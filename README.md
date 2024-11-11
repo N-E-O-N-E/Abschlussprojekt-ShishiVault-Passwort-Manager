@@ -1,4 +1,6 @@
-![Slide 16_9 - 1](https://github.com/user-attachments/assets/a723b93d-c9f2-4f15-ba6e-950ae24101fa)
+<p>
+  <img src="./images/Slide 16_9 - 1.png" width="1000">
+</p>
 
 # Shishi Vault - iOS Passwort-Manager
 
@@ -48,4 +50,10 @@ Benutzerführung:
       - Die Daten sind nur nach Entschlüsselung über den AES-Schlüssel des Geräts lesbar bzw. importierbar.
 
 Shishi Vault schützt Ihre Daten so zuverlässig wie die Shishi-Löwen und bietet Ihnen die Flexibilität und Sicherheit, die Sie benötigen, um Ihre sensiblen Informationen zu verwalten.
+
+<p>
+  <img src="./images/Slide 16_9 - 2.png" width="333">
+   <img src="./images/Slide 16_9 - 3.png" width="333">
+   <img src="./images/Slide 16_9 - 4.png" width="333">
+</p>
 
