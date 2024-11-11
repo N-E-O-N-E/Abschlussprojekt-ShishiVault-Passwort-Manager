@@ -1,51 +1,51 @@
-# Name der App
+![Slide 16_9 - 1](https://github.com/user-attachments/assets/a723b93d-c9f2-4f15-ba6e-950ae24101fa)
 
-**Füge hier einen kurzen, knackigen Slogan ein, um deine App zu bewerben.**
+# Shishi Vault - iOS Passwort-Manager
 
-Beschreibe hier in ein paar Sätzen, was deine App bietet.
+Willkommen zu Shishi Vault – einer sicheren und zuverlässigen Passwort-Manager-App für iOS, entwickelt mit SwiftUI. Der Name “Shishi Vault” ist inspiriert von den chinesischen Shishi-Löwen, die symbolisch als Wächter gelten, wie z.B. beim Schutz von Tempeln. Diese App soll die Sicherheit und Vertraulichkeit Ihrer Passwörter und persönlichen Daten gewährleisten.
 
-Für wen ist sie geeignet? Welches Problem löst sie? Was macht deine App anders/besser als andere Apps?
-Vermeide es, hier allzusehr in technische Details zu gehen.
+## Inhaltsverzeichnis
 
+- Über das Projekt
+- Features
+- Technologien
+- Anwendung
 
-## Design
-Füge hier am Ende die Screenshots deiner App ein (achte hierbei auf die Guidelines).
+### Über das Projekt:
 
-<p>
-  <img src="./img/screen1.png" width="200">
-  <img src="./img/screen2.png" width="200">
-  <img src="./img/screen3.png" width="200">
-</p>
+Shishi Vault ist eine iOS-App zur Verwaltung und sicheren Speicherung von Passwörtern, Bankdaten und anderen sensiblen Informationen. Durch die Integration von Firebase und einer Hybrid-Speicherlösung kombiniert Shishi Vault moderne Sicherheitstechniken mit einer benutzerfreundlichen Bedienung. Die App nutzt Firebase Authentication für die Anmeldung und AES-Verschlüsselung in Verbindung mit Firebase Storage für die sichere Speicherung und Synchronisation der Backup-Daten.
 
+### Features:
 
-## Features
-Hier kommen alle Features rein, welche deine App bietet.
+  - Passwort-Manager: Erstellen, Speichern und Verwalten von Zugangsdaten, Bankverbindungen sowie Kredit- und Girokarten.
+  - Passwort-Generator: Ein flexibler Passwortgenerator, der Passwörter mit benutzerdefinierter Länge, Groß- und Kleinschreibung sowie Sonderzeichen generieren kann. Dies wird über eine eigens implementierte API abgewickelt.
+  - Firebase-Integration: Benutzeranmeldung und Authentifizierung via Firebase Authentication.
 
-**Tipp: Du kannst diese Punkte auch am Anfang ausfüllen und mit der Zeit abhaken, sodass am Ende eine vollständige Liste entsteht.**
+### Hybride Datenspeicherung:
 
-- [x] Feature 1
-- [x] Feature 2
-- [ ] ...
+  - Lokale Speicherung: Sensible Daten werden lokal via AES verschlüsselt und auf dem Gerät als JSON gespeichert, was die Sicherheit erhöht.
+  - Firebase-Backup: Die verschlüsselten Daten werden automatisch in Firebase Storage AES verschlüsselt gesichert und synchronisiert, um den Zugriff auf mehreren Geräten und die Datenwiederherstellung bei Geräteverlust zu ermöglichen.
 
+### Technologien:
 
-## Technischer Aufbau
+  - SwiftUI – für die gesamte UI und Applogik
+  - Firebase Authentication – für Benutzeranmeldung und Authentifizierung
+  - AES-Verschlüsselung – zur Sicherung der lokalen Daten und Firebase Backups
+  - Passwort-Generator API – zur Erstellung von sicheren Passwörtern mit benutzerdefinierten Einstellungen
 
-#### Projektaufbau
-Eine kurze Beschreibung deiner Ordnerstruktur und Architektur (MVVM, Repositories) um Außenstehenden zu helfen, sich in deinem Projekt zurecht zu finden.
+## Anwendung
 
-#### Datenspeicherung
-Welche Daten speicherst du? Wo und wie (Firebase, Core Data)? Erkläre hier auch, warum du den jeweiligen Dienst nutzt (offline-first, Sync usw.).
+Benutzerführung:
 
-#### API Calls
-Welche APIs verwendest du?
+  1.	Anmeldung:
+      - Der Benutzer meldet sich über Firebase Authentication an.
+  2.	Passwort-Manager:
+      - Zugangsdaten, Bankverbindungen sowie Kreditkarteninformationen können über die Benutzeroberfläche sicher gespeichert und verwaltet werden.
+  3.	Passwort-Generator:
+      - Der Benutzer kann im Passwortgenerator ein Passwort nach gewünschten Einstellungen (Länge, Groß- und Kleinschreibung, Sonderzeichen) generieren. Dies geschieht über eine eingebundene API, die sicherstellt, dass die erzeugten Passwörter die Anforderungen erfüllen.
+  4.	Hybride Speicherung:
+      - Sensible Daten werden mit AES verschlüsselt lokal gespeichert und synchronisiert als verschlüsseltes Backup in Firebase Storeage gesichert.
+      - Die Daten sind nur nach Entschlüsselung über den AES-Schlüssel des Geräts lesbar bzw. importierbar.
 
-#### 3rd-Party Frameworks
-Verwendest du Frameworks, die nicht von dir stammen? Bspw. Swift Packages für Firebase, fertige SwiftUI-Views o.Ä.? Gib diese hier an.
+Shishi Vault schützt Ihre Daten so zuverlässig wie die Shishi-Löwen und bietet Ihnen die Flexibilität und Sicherheit, die Sie benötigen, um Ihre sensiblen Informationen zu verwalten.
 
-
-## Ausblick
-Beschreibe hier, wo die Reise nach deinem Praxisprojekt hin geht. Was möchtest du in Zukunft noch ergänzen?
-
-- [ ] Geplantes Feature 1
-- [ ] Geplantes Feature 2
-- [ ] ...
