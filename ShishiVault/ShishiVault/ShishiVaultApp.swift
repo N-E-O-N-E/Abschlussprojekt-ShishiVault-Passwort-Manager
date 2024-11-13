@@ -29,9 +29,9 @@ struct ShishiVaultApp: App {
         WindowGroup {
             NavigationStack {
                 SignInView()
-                    .environmentObject(signInViewModel) // übergibt das ViewModel an die View(s)
-                    .environment(\.modelContext, sharedModelContainer.mainContext) // übergibt den ModelContainer
             }
+            .environmentObject(signInViewModel) // übergibt das ViewModel an die View(s)
+            .environment(\.modelContext, sharedModelContainer.mainContext) // übergibt den ModelContainer
         }
     }
 }

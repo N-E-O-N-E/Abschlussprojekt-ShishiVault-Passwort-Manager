@@ -14,9 +14,9 @@ struct ComponentsExampleView: View {
     // Exemplarisches Einbinden des ViewModels zur Anmeldung mit Apple ID
     @EnvironmentObject var signInViewModel: SignInViewModel
     
-    
     @State private var text: String = ""
     @State private var isPasswordVisible: Bool = false
+    
     
     var body: some View {
         
@@ -25,8 +25,8 @@ struct ComponentsExampleView: View {
             
             // Standardschriften ------------------------------------------------------
             
-            Text("Willkommen")
-                .font(.title)
+            Text("Willkommen \(signInViewModel.userNameKeyPublic)")
+                .font(.largeTitle)
                 .bold()
                 .foregroundStyle(Color.ShishiColorBlack)
                 .padding(.horizontal, 20)
@@ -39,7 +39,7 @@ struct ComponentsExampleView: View {
                 .padding(.vertical, 10)
             
             Text("Normaler Text")
-                .font(.footnote)
+                .font(.callout)
                 .foregroundStyle(Color.ShishiColorBlack)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 10)
@@ -207,12 +207,10 @@ struct ComponentsExampleView: View {
             .navigationBarBackButtonHidden(true)
         }
         
-        
-        
     }
 }
 
 #Preview {
     ComponentsExampleView()
-        .modelContainer(for: Credentials.self, inMemory: true)
+        .modelContainer(for: EntryData.self, inMemory: true)
 }

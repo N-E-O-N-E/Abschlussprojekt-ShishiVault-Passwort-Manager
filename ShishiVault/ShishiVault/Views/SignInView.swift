@@ -13,28 +13,36 @@ struct SignInView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
     
     var body: some View {
-        NavigationStack {
-            VStack {
-                // SignIn Button (SignUp) > je nach LoginStatus wird dieser angezeigt
-                if !signInViewModel.isLoggedIn {
-                    SignInWithAppleButton(.signUp) { request in
-                        request.requestedScopes = [.fullName, .email] // Fordert Namen und die E-Mail-Adresse
-                        request.requestedOperation = .operationLogin // Gibt an, dass der Anmeldevorgang ein Login-Vorgang ist
-                    } onCompletion: { result in
-                        signInViewModel.handleLogin(result: result)
-                        // Wird ausgeführt, wenn der Anmeldevorgang abgeschlossen ist auch wenn er einen Fehle hat
-                    }
+        ZStack {
+            Color.ShishiColorRed.ignoresSafeArea()
+            
+            NavigationStack {
+                VStack {
+                    
+                    Image("ShishiLogo_600")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 300)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                    
+                    // SignIn Button (SignUp) > je nach LoginStatus wird dieser angezeigt
+                    SignInWithAppleButton(
+                        .signIn,
+                        onRequest: signInViewModel.configure,
+                        onCompletion: signInViewModel.handleLogin
+                    )
                     .frame(height: 50)
                     .padding()
-                } else {
-                    Text("User angemeldet")
+                    
+                }
+                .navigationDestination(isPresented: $signInViewModel.isLoggedIn) {
+                    ComponentsExampleView() // ist der LoginStatus true wird die View aufgerufen
+                        .environmentObject(signInViewModel) // Hängt das ViewModel an die View
                 }
             }
-            .navigationDestination(isPresented: $signInViewModel.isLoggedIn) {
-                ComponentsExampleView() // ist der LoginStatus true wird die View aufgerufen
-                    .environmentObject(signInViewModel) // Hängt das ViewModel an die View
-            }
         }
+        
+        
     }
 }
 
