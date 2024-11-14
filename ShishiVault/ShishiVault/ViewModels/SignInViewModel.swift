@@ -8,30 +8,31 @@
 import SwiftUI
 import AuthenticationServices
 
+// Quelle zur Umsetzung des SignInWithApple Buttons:
+// https://www.youtube.com/watch?v=O2FVDzoAB34 - https://developer.apple.com/documentation/swift/result
+
+
 class SignInViewModel: ObservableObject {
     // Published Variable um die View zu Steuern
     @Published var isLoggedIn = false
     @Published var userNameKeyPublic = "userNameKeyPublic"
+    
     private let userIDKey = "userIDKey"
     private let userNameKey = "userNameKey"
     
     init() {
-        // initiale Statusabfrage
-        print("Check login status - is actually: \(isLoggedIn)")
         checkLoginStatus()
-        print("Check again login check - is now: \(isLoggedIn)")
-        print(">>> Apple Username is: \(userNameKeyPublic)")
+        print("Login Status: \(isLoggedIn)")
+        print("Apple UserName: \(userNameKeyPublic)")
     }
     
-    // Quelle zur Umsetzung des SignInWithApple Buttons: https://www.youtube.com/watch?v=O2FVDzoAB34
-    
-    // SignInWithAppleID Button Funktionen (configure und handle)
-    func configure(request: ASAuthorizationAppleIDRequest) {
+    // SignInWithAppleID Button Funktion (configure)
+    func configure(request: ASAuthorizationAppleIDRequest) async {
         request.requestedScopes = [.fullName, .email] // Fordert Namen und die E-Mail-Adresse
     }
     
-    // Auswertung des Ergebnisses der Anmeldung
-    func handleLogin(result: Result<ASAuthorization, Error>) {
+    // SignInWithAppleID Button Funktion (handle)
+    func handleLogin(result: Result<ASAuthorization, Error>) async {
         switch result {
             case .success(let auth):
                 print("Login successful \(auth)")
@@ -53,14 +54,13 @@ class SignInViewModel: ObservableObject {
         
         // Speichern des Benutzernamens, falls vorhanden
         if let givenName = credentials.fullName?.givenName {
-            print("Given name is available: \(givenName)")
             KeychainHelper.shared.save(data: givenName, for: userNameKey)
             print("Stored Username: \(givenName) under key \(userNameKey)")
         } else {
             print("Given name is nil, not stored.")
         }
         
-        // Benutzernamen für die Anzeige laden in eine Publicvariable
+        // Benutzernamen für die UI Anzeige laden in eine Publicvariable
         if let username = KeychainHelper.shared.read(for: userNameKey) {
             self.userNameKeyPublic = username
             print("Retrieved username for display: \(username)")
@@ -80,7 +80,9 @@ class SignInViewModel: ObservableObject {
     // Prüft ob der Userkey in der Keychain vorhanden ist und nicht nil um den
     // LoginStatus beim start der App über den init() gleich auf true zu setzen
     private func checkLoginStatus() {
-        if KeychainHelper.shared.read(for: userIDKey) != nil {
+        if KeychainHelper.shared.read(for: userIDKey) != nil &&
+            KeychainHelper.shared.read(for: userNameKey) != nil {
+            
             isLoggedIn = true
             userNameKeyPublic = KeychainHelper.shared.read(for: userNameKey) ?? ""
         } else {
@@ -95,6 +97,5 @@ class SignInViewModel: ObservableObject {
         self.userNameKeyPublic = ""
         isLoggedIn = false
     }
-    
     
 }

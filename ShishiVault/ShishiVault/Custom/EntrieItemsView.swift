@@ -7,17 +7,14 @@
 
 import SwiftUI
 
-struct EntireItemsView: View {
+struct EntrieItemsView: View {
     
-    var titel: String
-    var username: String
-    var email: String
-    var created: Date
-    var website: String?
+    var titel: String = ""
+    var email: String = ""
+    var created = Date()
+    var website: String = ""
     
     var body: some View {
-        
-        List {
         // Einträge-Element
         ZStack {
             Rectangle()
@@ -37,14 +34,15 @@ struct EntireItemsView: View {
                         .foregroundStyle(Color.ShishiColorBlack)
                         .bold()
                         .padding(0)
-                    Text("Mail: \(email.count > 30 ? String(email.prefix(30)) + " ..." : email)")
+                    Text("Mail: \(email.count > 25 ? String(email.prefix(25)) + " ..." : email)")
                         .font(.footnote)
                         .foregroundStyle(Color.ShishiColorBlack)
                         .padding(0)
-                    Text("Web: \(website.count > 30 ? String(website.prefix(30)) + " ..." : website)")
-                        .font(.footnote)
-                        .foregroundStyle(Color.ShishiColorBlack)
-                        .padding(0)
+                    Text("Web: \(website.count > 26 ? String(website.prefix(26)) + " ..." : website)")
+                            .font(.footnote)
+                            .foregroundStyle(Color.ShishiColorBlack)
+                            .padding(0)
+                    
                     
                     Divider()
                     Text("Aktualisiert am: \(created.formatted())")
@@ -58,14 +56,12 @@ struct EntireItemsView: View {
                     .foregroundColor(Color.ShishiColorDarkGray)
                     .padding(10)
                 
-            }.padding(8)
-        }.padding()
-    }
-        
-        
+            }.padding(10)
+        }.padding(.horizontal)
+            .padding(.vertical, 2)
     }
 }
 
 #Preview {
-    EntireItemsView(titel: "", username: "", email: "", created: Date(), website: "")
+    EntrieItemsView(titel: "Amazon Shopping", email: "markus@meinedomain.com", created: Date(), website: "http://www.meinedomain.com")
 }

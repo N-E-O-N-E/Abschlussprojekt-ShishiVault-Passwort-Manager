@@ -9,53 +9,40 @@ import SwiftData
 
 // Standardfelder der APP zum Anlegen der Einträge und der Möglichkeit für individuelle Felder
 
-@Model
-class EntryData: Identifiable {
-    var id: UUID
+struct EntryData: Identifiable {
+    
+    var id = UUID()
     var titel: String
-    var username: String
+    var username: String?
+    var email: String
     var password: String
-    var website: String
-    var notes: String
     var created: Date
     
-    
-    // Feld für die Speicherung der Custom-Fields (!) -> für JSON speicherung anpassen nicht vergessen!
+    var notes: String?
+    var website: String?
     var customFields: [CustomField] = []
     
-    init(id: UUID = UUID(), titel: String, username: String, password: String, website: String, notes: String, created: Date = Date()) {
-        self.id = id
-        self.titel = titel
-        self.username = username
-        self.password = password
-        self.website = website
-        self.notes = notes
-        self.created = created
+    mutating func editCustomFieldName(id: UUID, newName: String) {
+        if let result = customFields.firstIndex(where: { $0.id == id }) {
+            customFields[result].name = newName
+        }
     }
     
     // Mit dieser Funkto werden neue Einträge zu customFields hinzugefügt
-    func addCustomField(name: String, value: String) {
-        let field = CustomField(name: name, value: value)
-        customFields.append(field)
+    mutating func addCustomField(name: String, value: String) {
+        customFields.append(CustomField(name: name, value: value))
     }
     
     // Mit dieser Funkto werden Einträge aus customFields gelöscht
-    func removeCustomField(field: CustomField) {
-        if let index = customFields.firstIndex(where: { $0.id == field.id }) {
+    mutating func removeCustomField(id: UUID) {
+        if let index = customFields.firstIndex(where: { $0.id == id }) {
             customFields.remove(at: index)
         }
     }
-}
-
-// Hilfsklasse zum Anlegen neuer Felder -> Codable da diese Daten später in JSON gespeichert werden müssen
-class CustomField: Identifiable, Codable {
-    var id: UUID
-    var name: String
-    var value: String
     
-    init(name: String, value: String) {
-        self.id = UUID()
-        self.name = name
-        self.value = value
+    struct CustomField: Identifiable {
+        let id = UUID()
+        var name: String
+        var value: String
     }
 }

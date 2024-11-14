@@ -9,19 +9,20 @@ import SwiftUI
 import SwiftData
 
 struct ComponentsExampleView: View {
-    // Expemplarisches Einbinden des ModelContainers
-    @Environment(\.modelContext) private var modelContext
     // Exemplarisches Einbinden des ViewModels zur Anmeldung mit Apple ID
     @EnvironmentObject var signInViewModel: SignInViewModel
     
+    // Testdaten
     @State private var text: String = ""
     @State private var isPasswordVisible: Bool = false
+    @State private var entries: [EntryData] = [
+        EntryData(titel: "Amazon Shopping", email: "max1988@meinedomain.com", password: "", created: Date.now, website: "http://www.meinedomain.com/login/users/id=32132164"),
+        EntryData(titel: "Netflix", email: "max1988@meinedomain.com", password: "", created: Date.now, website: "http://www.meinedomain.com/login/users/id=32132164"),
+        EntryData(titel: "Apple Account", email: "max1988@meinedomain.com", password: "", created: Date.now, website: "http://www.meinedomain.com/login/users/id=32132164")
+    ]
     
     
     var body: some View {
-        
-        ScrollView {
-            
             
             // Standardschriften ------------------------------------------------------
             
@@ -30,28 +31,27 @@ struct ComponentsExampleView: View {
                 .bold()
                 .foregroundStyle(Color.ShishiColorBlack)
                 .padding(.horizontal, 20)
-                .padding(.vertical, 10)
+                .padding(.vertical, 1)
             
             Text("Bereichsbeschreibung")
                 .font(.title3)
                 .foregroundStyle(Color.ShishiColorDarkGray)
                 .padding(.horizontal, 20)
-                .padding(.vertical, 10)
+                .padding(.vertical, 1)
             
             Text("Normaler Text")
                 .font(.callout)
                 .foregroundStyle(Color.ShishiColorBlack)
                 .padding(.horizontal, 20)
-                .padding(.vertical, 10)
+                .padding(.vertical, 2)
             
             Text("Kleiner Text für unter Textfelder")
                 .font(.caption)
                 .foregroundStyle(Color.ShishiColorDarkGray)
                 .padding(.horizontal, 20)
-                .padding(.vertical, 10)
+                .padding(.vertical, 1)
             
             Divider()
-            
             
             // Standard-Logo und Farbe -----------------------------------------
             
@@ -63,71 +63,24 @@ struct ComponentsExampleView: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 10)
             
-            HStack {
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color.ShishiColorBlue)
-                    .frame(width: 100, height: 50)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 10)
-                
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color.ShishiColorRed)
-                    .frame(width: 100, height: 50)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 10)
-            }
-            
-            
             Divider()
             
-            
+        ScrollView {
             
             // Standard-Listelemente -----------------------------------------
-            NavigationLink {
-                ComponentsExampleView()
-            } label: {
-                ZStack {
-                    Rectangle()
-                        .foregroundStyle(Color.ShishiColorPanelBackground)
-                        .clipShape(.rect(cornerRadius: 10))
-                        .shadow(radius: 2, x: 0, y: 2)
-                    
-                    HStack {
-                        Image(systemName: "lock.fill")
-                            .foregroundStyle(Color.ShishiColorBlue)
-                            .scaleEffect(2.5)
-                            .padding(15)
-                        
-                        VStack(alignment: .leading) {
-                            Text("Amazon Shopping")
-                                .font(.title3)
-                                .foregroundStyle(Color.ShishiColorBlack)
-                                .bold()
-                                .padding(0)
-                            Text("max1988@meinedomain.com")
-                                .font(.footnote)
-                                .foregroundStyle(Color.ShishiColorBlack)
-                                .padding(0)
-                                .textSelection(.disabled)
-                            
-                            Divider()
-                            Text("Aktualisiert am: \(Date().formatted())")
-                                .font(.caption2)
-                                .foregroundStyle(Color.ShishiColorDarkGray)
-                                .padding(0)
-                        }
-                        Spacer()
-                        Image(systemName: "info.circle")
-                            .scaleEffect(1)
-                            .foregroundColor(Color.ShishiColorDarkGray)
-                            .padding(10)
-                        
-                    }.padding(8)
-                }.padding()
+            ForEach(entries) { entry in
+                NavigationLink {
+                    ComponentsExampleView()
+                } label: {
+                    EntrieItemsView(
+                        titel: entry.titel,
+                        email: entry.email,
+                        created: entry.created,
+                        website: entry.website ?? "")
+                }
             }
             
             Divider()
-            
             
             // Standard-Textfeld und Password -----------------------------------------
             
@@ -212,7 +165,9 @@ struct ComponentsExampleView: View {
     }
 }
 
+
 #Preview {
+    
     ComponentsExampleView()
-        .modelContainer(for: EntryData.self, inMemory: true)
+        .environmentObject(SignInViewModel())
 }

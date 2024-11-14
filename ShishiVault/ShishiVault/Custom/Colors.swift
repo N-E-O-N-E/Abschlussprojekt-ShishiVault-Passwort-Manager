@@ -14,5 +14,4 @@ extension Color {
     static let ShishiColorDarkGray = Color(red: 0.3, green: 0.3, blue: 0.3)
     static let ShishiColorBlack = Color(red: 0.0, green: 0.0, blue: 0.0)
     static let ShishiColorPanelBackground = Color(red: 205/255, green: 240/255, blue: 255/255)
-
 }
