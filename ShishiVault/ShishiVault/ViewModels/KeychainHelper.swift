@@ -11,20 +11,27 @@ import Security
 // KeychainHelper ist Boilerplate-Code aus dem Internet den ich hier verwendet habe für
 // unterschiedliche Methoden
 
+
+// Quelle zur Umsetzung: https://www.advancedswift.com/secure-private-data-keychain-swift/#save-data-to-keychain
+// Quelle zur Umsetzung: https://github.com/evgenyneu/keychain-swift
+
+
 class KeychainHelper {
-    // Singleton-Instanz um global darauf zureifen zu können
+    // Singleton-Instanz um global darauf zureifen zu können - privat initialisiert
     static let shared = KeychainHelper()
+    private init() {}
     
     // Diese Funktion speichert (data) unter (key) im Keychain
     func save(data: String, for key: String) {
         // Wandelt den zu String in UTF-8 Daten um
         let data = Data(data.utf8)
         
-        // Löscht zuerst Daten für diesen Schlüssel im Keychain,
+        // Löscht zuerst Daten im Keychain,
         // sodass kein doppelter Eintrag für denselben Schlüssel existiert
         let query = [
             kSecClass: kSecClassGenericPassword,
-            kSecAttrAccount: key
+            kSecAttrAccount: key,
+            kSecValueData: data
         ] as [String: Any]
         SecItemDelete(query as CFDictionary)
         
@@ -34,7 +41,11 @@ class KeychainHelper {
             kSecAttrAccount: key,
             kSecValueData: data // Die Daten
         ] as [String: Any]
-        SecItemAdd(attributes as CFDictionary, nil)
+        
+        let status = SecItemAdd(attributes as CFDictionary, nil)
+        if status != errSecSuccess {
+            print("Error saving to Keychain: \(status)")
+        }
     }
     
     // Diese Funktion liest die Daten für einen bestimmten Key
@@ -50,8 +61,11 @@ class KeychainHelper {
         let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
         
         // Wenn die Suche erfolgreich war werden sie in einen String umgewandelt
-        if status == errSecSuccess, let data = dataTypeRef as? Data {
-            return String(data: data, encoding: .utf8)
+        if status == errSecSuccess,
+           let data = dataTypeRef as? Data,
+           let result = String(data: data, encoding: .utf8) {
+            
+            return result
         }
         return nil
     }

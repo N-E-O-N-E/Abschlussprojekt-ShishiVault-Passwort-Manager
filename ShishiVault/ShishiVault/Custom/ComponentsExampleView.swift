@@ -108,6 +108,8 @@ struct ComponentsExampleView: View {
                                 .font(.footnote)
                                 .foregroundStyle(Color.ShishiColorBlack)
                                 .padding(0)
+                                .textSelection(.disabled)
+                            
                             Divider()
                             Text("Aktualisiert am: \(Date().formatted())")
                                 .font(.caption2)
