@@ -60,7 +60,6 @@ class KeychainHelper {
         if status == errSecSuccess,
            let dataToResult = data as? Data,
            let result = String(data: dataToResult, encoding: .utf8) {
-            print("The Keychain was read successfully: \(key)")
             return result
         }
         return nil

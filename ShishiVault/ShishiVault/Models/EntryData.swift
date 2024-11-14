@@ -17,7 +17,6 @@ struct EntryData: Identifiable {
     var email: String
     var password: String
     var created: Date
-    
     var notes: String?
     var website: String?
     var customFields: [CustomField] = []

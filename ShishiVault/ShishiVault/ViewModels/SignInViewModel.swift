@@ -16,6 +16,7 @@ class SignInViewModel: ObservableObject {
     // Published Variable um die View zu Steuern
     @Published var isLoggedIn = false
     @Published var userNameKeyPublic = "userNameKeyPublic"
+    @Published var userKeyPublic = "userKeyPublic"
     
     private let userIDKey = "userIDKey"
     private let userNameKey = "userNameKey"
@@ -50,7 +51,6 @@ class SignInViewModel: ObservableObject {
         
         // Speichern der ID
         KeychainHelper.shared.save(data: credentials.user, for: userIDKey)
-        print("Stored User ID: \(credentials.user) under key \(userIDKey)")
         
         // Speichern des Benutzernamens, falls vorhanden
         if let givenName = credentials.fullName?.givenName {
@@ -60,13 +60,12 @@ class SignInViewModel: ObservableObject {
             print("Given name is nil, not stored.")
         }
         
-        // Benutzernamen für die UI Anzeige laden in eine Publicvariable
-        if let username = KeychainHelper.shared.read(for: userNameKey) {
-            self.userNameKeyPublic = username
-            print("Retrieved username for display: \(username)")
-        } else {
-            print("No username found for the key \(userNameKey).")
-        }
+//        // Benutzernamen für die UI Anzeige laden in eine Publicvariable
+//        if let username = KeychainHelper.shared.read(for: userNameKey) {
+//            self.userNameKeyPublic = username
+//        } else {
+//            print("No username found for the key \(userNameKey).")
+//        }
         
         // Login-Status setzen
         isLoggedIn = true
@@ -84,7 +83,17 @@ class SignInViewModel: ObservableObject {
             KeychainHelper.shared.read(for: userNameKey) != nil {
             
             isLoggedIn = true
-            userNameKeyPublic = KeychainHelper.shared.read(for: userNameKey) ?? ""
+            
+            if let getKeyForPublic = KeychainHelper.shared.read(for: userIDKey) {
+                userKeyPublic = getKeyForPublic
+                print("Public Key: \(userKeyPublic)")
+            }
+                
+            if let getNameForPublic = KeychainHelper.shared.read(for: userNameKey) {
+                userNameKeyPublic = getNameForPublic
+                print("Public Name: \(userNameKeyPublic)")
+            }
+            
         } else {
             isLoggedIn = false
         }
