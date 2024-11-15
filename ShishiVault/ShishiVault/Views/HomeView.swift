@@ -40,6 +40,16 @@ struct HomeView: View {
                         Image(systemName: "line.3.horizontal")
                     }
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        let _ = entrieViewModel.createEntry(
+                            title: "Testeintrag", username: "Max Mustermann", email: "text@meineDomain.com",
+                            password: "1234", passwordConfirm: "1234", notes: "",
+                            website: "http://testserver.com/", customFields: [])
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
             }
         } .overlay(
             Button(action: {
