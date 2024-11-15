@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 class EntriesViewModel: ObservableObject {
     @Published var entries: [EntryData] = []
     @Published var customFields: [CustomField] = []
@@ -15,7 +16,13 @@ class EntriesViewModel: ObservableObject {
         
     }
     
-    func createEntry() {
+    func createEntry(title: String, username: String, email: String, password: String, passwordConfirm: String, notes: String, website: String, customFields: [CustomField]) -> Bool {
+        if password == passwordConfirm {
+            entries.append(EntryData(title: title, username: username, email: email, password: password, customFields: customFields))
+            return true
+        } else {
+            return false
+        }
         
     }
     

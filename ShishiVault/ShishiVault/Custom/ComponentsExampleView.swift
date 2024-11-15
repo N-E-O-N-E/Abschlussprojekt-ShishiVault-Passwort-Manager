@@ -24,7 +24,7 @@ struct ComponentsExampleView: View {
             
             // Standardschriften ------------------------------------------------------
             
-            Text("Überschriften large")
+            Text("Angemeldet: \(signInViewModel.userNameKeyPublic)")
                 .font(.largeTitle)
                 .bold()
                 .foregroundStyle(Color.ShishiColorBlack)
@@ -159,7 +159,9 @@ struct ComponentsExampleView: View {
                             .foregroundColor(.white)
                     )
             }
+            
             // .navigationBarBackButtonHidden(true)
+            .navigationTitle("Einstellungen")
         }
         
     }

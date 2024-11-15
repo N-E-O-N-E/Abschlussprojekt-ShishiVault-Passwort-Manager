@@ -10,10 +10,11 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
     @EnvironmentObject var entrieViewModel: EntriesViewModel
-    @State var showAddEntrieView: Bool = false
-    @State var showComponentsView: Bool = false
+    @State private var showAddEntrieView: Bool = false
+    @State private var showComponentsView: Bool = false
     
     var body: some View {
+        
         ScrollView {
             VStack {
                 ForEach(entrieViewModel.entries) { entry in
@@ -58,11 +59,16 @@ struct HomeView: View {
         )
         
         
-        .navigationDestination(isPresented: $showAddEntrieView, destination: { EntrieAddView() })
-        .navigationDestination(isPresented: $showComponentsView, destination: { ComponentsExampleView() })
+        .navigationDestination(isPresented: $showAddEntrieView, destination: {
+            EntrieAddView(showAddEntrieView: $showAddEntrieView)
+                .environmentObject(entrieViewModel)
+        })
+        .navigationDestination(isPresented: $showComponentsView, destination: {
+            ComponentsExampleView()
+        })
         
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("Hallo \(signInViewModel.userNameKeyPublic)")
+        .navigationTitle("Shishi Vault")
     }
 }
 

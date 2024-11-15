@@ -13,6 +13,7 @@ struct EntrieAddView: View {
     
     @State private var isPasswordVisible: Bool = false
     @State private var isSavedAlert: Bool = false
+    @Binding var showAddEntrieView: Bool
     
     @State private var title: String = ""
     @State private var username: String = ""
@@ -26,14 +27,13 @@ struct EntrieAddView: View {
     var body: some View {
         
         VStack {
-            
             TextField("Titel", text: $title)
                 .frame(height: 25)
                 .textFieldStyle(.plain)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 10)
                 .border(Color.ShishiColorDarkGray, width: 1)
-            
+                .disableAutocorrection(true)
             HStack {
                 Text("Bezeichnung")
                     .font(.caption)
@@ -42,34 +42,34 @@ struct EntrieAddView: View {
                 
                 Spacer()
             }
-        }.padding(.horizontal).padding(.vertical, 5)
         
-        VStack {
             TextField("Benutzername", text: $username)
                 .frame(height: 25)
                 .textFieldStyle(.plain)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 10)
                 .border(Color.ShishiColorDarkGray, width: 1)
-            
+                .autocapitalization(.none)
+                .textInputAutocapitalization(.never)
+                .disableAutocorrection(true)
             HStack {
                 Text("Benutzername")
                     .font(.caption)
                     .foregroundStyle(Color.ShishiColorDarkGray)
                     .padding(.horizontal, 20).padding(.vertical, 5)
-                
+                    
                 Spacer()
             }
-        } .padding(.horizontal)
-        
-        VStack {
+            
             TextField("E-Mail", text: $email)
                 .frame(height: 25)
                 .textFieldStyle(.plain)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 10)
                 .border(Color.ShishiColorDarkGray, width: 1)
-            
+                .autocapitalization(.none)
+                .textInputAutocapitalization(.never)
+                .disableAutocorrection(true)
             HStack {
                 Text("E-Mail Adresse")
                     .font(.caption)
@@ -78,12 +78,13 @@ struct EntrieAddView: View {
                 
                 Spacer()
             }
-        } .padding(.horizontal).padding(.vertical, 5)
-        
-        VStack {
+            
             HStack {
                 if isPasswordVisible {
                     TextField("Passwort", text: $password)
+                        .autocapitalization(.none)
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
                         .frame(height: 25)
                         .textFieldStyle(.plain)
                         .foregroundStyle(Color.ShishiColorDarkGray)
@@ -92,6 +93,9 @@ struct EntrieAddView: View {
                         .border(Color.ShishiColorDarkGray, width: 1)
                 } else {
                     SecureField("Passwort", text: $password)
+                        .autocapitalization(.none)
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
                         .frame(height: 25)
                         .textFieldStyle(.plain)
                         .foregroundStyle(Color.ShishiColorDarkGray)
@@ -119,12 +123,13 @@ struct EntrieAddView: View {
                     .padding(.horizontal, 20)
                 Spacer()
             }
-        } .padding(.horizontal).padding(.vertical, 5)
-        
-        VStack {
+
             HStack {
                 if isPasswordVisible {
                     TextField("PasswortConfirm", text: $passwordConfirm)
+                        .autocapitalization(.none)
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
                         .frame(height: 25)
                         .textFieldStyle(.plain)
                         .foregroundStyle(Color.ShishiColorDarkGray)
@@ -133,6 +138,9 @@ struct EntrieAddView: View {
                         .border(Color.ShishiColorDarkGray, width: 1)
                 } else {
                     SecureField("PasswortConfirm", text: $passwordConfirm)
+                        .autocapitalization(.none)
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
                         .frame(height: 25)
                         .textFieldStyle(.plain)
                         .foregroundStyle(Color.ShishiColorDarkGray)
@@ -159,14 +167,24 @@ struct EntrieAddView: View {
                     .padding(.horizontal, 20)
                 Spacer()
             }
-        } .padding(.horizontal).padding(.vertical, 5)
-        
-        
-        
-        Button {
             
+            Spacer()
+            
+        } .padding(.horizontal).padding(.vertical, 5)
+                
+        Button {
+            let _: Bool = entrieViewModel.createEntry(
+                title: title,
+                username: username,
+                email: email,
+                password: password,
+                passwordConfirm: passwordConfirm,
+                notes: notes,
+                website: website,
+                customFields: [])
             
             isSavedAlert.toggle()
+            showAddEntrieView.toggle()
             
         } label: {
             RoundedRectangle(cornerRadius: 25)
@@ -191,9 +209,4 @@ struct EntrieAddView: View {
         .navigationTitle("Eintrag hinzufügen")
 
     }
-}
-
-#Preview {
-    EntrieAddView()
-        .environmentObject(EntriesViewModel())
 }
