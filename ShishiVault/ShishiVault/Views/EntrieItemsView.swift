@@ -3,7 +3,6 @@
 //  ShishiVault
 //
 //  Created by Markus Wirtz on 14.11.24.
-//
 
 import SwiftUI
 
