@@ -100,7 +100,9 @@ struct ComponentsExampleView: View {
                     
                     Spacer()
                 }
-            } .padding()
+            } .padding(.horizontal).padding(.vertical, 5)
+            
+            
             VStack {
                 HStack {
                     if isPasswordVisible {
@@ -128,7 +130,7 @@ struct ComponentsExampleView: View {
                         Image(systemName: isPasswordVisible ? "eye" : "eye.slash")
                             .foregroundColor(isPasswordVisible ? Color.ShishiColorBlue : Color.ShishiColorRed)
                     }
-                    .padding(.horizontal, 10)
+                    .padding(.horizontal).padding(.vertical, 5)
                 }
                 HStack {
                     Text("Passworteinagabe")
