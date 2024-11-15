@@ -6,7 +6,7 @@
 
 import SwiftUI
 
-struct EntrieItemsView: View {
+struct EntrieListItem: View {
     
     var titel: String = ""
     var email: String = ""
@@ -62,5 +62,5 @@ struct EntrieItemsView: View {
 }
 
 #Preview {
-    EntrieItemsView(titel: "Amazon Shopping", email: "markus@meinedomain.com", created: Date(), website: "http://www.meinedomain.com")
+    EntrieListItem(titel: "Amazon Shopping", email: "markus@meinedomain.com", created: Date(), website: "http://www.meinedomain.com")
 }

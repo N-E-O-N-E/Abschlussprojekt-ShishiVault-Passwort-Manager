@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct EntrieAddView: View {
-    @EnvironmentObject var entiresViewModel: EntriesViewModel
+    @EnvironmentObject var signInViewModel: SignInViewModel
+    @EnvironmentObject var entrieViewModel: EntriesViewModel
     
     @State private var isPasswordVisible: Bool = false
+    @State private var isSavedAlert: Bool = false
+    
     @State private var title: String = ""
     @State private var username: String = ""
     @State private var email: String = ""
@@ -18,8 +21,7 @@ struct EntrieAddView: View {
     @State private var passwordConfirm: String = ""
     @State private var notes: String = ""
     @State private var website: String = ""
-    @State private var customFields: [EntryData.CustomField] = []
-    
+    @State private var customFields: [CustomField] = []
     
     var body: some View {
         
@@ -163,14 +165,8 @@ struct EntrieAddView: View {
         
         Button {
             
-            entiresViewModel.addEntry(
-                titel: title,
-                username: username,
-                email: email,
-                password: password,
-                notes: notes,
-                website: website,
-                customFields: customFields)
+            
+            isSavedAlert.toggle()
             
         } label: {
             RoundedRectangle(cornerRadius: 25)
@@ -183,7 +179,17 @@ struct EntrieAddView: View {
                         .font(.title3).bold()
                         .foregroundColor(.white))
         }
+        .alert("Gespeichert", isPresented: $isSavedAlert, actions: {
+            Text("Der Eintrag wurde gespeichert.")
+            Button("OK") {
+                isSavedAlert.toggle()
+            }
+        })
+        
+    
+        
         .navigationTitle("Eintrag hinzufügen")
+
     }
 }
 

@@ -15,6 +15,7 @@ import AuthenticationServices
 struct SignInView: View {
     // Bindet das ViewModel zur Authentifizierung ein
     @EnvironmentObject var signInViewModel: SignInViewModel
+    @StateObject var entrieViewModel = EntriesViewModel()
     
     var body: some View {
         ZStack {
@@ -47,8 +48,9 @@ struct SignInView: View {
                     .padding()
                     
                     .navigationDestination(isPresented: $signInViewModel.isLoggedIn) {
-                        ComponentsExampleView() // ist der LoginStatus true wird die View aufgerufen
-                            .environmentObject(signInViewModel) // Hängt das ViewModel an die View
+                        HomeView()
+                            .environmentObject(signInViewModel)
+                            .environmentObject(entrieViewModel)
                     }
                 }
             }
@@ -58,5 +60,6 @@ struct SignInView: View {
 
 
 #Preview {
-    SignInView()
+    SignInView(entrieViewModel: EntriesViewModel())
+        .environmentObject(SignInViewModel())
 }

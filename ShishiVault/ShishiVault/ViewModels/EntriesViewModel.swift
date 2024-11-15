@@ -9,27 +9,45 @@ import SwiftUI
 
 class EntriesViewModel: ObservableObject {
     @Published var entries: [EntryData] = []
+    @Published var customFields: [CustomField] = []
     
     init() {
         
     }
     
-    func addEntry(titel: String, username: String?, email: String, password: String, notes: String?, website: String?, customFields: [EntryData.CustomField]) {
-        let newEntry = EntryData(titel: titel, username: username, email: email, password: password, created: Date(), notes: notes, website: website, customFields: customFields)
-        entries.append(newEntry)
-        saveEntryInJSON()
-    }
-    
-    func saveEntryInJSON() {
-        let encoder = JSONEncoder()
+    func createEntry() {
         
     }
     
-    func loadEntriesFromJSON() {
+    func readEntry() {
         
     }
     
+    func updateEntry() {
+        
+    }
     
+    func deleteEntry() {
+        
+    }
+    
+    // ------------------------------------------------------------------------------------
+    
+    func createCustomField() {
+        
+    }
+    
+    func editCustomField() {
+        
+    }
+    
+    func updateCustomField() {
+        
+    }
+    
+    func deleteCustomField() {
+        
+    }
     
     
 }

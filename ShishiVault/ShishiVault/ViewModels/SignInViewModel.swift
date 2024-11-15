@@ -11,7 +11,7 @@ import AuthenticationServices
 // Quelle zur Umsetzung des SignInWithApple Buttons:
 // https://www.youtube.com/watch?v=O2FVDzoAB34 - https://developer.apple.com/documentation/swift/result
 
-
+@MainActor
 class SignInViewModel: ObservableObject {
     // Published Variable um die View zu Steuern
     @Published var isLoggedIn = false
