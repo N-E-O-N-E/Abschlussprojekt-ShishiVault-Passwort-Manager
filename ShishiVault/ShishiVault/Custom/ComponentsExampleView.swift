@@ -16,9 +16,7 @@ struct ComponentsExampleView: View {
     @State private var text: String = ""
     @State private var isPasswordVisible: Bool = false
     @State private var entries: [EntryData] = [
-        EntryData(titel: "Amazon Shopping", email: "max1988@meinedomain.com", password: "", created: Date.now, website: "http://www.meinedomain.com/login/users/id=32132164"),
-        EntryData(titel: "Netflix", email: "max1988@meinedomain.com", password: "", created: Date.now, website: "http://www.meinedomain.com/login/users/id=32132164"),
-        EntryData(titel: "Apple Account", email: "max1988@meinedomain.com", password: "", created: Date.now, website: "http://www.meinedomain.com/login/users/id=32132164")
+        EntryData(title: "Amazon Shopping", email: "max1988@meinedomain.com", password: "", website: "http://www.meinedomain.com/login/users/id=32132164")
     ]
     
     
@@ -26,7 +24,7 @@ struct ComponentsExampleView: View {
             
             // Standardschriften ------------------------------------------------------
             
-            Text("Willkommen \(signInViewModel.userNameKeyPublic)")
+            Text("Angemeldet: \(signInViewModel.userNameKeyPublic)")
                 .font(.largeTitle)
                 .bold()
                 .foregroundStyle(Color.ShishiColorBlack)
@@ -72,8 +70,8 @@ struct ComponentsExampleView: View {
                 NavigationLink {
                     ComponentsExampleView()
                 } label: {
-                    EntrieItemsView(
-                        titel: entry.titel,
+                    EntrieListItem(
+                        titel: entry.title,
                         email: entry.email,
                         created: entry.created,
                         website: entry.website ?? "")
@@ -100,7 +98,9 @@ struct ComponentsExampleView: View {
                     
                     Spacer()
                 }
-            } .padding()
+            } .padding(.horizontal).padding(.vertical, 5)
+            
+            
             VStack {
                 HStack {
                     if isPasswordVisible {
@@ -128,7 +128,7 @@ struct ComponentsExampleView: View {
                         Image(systemName: isPasswordVisible ? "eye" : "eye.slash")
                             .foregroundColor(isPasswordVisible ? Color.ShishiColorBlue : Color.ShishiColorRed)
                     }
-                    .padding(.horizontal, 10)
+                    .padding(.horizontal).padding(.vertical, 5)
                 }
                 HStack {
                     Text("Passworteinagabe")
@@ -159,7 +159,9 @@ struct ComponentsExampleView: View {
                             .foregroundColor(.white)
                     )
             }
-            .navigationBarBackButtonHidden(true)
+            
+            // .navigationBarBackButtonHidden(true)
+            .navigationTitle("Einstellungen")
         }
         
     }

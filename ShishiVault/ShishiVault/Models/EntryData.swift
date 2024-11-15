@@ -9,10 +9,10 @@ import SwiftData
 
 // Standardfelder der APP zum Anlegen der Einträge und der Möglichkeit für individuelle Felder
 
-struct EntryData: Identifiable {
+struct EntryData: Identifiable, Codable {
     
-    var id = UUID()
-    var titel: String
+    var id: UUID
+    var title: String
     var username: String?
     var email: String
     var password: String
@@ -21,27 +21,23 @@ struct EntryData: Identifiable {
     var website: String?
     var customFields: [CustomField] = []
     
-    mutating func editCustomFieldName(id: UUID, newName: String) {
-        if let result = customFields.firstIndex(where: { $0.id == id }) {
-            customFields[result].name = newName
-        }
+    init(title: String, username: String? = nil, email: String, password: String, notes: String? = nil, website: String? = nil, customFields: [CustomField] = []) {
+        self.id = UUID()
+        self.title = title
+        self.username = username
+        self.email = email
+        self.password = password
+        self.created = Date()
+        self.notes = notes
+        self.website = website
+        self.customFields = customFields
     }
     
-    // Mit dieser Funkto werden neue Einträge zu customFields hinzugefügt
-    mutating func addCustomField(name: String, value: String) {
-        customFields.append(CustomField(name: name, value: value))
-    }
     
-    // Mit dieser Funkto werden Einträge aus customFields gelöscht
-    mutating func removeCustomField(id: UUID) {
-        if let index = customFields.firstIndex(where: { $0.id == id }) {
-            customFields.remove(at: index)
-        }
-    }
-    
-    struct CustomField: Identifiable {
-        let id = UUID()
-        var name: String
-        var value: String
-    }
+}
+
+struct CustomField: Identifiable, Codable {
+    var id = UUID()
+    var name: String
+    var value: String
 }
