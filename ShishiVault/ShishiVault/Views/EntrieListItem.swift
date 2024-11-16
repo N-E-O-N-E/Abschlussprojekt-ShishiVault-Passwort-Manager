@@ -33,15 +33,28 @@ struct EntrieListItem: View {
                         .foregroundStyle(Color.ShishiColorBlack)
                         .bold()
                         .padding(0)
-                    Text("Mail: \(email.count > 25 ? String(email.prefix(25)) + " ..." : email)")
-                        .font(.footnote)
-                        .foregroundStyle(Color.ShishiColorBlack)
-                        .padding(0)
-                    Text("Web: \(website.count > 26 ? String(website.prefix(26)) + " ..." : website)")
+                    HStack {
+                        Text("Mail:")
                             .font(.footnote)
                             .foregroundStyle(Color.ShishiColorBlack)
                             .padding(0)
-                    
+                        Text(email.count > 25 ? String(email.prefix(25)) + " ..." : email)
+                            .font(.footnote)
+                            .foregroundStyle(Color.ShishiColorBlack)
+                            .padding(0)
+                        Spacer()
+                    }
+                    HStack {
+                        Text("Link:")
+                            .font(.footnote)
+                            .foregroundStyle(Color.ShishiColorBlack)
+                            .padding(0)
+                        Text(website.count > 26 ? String(website.prefix(26)) + " ..." : website)
+                            .font(.footnote)
+                            .foregroundStyle(Color.ShishiColorBlack)
+                            .padding(0)
+                        Spacer()
+                    }
                     
                     Divider()
                     Text("Aktualisiert am: \(created.formatted())")
