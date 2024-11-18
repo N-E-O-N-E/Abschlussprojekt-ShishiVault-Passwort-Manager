@@ -28,12 +28,12 @@ class SignInViewModel: ObservableObject {
     }
     
     // SignInWithAppleID Button Funktion (configure)
-    func configure(request: ASAuthorizationAppleIDRequest) async {
+    func configure(request: ASAuthorizationAppleIDRequest) async throws {
         request.requestedScopes = [.fullName, .email] // Fordert Namen und die E-Mail-Adresse
     }
     
     // SignInWithAppleID Button Funktion (handle)
-    func handleLogin(result: Result<ASAuthorization, Error>) async {
+    func handleLogin(result: Result<ASAuthorization, Error>) {
         switch result {
             case .success(let auth):
                 print("Login successful \(auth)")
@@ -47,10 +47,9 @@ class SignInViewModel: ObservableObject {
     
     // Speichert den Userkey in die Variable und setzt den LoginStatus auf true
     private func handleSuccessfulLogin(with credentials: ASAuthorizationAppleIDCredential) {
-        print("Login successful")
-        
         // Speichern der ID
         KeychainHelper.shared.save(data: credentials.user, for: userIDKey)
+        print("Login successful")
         
         // Speichern des Benutzernamens, falls vorhanden
         if let givenName = credentials.fullName?.givenName {
@@ -59,14 +58,6 @@ class SignInViewModel: ObservableObject {
         } else {
             print("Given name is nil, not stored.")
         }
-        
-//        // Benutzernamen für die UI Anzeige laden in eine Publicvariable
-//        if let username = KeychainHelper.shared.read(for: userNameKey) {
-//            self.userNameKeyPublic = username
-//        } else {
-//            print("No username found for the key \(userNameKey).")
-//        }
-        
         // Login-Status setzen
         isLoggedIn = true
     }

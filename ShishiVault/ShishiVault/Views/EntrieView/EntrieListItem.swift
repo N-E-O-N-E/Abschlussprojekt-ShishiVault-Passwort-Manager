@@ -70,7 +70,7 @@ struct EntrieListItem: View {
                 
             }.padding(10)
         }.padding(.horizontal)
-            .padding(.vertical, 2)
+            .padding(.vertical, 3)
     }
 }
 

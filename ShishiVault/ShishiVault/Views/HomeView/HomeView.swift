@@ -12,15 +12,22 @@ struct HomeView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @State private var showAddEntrieView: Bool = false
     @State private var showComponentsView: Bool = false
+    @State private var searchText: String = ""
     
     var body: some View {
+        VStack {
+            TextField("Suche", text: $searchText)
+                .customTextField()
+        }.padding(.horizontal).padding(.vertical, 5)
         
         ScrollView {
             VStack {
-                ForEach(entrieViewModel.entries) { entry in
+                ForEach(entrieViewModel.entries.filter { entry in
+                    searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
+                }) { entry in
+                    
                     NavigationLink {
                         // View()
-                        
                     } label: {
                         EntrieListItem(
                             titel: entry.title,
@@ -28,8 +35,14 @@ struct HomeView: View {
                             created: entry.created,
                             website: entry.website ?? "")
                     }
+                    .swipeActions(edge: .trailing) {
+                        Button("\(Image(systemName: "trash"))") {
+                            entrieViewModel.deleteEntry(entrie: entry)
+                        }
+                    }
+                    
                 }
-            }
+            } // End VStack
             .frame(maxWidth: .infinity)
             
             .toolbar {
@@ -42,7 +55,7 @@ struct HomeView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        let _ = entrieViewModel.createEntry(
+                        entrieViewModel.createEntry(
                             title: "Testeintrag", username: "Max Mustermann", email: "text@meineDomain.com",
                             password: "1234", passwordConfirm: "1234", notes: "",
                             website: "http://testserver.com/", customFields: [])
@@ -50,8 +63,10 @@ struct HomeView: View {
                         Image(systemName: "plus")
                     }
                 }
-            }
-        } .overlay(
+            } // End Toolbar
+            
+        } // End ScrollView
+        .overlay(
             Button(action: {
                 showAddEntrieView.toggle()
             }) {
@@ -69,6 +84,8 @@ struct HomeView: View {
         )
         
         
+        
+        
         .navigationDestination(isPresented: $showAddEntrieView, destination: {
             EntrieAddView(showAddEntrieView: $showAddEntrieView)
                 .environmentObject(entrieViewModel)
@@ -79,6 +96,7 @@ struct HomeView: View {
         
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Shishi Vault")
+        
     }
 }
 

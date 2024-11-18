@@ -88,7 +88,8 @@ struct ComponentsExampleView: View {
                     .textFieldStyle(.plain)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 10)
-                    .border(Color.ShishiColorDarkGray, width: 1)
+                    .background(RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.ShishiColorDarkGray, lineWidth: 1))
                 
                 HStack {
                     Text("Benutzereingabe")
@@ -110,7 +111,8 @@ struct ComponentsExampleView: View {
                             .foregroundStyle(Color.ShishiColorDarkGray)
                             .padding(.horizontal, 20)
                             .padding(.vertical, 10)
-                            .border(Color.ShishiColorDarkGray, width: 1)
+                            .background(RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.ShishiColorDarkGray, lineWidth: 1))
                     } else {
                         SecureField("Password", text: $text)
                             .frame(height: 30)
@@ -118,7 +120,8 @@ struct ComponentsExampleView: View {
                             .foregroundStyle(Color.ShishiColorDarkGray)
                             .padding(.horizontal, 20)
                             .padding(.vertical, 10)
-                            .border(Color.ShishiColorDarkGray, width: 1)
+                            .background(RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.ShishiColorDarkGray, lineWidth: 1))
                     }
                     Button(action: {
                         if !text.isEmpty {

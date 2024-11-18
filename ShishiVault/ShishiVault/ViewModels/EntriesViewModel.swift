@@ -10,10 +10,8 @@ import SwiftUI
 @MainActor
 class EntriesViewModel: ObservableObject {
     @Published var entries: [EntryData] = []
-    
-    init() {
-        
-    }
+    @Published var customFieldsForEntrie: [CustomField] = []
+    @Published var customFieldsForEntrieToSave: [CustomField] = []
     
     func entrieSaveButtomnCheck(title: String, username: String, email: String, password: String, passwordConfirm: String) -> String {
         let mindestFelderNichtLeer = !title.isEmpty && !password.isEmpty && !passwordConfirm.isEmpty
@@ -40,15 +38,13 @@ class EntriesViewModel: ObservableObject {
         return "sonstiges"
     }
     
-    func createEntry(title: String, username: String, email: String, password: String, passwordConfirm: String, notes: String, website: String, customFields: [CustomField]) -> Bool {
-        if password == passwordConfirm {
-            let newEntrie = EntryData(title: title, username: username, email: email, password: password, customFields: customFields)
-            entries.append(newEntrie)
-            return true
-        } else {
-            return false
+    func createEntry(title: String, username: String, email: String, password: String, passwordConfirm: String, notes: String, website: String, customFields: [CustomField]) {
+        guard password == passwordConfirm else {
+            return print("Fehler beim angelegen der Daten")
         }
-        
+            
+        let newEntrie = EntryData(title: title, username: username, email: email, password: password, customFields: customFields)
+        entries.append(newEntrie)
     }
     
     func readEntry() {
@@ -59,14 +55,16 @@ class EntriesViewModel: ObservableObject {
         
     }
     
-    func deleteEntry() {
-        
+    func deleteEntry(entrie: EntryData) {
+        entries.removeAll(where: { $0.id == entrie.id })
+        print("Der Eintrag wurde gelöscht")
     }
     
     // ------------------------------------------------------------------------------------
     
-    func createCustomField(id: UUID, name: String, value: String) {
-
+    func createCustomField(customField: CustomField) {
+        customFieldsForEntrie.append(customField)
+        print("Neues CustomFeld zwischengespeichert")
     }
     
     func editCustomField() {
@@ -78,7 +76,28 @@ class EntriesViewModel: ObservableObject {
     }
     
     func deleteCustomField() {
+        customFieldsForEntrie.removeAll()
+        print("CustomFeld gelöscht")
+    }
+    
+    // -------------------------------------------------------------------------------------
+    
+    func createCustomFieldToSave() {
+        customFieldsForEntrieToSave.append(contentsOf: customFieldsForEntrie)
+        print("CustomFeld für Speichering in Eintrag zwischengespeichert")
+    }
+    
+    func readCustomFieldToSave() {
         
+    }
+    
+    func updateCustomFieldToSave() {
+        
+    }
+    
+    func deleteCustomFieldToSave() {
+        customFieldsForEntrieToSave.removeAll()
+        print("CustomFeld für Speichering in Eintrag gelöscht")
     }
     
     

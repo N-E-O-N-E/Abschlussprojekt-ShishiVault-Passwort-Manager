@@ -11,6 +11,7 @@ import Security
 // Quelle zur Umsetzung: https://www.advancedswift.com/secure-private-data-keychain-swift/#save-data-to-keychain
 // Quelle zur Umsetzung: https://developer.apple.com/documentation/security/storing-keys-in-the-keychain
 // Quelle zur Umsetzung: https://developer.apple.com/documentation/security/using-the-keychain-to-manage-user-secrets
+// Quelle zur Umsetzung: https://developer.apple.com/documentation/security/updating-and-deleting-keychain-items
 
 class KeychainHelper {
     // Singleton-Instanz um global darauf zureifen zu können - privat initialisiert
@@ -37,7 +38,7 @@ class KeychainHelper {
             kSecAttrAccount as String: key,
             kSecValueData as String: data // Die Daten
         ]
-        
+        // Speichert die Daten
         let status = SecItemAdd(attributes as CFDictionary, nil)
         if status != errSecSuccess {
             print("Error saving to Keychain: \(status)")
@@ -63,6 +64,28 @@ class KeychainHelper {
             return result
         }
         return nil
+    }
+    
+    func update(data: String, for key: String) -> Bool {
+        let data = Data(data.utf8) // Konvertierung der String in daten
+        
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key]
+        
+        let attributeUpdate: [String: Any] = [
+            kSecValueData as String: data]
+        
+        let status = SecItemUpdate(query as CFDictionary, attributeUpdate as CFDictionary)
+        
+        if status == errSecSuccess {
+            return true
+        } else if  status == errSecItemNotFound {
+            print("Keychain item not found! \(key)")
+        } else {
+            print("Update failed: \(status)")
+        }
+       return false
     }
     
     // Löscht die Daten für einen Key

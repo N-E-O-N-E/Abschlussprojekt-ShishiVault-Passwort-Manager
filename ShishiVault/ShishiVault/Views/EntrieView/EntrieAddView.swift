@@ -15,7 +15,6 @@ struct EntrieAddView: View {
     @State private var isEmptyFieldsAlert: Bool = false
     @State private var isEmptyOptFieldsAlert: Bool = false
     @State private var isDiffPassAlert: Bool = false
-    
     @State private var customFieldSheet: Bool = false
     @Binding var showAddEntrieView: Bool
     
@@ -26,7 +25,7 @@ struct EntrieAddView: View {
     @State private var passwordConfirm: String = ""
     @State private var notes: String = ""
     @State private var website: String = ""
-    @State private var customFieldsForEntrie: [CustomField] = []
+    
     
     var body: some View {
         ScrollView {
@@ -108,7 +107,7 @@ struct EntrieAddView: View {
                 Divider().padding(.vertical, 10)
                 
                 // CustomFields ----------------------------
-                ForEach($customFieldsForEntrie) { $customField in
+                ForEach($entrieViewModel.customFieldsForEntrie) { $customField in
                     TextField(customField.name, text: $customField.value )
                         .customTextField()
                     HStack {
@@ -135,7 +134,9 @@ struct EntrieAddView: View {
                             isDiffPassAlert.toggle()
                             
                         case "ok":
-                            let _: Bool = entrieViewModel.createEntry(
+                            entrieViewModel.createCustomFieldToSave()
+                            
+                            entrieViewModel.createEntry(
                                 title: title,
                                 username: username,
                                 email: email,
@@ -143,8 +144,10 @@ struct EntrieAddView: View {
                                 passwordConfirm: passwordConfirm,
                                 notes: notes,
                                 website: website,
-                                customFields: customFieldsForEntrie)
+                                customFields: entrieViewModel.customFieldsForEntrieToSave)
                             
+                            entrieViewModel.deleteCustomField()
+                            entrieViewModel.deleteCustomFieldToSave()
                             isSavedAlert.toggle()
                             
                         default:
@@ -177,7 +180,7 @@ struct EntrieAddView: View {
         }
         
         .sheet(isPresented: $customFieldSheet) {
-            CustomFieldAddView(customFieldSheet: $customFieldSheet, customFieldsForEntrie: $customFieldsForEntrie)
+            CustomFieldAddView(customFieldSheet: $customFieldSheet)
                 .environmentObject(entrieViewModel)
         }
         
@@ -208,6 +211,11 @@ struct EntrieAddView: View {
         .navigationTitle("Eintrag hinzufügen")
         
         
+        .onAppear {
+            entrieViewModel.deleteCustomField()
+            entrieViewModel.deleteCustomFieldToSave()
+            print("CustomField Daten wurden zurückgesetzt")
+        }
     }
 }
 

@@ -11,7 +11,6 @@ import AuthenticationServices
 // Quellen für die Umsetzung: https://developer.apple.com/documentation/authenticationservices/signinwithapplebutton
 // Quellen für die Umsetzung: https://developer.apple.com/documentation/authenticationservices/signinwithapplebutton/init(_:onrequest:oncompletion:)
 
-
 struct SignInView: View {
     // Bindet das ViewModel zur Authentifizierung ein
     @EnvironmentObject var signInViewModel: SignInViewModel
@@ -23,7 +22,6 @@ struct SignInView: View {
             
             NavigationStack {
                 VStack {
-                    
                     Image("ShishiLogo_600")
                         .resizable()
                         .scaledToFit()
@@ -35,12 +33,16 @@ struct SignInView: View {
                         .signIn,
                         onRequest: { request in
                             Task {
-                                await signInViewModel.configure(request: request)
+                                do {
+                                    try await signInViewModel.configure(request: request)
+                                } catch {
+                                    // Fehler
+                                }
                             }
                         },
                         onCompletion: { completion in
                             Task {
-                                await signInViewModel.handleLogin(result: completion)
+                                signInViewModel.handleLogin(result: completion)
                             }
                         }
                     )
