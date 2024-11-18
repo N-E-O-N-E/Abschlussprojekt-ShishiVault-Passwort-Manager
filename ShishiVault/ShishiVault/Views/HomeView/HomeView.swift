@@ -52,7 +52,7 @@ struct HomeView: View {
                     Button { entrieViewModel.createEntry(
                             title: "Testeintrag \(zufall.randomElement() ?? 0)",
                             username: "Max Mustermann", email: "text@meineDomain.com",
-                            password: "1234", passwordConfirm: "1234", notes: "",
+                            password: "1234", passwordConfirm: "1234", notes: "TestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotes",
                             website: "http://testserver.com/", customFields: [])
                     } label: {
                         Image(systemName: "plus")

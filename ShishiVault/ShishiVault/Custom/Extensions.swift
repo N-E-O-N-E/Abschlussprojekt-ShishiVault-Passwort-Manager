@@ -78,11 +78,49 @@ extension Text {
     }
 }
 
+extension Text {
+    func textFieldAlsText() -> some View {
+        self
+            .frame(maxWidth: 400, maxHeight: 25, alignment: .topLeading)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 10)
+            .background(RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.ShishiColorGray, lineWidth: 1 ))
+            .padding(1)
+    }
+}
 
+extension Text {
+    func notizenText() -> some View {
+        self
+            .frame(maxWidth: 400, maxHeight: 75, alignment: .leading)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 10)
+            .background(RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.ShishiColorGray, lineWidth: 1 ))
+            .padding(1)
+    }
+}
+    
+extension TextEditor {
+    func customTextFieldNotes() -> some View {
+        self
+            .frame(height: 50, alignment: .topLeading)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 10)
+            .background(RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.ShishiColorGray, lineWidth: 1 ))
+            .padding(1)
+            .disableAutocorrection(true)
+            .textInputAutocapitalization(.never)
+            .textEditorStyle(.plain)
+            .multilineTextAlignment(.leading)
+    }
+}
 extension TextField {
     func customTextField() -> some View {
         self
-            .frame(height: 25)
+            .frame(height: 25, alignment: .leading)
             .textFieldStyle(.plain)
             .padding(.horizontal, 20)
             .padding(.vertical, 10)
@@ -90,6 +128,7 @@ extension TextField {
                 .stroke(Color.ShishiColorGray, lineWidth: 1 ))
             .padding(1)
             .disableAutocorrection(true)
+            .textInputAutocapitalization(.never)
     }
 }
 extension Text {
@@ -114,6 +153,7 @@ extension TextField {
                 .stroke(Color.ShishiColorGray, lineWidth: 1))
             .padding(1)
             .disableAutocorrection(true)
+            .textInputAutocapitalization(.never)
     }
 }
 extension SecureField {
@@ -127,5 +167,6 @@ extension SecureField {
                 .stroke(Color.ShishiColorGray, lineWidth: 1))
             .padding(1)
             .disableAutocorrection(true)
+            .textInputAutocapitalization(.never)
     }
 }

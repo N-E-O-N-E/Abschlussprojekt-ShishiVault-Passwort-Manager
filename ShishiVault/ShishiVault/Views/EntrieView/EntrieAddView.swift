@@ -51,6 +51,20 @@ struct EntrieAddView: View {
                         .customTextFieldText()
                     Spacer()
                 }
+                TextField("Website", text: $website)
+                    .customTextField()
+                HStack {
+                    Text("Website")
+                        .customTextFieldText()
+                    Spacer()
+                }
+                TextEditor(text: $notes)
+                    .customTextFieldNotes()
+                HStack {
+                    Text("Notizen")
+                        .customTextFieldText()
+                    Spacer()
+                }
                 Divider().padding(.vertical, 10)
                 HStack {
                     if isPasswordVisible {

@@ -43,7 +43,8 @@ class EntriesViewModel: ObservableObject {
             return print("Fehler beim angelegen der Daten")
         }
             
-        let newEntrie = EntryData(title: title, username: username, email: email, password: password, customFields: customFields)
+        let newEntrie = EntryData(title: title, username: username, email: email, password: password,
+                                  notes: notes, website: website, customFields: customFields)
         entries.append(newEntrie)
     }
     
