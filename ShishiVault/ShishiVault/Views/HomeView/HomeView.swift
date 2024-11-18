@@ -13,6 +13,7 @@ struct HomeView: View {
     @State private var showAddEntrieView: Bool = false
     @State private var showComponentsView: Bool = false
     @State private var searchText: String = ""
+    let zufall = Range(0...100)
     
     var body: some View {
         VStack {
@@ -35,12 +36,6 @@ struct HomeView: View {
                             created: entry.created,
                             website: entry.website ?? "")
                     }
-                    .swipeActions(edge: .trailing) {
-                        Button("\(Image(systemName: "trash"))") {
-                            entrieViewModel.deleteEntry(entrie: entry)
-                        }
-                    }
-                    
                 }
             } // End VStack
             .frame(maxWidth: .infinity)
@@ -55,8 +50,10 @@ struct HomeView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
+                        
                         entrieViewModel.createEntry(
-                            title: "Testeintrag", username: "Max Mustermann", email: "text@meineDomain.com",
+                            title: "Testeintrag \(zufall.randomElement() ?? 0)",
+                            username: "Max Mustermann", email: "text@meineDomain.com",
                             password: "1234", passwordConfirm: "1234", notes: "",
                             website: "http://testserver.com/", customFields: [])
                     } label: {
