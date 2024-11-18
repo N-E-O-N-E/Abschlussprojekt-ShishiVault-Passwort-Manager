@@ -42,6 +42,7 @@ struct EntrieListItem: View {
                             .font(.footnote)
                             .foregroundStyle(Color.ShishiColorBlack)
                             .padding(0)
+                        
                         Spacer()
                     }
                     HStack {
@@ -53,24 +54,31 @@ struct EntrieListItem: View {
                             .font(.footnote)
                             .foregroundStyle(Color.ShishiColorBlack)
                             .padding(0)
+                        
                         Spacer()
                     }
                     
                     Divider()
+                    
                     Text("Aktualisiert am: \(created.formatted())")
                         .font(.caption2)
                         .foregroundStyle(Color.ShishiColorDarkGray)
                         .padding(0)
                 }
                 Spacer()
+                
                 Image(systemName: "info.circle")
                     .scaleEffect(1)
                     .foregroundColor(Color.ShishiColorDarkGray)
                     .padding(10)
                 
-            }.padding(10)
-        }.padding(.horizontal)
-            .padding(.vertical, 3)
+            }
+            .padding(10)
+            
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 3)
+        
     }
 }
 

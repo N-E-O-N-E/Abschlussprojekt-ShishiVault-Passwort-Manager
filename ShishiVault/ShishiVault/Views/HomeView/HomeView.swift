@@ -30,11 +30,8 @@ struct HomeView: View {
                     NavigationLink {
                         // View()
                     } label: {
-                        EntrieListItem(
-                            titel: entry.title,
-                            email: entry.email,
-                            created: entry.created,
-                            website: entry.website ?? "")
+                        EntrieListItem(titel: entry.title, email: entry.email,
+                            created: entry.created, website: entry.website ?? "")
                     }
                 }
             } // End VStack
@@ -49,9 +46,7 @@ struct HomeView: View {
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        
-                        entrieViewModel.createEntry(
+                    Button { entrieViewModel.createEntry(
                             title: "Testeintrag \(zufall.randomElement() ?? 0)",
                             username: "Max Mustermann", email: "text@meineDomain.com",
                             password: "1234", passwordConfirm: "1234", notes: "",
@@ -79,9 +74,6 @@ struct HomeView: View {
                 .padding(.trailing, 50),
             alignment: .bottomTrailing
         )
-        
-        
-        
         
         .navigationDestination(isPresented: $showAddEntrieView, destination: {
             EntrieAddView(showAddEntrieView: $showAddEntrieView)

@@ -89,7 +89,7 @@ struct EntrieAddView: View {
                     }
                     Button(action: {
                         if !password.isEmpty {
-                            //
+                            // ggf. Passwort Random erstellen lassen
                         }
                     }) {
                         Image(systemName: "lock.rotation")
