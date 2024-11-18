@@ -59,6 +59,26 @@ extension Text {
     }
 }
 
+extension Text {
+    func normalerText() -> some View {
+        self
+            .font(.callout)
+            .foregroundStyle(Color.ShishiColorBlack)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 2)
+    }
+}
+extension Text {
+    func normalerTextBold() -> some View {
+        self
+            .font(.callout).bold()
+            .foregroundStyle(Color.ShishiColorBlack)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 2)
+    }
+}
+
+
 extension TextField {
     func customTextField() -> some View {
         self

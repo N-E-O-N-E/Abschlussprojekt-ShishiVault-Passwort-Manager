@@ -10,7 +10,9 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
     @EnvironmentObject var entrieViewModel: EntriesViewModel
+    
     @State private var showAddEntrieView: Bool = false
+    @State private var entrieShowView: Bool = false
     @State private var showComponentsView: Bool = false
     @State private var searchText: String = ""
     let zufall = Range(0...100)
@@ -28,7 +30,8 @@ struct HomeView: View {
                 }) { entry in
                     
                     NavigationLink {
-                        // View()
+                        EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
+                            .environmentObject(entrieViewModel)
                     } label: {
                         EntrieListItem(titel: entry.title, email: entry.email,
                             created: entry.created, website: entry.website ?? "")
