@@ -14,7 +14,7 @@ extension Color {
     static let ShishiColorDarkGray = Color(red: 0.3, green: 0.3, blue: 0.3)
     static let ShishiColorGray = Color(red: 0.5, green: 0.5, blue: 0.5)
     static let ShishiColorBlack = Color(red: 0.0, green: 0.0, blue: 0.0)
-    static let ShishiColorPanelBackground = Color(red: 245/255, green: 250/255, blue: 255/255)
+    static let ShishiColorPanelBackground = Color(red: 240/255, green: 250/255, blue: 255/255)
     static let ShishiColorPanelBackground_backup = Color(red: 205/255, green: 240/255, blue: 255/255)
 }
 
@@ -120,7 +120,7 @@ extension TextEditor {
 extension TextField {
     func customTextField() -> some View {
         self
-            .frame(height: 25, alignment: .leading)
+            .frame(height: 20, alignment: .leading)
             .textFieldStyle(.plain)
             .padding(.horizontal, 20)
             .padding(.vertical, 10)
@@ -131,6 +131,22 @@ extension TextField {
             .textInputAutocapitalization(.never)
     }
 }
+
+extension TextField {
+    func customSearchField() -> some View {
+        self
+            .frame(height: 20, alignment: .leading)
+            .textFieldStyle(.plain)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 10)
+            .background(RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.ShishiColorGray, lineWidth: 1 ))
+            .padding(1)
+            .disableAutocorrection(true)
+            .textInputAutocapitalization(.never)
+    }
+}
+
 extension Text {
     func customTextFieldText() -> some View {
         self
@@ -145,7 +161,7 @@ extension Text {
 extension TextField {
     func customPasswordField() -> some View {
         self
-            .frame(height: 25)
+            .frame(height: 20)
             .textFieldStyle(.plain)
             .padding(.horizontal, 20)
             .padding(.vertical, 10)
@@ -159,7 +175,7 @@ extension TextField {
 extension SecureField {
     func customSecureField() -> some View {
         self
-            .frame(height: 25)
+            .frame(height: 20)
             .textFieldStyle(.plain)
             .padding(.horizontal, 20)
             .padding(.vertical, 10)

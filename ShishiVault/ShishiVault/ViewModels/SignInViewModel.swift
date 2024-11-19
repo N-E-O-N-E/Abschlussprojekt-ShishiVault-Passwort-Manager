@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AuthenticationServices
+import CryptoKit
 
 // Quelle zur Umsetzung des SignInWithApple Buttons:
 // https://www.youtube.com/watch?v=O2FVDzoAB34 - https://developer.apple.com/documentation/swift/result
@@ -17,26 +18,28 @@ class SignInViewModel: ObservableObject {
     @Published var isLoggedIn = false
     @Published var userNameKeyPublic = "userNameKeyPublic"
     @Published var userKeyPublic = "userKeyPublic"
+    @Published var userKeyPublicHashed = "userKeyPublicHashed"
     
-    private let userIDKey = "userIDKey"
-    private let userNameKey = "userNameKey"
+    private var userIDKey = "userIDKey"
+    private var userIDKeyHashed = "userIDKeyHashed"
+    private var userNameKey = "userNameKey"
     
     init() {
         checkLoginStatus()
         print("Login Status: \(isLoggedIn)")
         print("Apple UserName: \(userNameKeyPublic)")
+        print("Hashed Key: \(userKeyPublicHashed)")
     }
     
     // SignInWithAppleID Button Funktion (configure)
-    func configure(request: ASAuthorizationAppleIDRequest) async throws {
+    func configure(request: ASAuthorizationAppleIDRequest) {
         request.requestedScopes = [.fullName, .email] // Fordert Namen und die E-Mail-Adresse
     }
-    
+
     // SignInWithAppleID Button Funktion (handle)
     func handleLogin(result: Result<ASAuthorization, Error>) {
         switch result {
             case .success(let auth):
-                print("Login successful \(auth)")
                 if let appleIDCredential = auth.credential as? ASAuthorizationAppleIDCredential {
                     handleSuccessfulLogin(with: appleIDCredential)
                 }
@@ -49,7 +52,7 @@ class SignInViewModel: ObservableObject {
     private func handleSuccessfulLogin(with credentials: ASAuthorizationAppleIDCredential) {
         // Speichern der ID
         KeychainHelper.shared.save(data: credentials.user, for: userIDKey)
-        print("Login successful")
+        userKeyPublicHashed = HashHelper.shared.hashData(key: userIDKey)
         
         // Speichern des Benutzernamens, falls vorhanden
         if let givenName = credentials.fullName?.givenName {
@@ -60,11 +63,6 @@ class SignInViewModel: ObservableObject {
         }
         // Login-Status setzen
         isLoggedIn = true
-    }
-    
-    // Printet ein Error aus
-    private func handleLoginError(with error: Error) {
-        print("Could not authenticate: \(error.localizedDescription)")
     }
     
     // Prüft ob der Userkey in der Keychain vorhanden ist und nicht nil um den
@@ -90,7 +88,12 @@ class SignInViewModel: ObservableObject {
         }
     }
     
-    // Logout durch setzten des LoginStatus und löschen der Dateb aus der Keychain für den aktuelle UserKey
+    // Printet ein Error aus
+    private func handleLoginError(with error: Error) {
+        print("Could not authenticate: \(error.localizedDescription)")
+    }
+    
+    // Logout durch setzten des LoginStatus und löschen der Daten aus der Keychain für den aktuelle UserKey
     func logout() {
         KeychainHelper.shared.delete(for: userIDKey)
         KeychainHelper.shared.delete(for: userNameKey)

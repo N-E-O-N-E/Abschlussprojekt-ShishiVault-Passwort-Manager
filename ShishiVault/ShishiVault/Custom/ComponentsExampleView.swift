@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct ComponentsExampleView: View {
     // Exemplarisches Einbinden des ViewModels zur Anmeldung mit Apple ID

@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 class EntriesViewModel: ObservableObject {
     @Published var entries: [EntryData] = []
     @Published var customFieldsForEntrie: [CustomField] = []

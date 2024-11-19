@@ -32,18 +32,10 @@ struct SignInView: View {
                     SignInWithAppleButton(
                         .signIn,
                         onRequest: { request in
-                            Task {
-                                do {
-                                    try await signInViewModel.configure(request: request)
-                                } catch {
-                                    // Fehler
-                                }
-                            }
+                            signInViewModel.configure(request: request)
                         },
                         onCompletion: { completion in
-                            Task {
-                                signInViewModel.handleLogin(result: completion)
-                            }
+                            signInViewModel.handleLogin(result: completion)
                         }
                     )
                     .frame(height: 50)

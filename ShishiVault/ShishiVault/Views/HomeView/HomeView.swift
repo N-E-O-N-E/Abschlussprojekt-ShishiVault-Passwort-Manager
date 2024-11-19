@@ -20,7 +20,7 @@ struct HomeView: View {
     var body: some View {
         VStack {
             TextField("Suche", text: $searchText)
-                .customTextField()
+                .customSearchField()
         }.padding(.horizontal).padding(.vertical, 5)
         
         ScrollView {

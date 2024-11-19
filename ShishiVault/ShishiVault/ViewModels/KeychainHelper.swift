@@ -16,7 +16,9 @@ import Security
 class KeychainHelper {
     // Singleton-Instanz um global darauf zureifen zu können - privat initialisiert
     static let shared = KeychainHelper()
-    private init() {}
+    private init() {
+        
+    }
     
     // Diese Funktion speichert Daten im Keychain
     func save(data: String, for key: String) {
