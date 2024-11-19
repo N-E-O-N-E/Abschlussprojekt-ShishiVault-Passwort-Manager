@@ -12,6 +12,7 @@ class JSONHelper {
     static let shared = JSONHelper()
     private init() {}
     
+    // Liefert den Pfad zur JSON datei
     func getJSONFilePath() -> URL {
         let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         return documentDirectory.appendingPathComponent("entries.json")
@@ -45,6 +46,7 @@ class JSONHelper {
         }
     }
     
+    // Speichert die Daten verschlüsselt in JSON
     func saveEntriesToJSON(key: SymmetricKey, entries: [EntryData]) {
         let path = getJSONFilePath()
         do {

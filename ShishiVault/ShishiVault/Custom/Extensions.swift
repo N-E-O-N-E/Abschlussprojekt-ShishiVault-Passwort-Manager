@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-// Shishi Vault spezifische Farben für Komponenten
+// Shishi Vault spezifische Farben, Text- und TextFeld formatierungen
+
 extension Color {
     static let ShishiColorRed = Color(red: 0.71, green: 0, blue: 0.21)
     static let ShishiColorBlue = Color(red: 0.15, green: 0.35, blue: 0.50)
@@ -18,7 +19,7 @@ extension Color {
     static let ShishiColorPanelBackground_backup = Color(red: 205/255, green: 240/255, blue: 255/255)
 }
 
-
+// Formatierung Text für fette Überschrift
 extension Text {
     func ueberschriftLarge() -> some View {
         self
@@ -29,6 +30,7 @@ extension Text {
     }
 }
 
+// Formatierung Text für fette Überschrift Groß
 extension Text {
     func ueberschriftLargeBold() -> some View {
         self
@@ -39,6 +41,7 @@ extension Text {
     }
 }
 
+// Formatierung Text für Überschrift
 extension Text {
     func ueberschriftenText() -> some View {
         self
@@ -49,6 +52,7 @@ extension Text {
     }
 }
 
+// Formatierung Text für fette Überschrift
 extension Text {
     func ueberschriftenTextBold() -> some View {
         self
@@ -59,6 +63,7 @@ extension Text {
     }
 }
 
+// Formatierung Text für normalen Fließtext
 extension Text {
     func normalerText() -> some View {
         self
@@ -68,6 +73,8 @@ extension Text {
             .padding(.vertical, 2)
     }
 }
+
+// Formatierung Text für Fließtext in Fett
 extension Text {
     func normalerTextBold() -> some View {
         self
@@ -78,6 +85,7 @@ extension Text {
     }
 }
 
+// Formatierung Text für die Anzeige der Daten mit Rahmen ohne Bearbeitungsfunktion
 extension Text {
     func textFieldAlsText() -> some View {
         self
@@ -90,6 +98,7 @@ extension Text {
     }
 }
 
+// Formatierung Text für die Notizen mit Rahmen
 extension Text {
     func notizenText() -> some View {
         self
@@ -101,7 +110,8 @@ extension Text {
             .padding(1)
     }
 }
-    
+   
+// Texteingabe Multiline
 extension TextEditor {
     func customTextFieldNotes() -> some View {
         self
@@ -117,6 +127,8 @@ extension TextEditor {
             .multilineTextAlignment(.leading)
     }
 }
+
+// Texteingabe für Daten
 extension TextField {
     func customTextField() -> some View {
         self
@@ -132,6 +144,7 @@ extension TextField {
     }
 }
 
+// Texteingabe für das Suchefeld im HomeScreen
 extension TextField {
     func customSearchField() -> some View {
         self
@@ -147,6 +160,8 @@ extension TextField {
     }
 }
 
+
+// Passender kleiner Text für Textfelder
 extension Text {
     func customTextFieldText() -> some View {
         self
@@ -157,7 +172,7 @@ extension Text {
 }
 
 
-
+// Passwortfeld klartext
 extension TextField {
     func customPasswordField() -> some View {
         self
@@ -172,6 +187,9 @@ extension TextField {
             .textInputAutocapitalization(.never)
     }
 }
+
+
+// Passwortfeld mit Sichtschutz
 extension SecureField {
     func customSecureField() -> some View {
         self
