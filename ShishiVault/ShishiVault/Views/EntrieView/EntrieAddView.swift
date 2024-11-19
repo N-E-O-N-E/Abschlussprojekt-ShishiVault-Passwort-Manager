@@ -160,6 +160,9 @@ struct EntrieAddView: View {
                                 website: website,
                                 customFields: entrieViewModel.customFieldsForEntrieToSave)
                             
+                            
+                            
+                            
                             entrieViewModel.deleteCustomField()
                             entrieViewModel.deleteCustomFieldToSave()
                             isSavedAlert.toggle()

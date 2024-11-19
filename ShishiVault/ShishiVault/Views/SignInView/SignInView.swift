@@ -13,7 +13,7 @@ import AuthenticationServices
 
 struct SignInView: View {
     // Bindet das ViewModel zur Authentifizierung ein
-    @EnvironmentObject var signInViewModel: SignInViewModel
+    @EnvironmentObject var signInViewModel: ShishiViewModel
     @StateObject var entrieViewModel = EntriesViewModel()
     
     var body: some View {
@@ -55,5 +55,5 @@ struct SignInView: View {
 
 #Preview {
     SignInView(entrieViewModel: EntriesViewModel())
-        .environmentObject(SignInViewModel())
+        .environmentObject(ShishiViewModel())
 }

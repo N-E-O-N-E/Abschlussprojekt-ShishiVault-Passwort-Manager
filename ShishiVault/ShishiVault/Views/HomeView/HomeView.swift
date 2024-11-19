@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject var signInViewModel: SignInViewModel
+    @EnvironmentObject var signInViewModel: ShishiViewModel
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     
     @State private var showAddEntrieView: Bool = false
@@ -33,8 +33,9 @@ struct HomeView: View {
                         EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
                             .environmentObject(entrieViewModel)
                     } label: {
-                        EntrieListItem(titel: entry.title, email: entry.email,
+                        EntrieListItem(title: entry.title, email: entry.email,
                             created: entry.created, website: entry.website ?? "")
+
                     }
                 }
             } // End VStack
@@ -64,6 +65,7 @@ struct HomeView: View {
         .overlay(
             Button(action: {
                 showAddEntrieView.toggle()
+                
             }) {
                 Image(systemName: "plus")
                     .foregroundColor(.white)
@@ -94,6 +96,6 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
-        .environmentObject(SignInViewModel())
+        .environmentObject(ShishiViewModel())
         .environmentObject(EntriesViewModel())
 }

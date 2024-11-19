@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ComponentsExampleView: View {
     // Exemplarisches Einbinden des ViewModels zur Anmeldung mit Apple ID
-    @EnvironmentObject var signInViewModel: SignInViewModel
+    @EnvironmentObject var signInViewModel: ShishiViewModel
     
     // Testdaten
     @State private var text: String = ""
@@ -23,7 +23,7 @@ struct ComponentsExampleView: View {
             
             // Standardschriften ------------------------------------------------------
             
-            Text("Angemeldet: \(signInViewModel.userNameKeyPublic)")
+            Text("Willkommen")
                 .font(.largeTitle)
                 .bold()
                 .foregroundStyle(Color.ShishiColorBlack)
@@ -70,7 +70,7 @@ struct ComponentsExampleView: View {
                     ComponentsExampleView()
                 } label: {
                     EntrieListItem(
-                        titel: entry.title,
+                        title: entry.title,
                         email: entry.email,
                         created: entry.created,
                         website: entry.website ?? "")
@@ -173,5 +173,5 @@ struct ComponentsExampleView: View {
 #Preview {
     
     ComponentsExampleView()
-        .environmentObject(SignInViewModel())
+        .environmentObject(ShishiViewModel())
 }

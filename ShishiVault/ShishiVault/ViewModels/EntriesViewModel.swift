@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 class EntriesViewModel: ObservableObject {
     @Published var entries: [EntryData] = []
     @Published var customFieldsForEntrie: [CustomField] = []
@@ -47,14 +48,6 @@ class EntriesViewModel: ObservableObject {
         entries.append(newEntrie)
     }
     
-    func readEntry() {
-        
-    }
-    
-    func updateEntry() {
-        
-    }
-    
     func deleteEntry(entrie: EntryData) {
         entries.removeAll(where: { $0.id == entrie.id })
         print("Der Eintrag wurde gelöscht")
@@ -65,14 +58,6 @@ class EntriesViewModel: ObservableObject {
     func createCustomField(customField: CustomField) {
         customFieldsForEntrie.append(customField)
         print("Neues CustomFeld zwischengespeichert")
-    }
-    
-    func editCustomField() {
-        
-    }
-    
-    func updateCustomField() {
-        
     }
     
     func deleteCustomField() {
@@ -87,18 +72,9 @@ class EntriesViewModel: ObservableObject {
         print("CustomFeld für Speichering in Eintrag zwischengespeichert")
     }
     
-    func readCustomFieldToSave() {
-        
-    }
-    
-    func updateCustomFieldToSave() {
-        
-    }
-    
     func deleteCustomFieldToSave() {
         customFieldsForEntrieToSave.removeAll()
         print("CustomFeld für Speichering in Eintrag gelöscht")
     }
-    
     
 }
