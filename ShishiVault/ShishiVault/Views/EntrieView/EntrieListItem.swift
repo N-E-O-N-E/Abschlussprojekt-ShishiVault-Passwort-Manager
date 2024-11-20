@@ -22,37 +22,26 @@ struct EntrieListItem: View {
                 .shadow(radius: 2, x: 0, y: 2)
             
             HStack {
-                Image(systemName: "lock.fill")
+                Image(systemName: "lock.document.fill")
                     .foregroundStyle(Color.ShishiColorBlue)
-                    .scaleEffect(2.5)
-                    .padding(15)
+                    .scaleEffect(2.2)
+                    .padding(.horizontal, 15)
                 
                 VStack(alignment: .leading) {
                     Text(title)
-                        .font(.title3)
-                        .foregroundStyle(Color.ShishiColorBlack)
-                        .bold()
-                        .padding(0)
+                        .panelTextBold()
                     HStack {
                         Text("Mail:")
-                            .font(.footnote)
-                            .foregroundStyle(Color.ShishiColorBlack)
-                            .padding(0)
+                            .panelText()
                         Text(email.count > 25 ? String(email.prefix(25)) + " ..." : email)
-                            .font(.footnote)
-                            .foregroundStyle(Color.ShishiColorBlack)
-                            .padding(0)
+                            .panelText()
                         Spacer()
                     }
                     HStack {
                         Text("Link:")
-                            .font(.footnote)
-                            .foregroundStyle(Color.ShishiColorBlack)
-                            .padding(0)
+                            .panelText()
                         Text(website.count > 26 ? String(website.prefix(26)) + " ..." : website)
-                            .font(.footnote)
-                            .foregroundStyle(Color.ShishiColorBlack)
-                            .padding(0)
+                            .panelText()
                         
                         Spacer()
                     }
@@ -67,7 +56,7 @@ struct EntrieListItem: View {
                 Spacer()
                 
                 Image(systemName: "info.circle")
-                    .scaleEffect(1)
+                    .scaleEffect(1.2)
                     .foregroundColor(Color.ShishiColorDarkGray)
                     .padding(10)
                 
@@ -76,7 +65,7 @@ struct EntrieListItem: View {
             
         }
         .padding(.horizontal)
-        .padding(.vertical, 3)
+        .padding(.vertical, 1)
         
     }
 }

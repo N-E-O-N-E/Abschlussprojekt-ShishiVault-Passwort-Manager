@@ -16,6 +16,13 @@ struct CustomFieldAddView: View {
     @State private var textIsEmptyAlert: Bool = false
     
     var body: some View {
+        VStack(alignment: .center) {
+            RoundedRectangle(cornerRadius: 20)
+                .frame(width: 150, height: 4)
+                .foregroundStyle(Color.ShishiColorGray)
+                .padding(10)
+        }
+        Spacer()
         
         VStack(alignment: .leading) {
             Text("Neues Eingabefeld")
@@ -61,7 +68,8 @@ struct CustomFieldAddView: View {
                 Text("Das Textfeld für die Bezeichnung darf nicht leer sein!")
             }
         
-            .presentationDetents([.fraction(0.35)])
+            .presentationDetents([.fraction(0.3)])
+    
         
     }
 }

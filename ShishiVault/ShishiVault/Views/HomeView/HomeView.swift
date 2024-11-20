@@ -24,66 +24,74 @@ struct HomeView: View {
     
     var body: some View {
         VStack {
-            TextField("Suche", text: $searchText)
-                .customSearchField()
-        }.padding(.horizontal).padding(.vertical, 5)
-        
-        ScrollView {
+            Image("ShishiLogo_Home")
+                .resizable()
+                .scaledToFit()
+                .padding(0)
+            
             VStack {
-                ForEach(entrieViewModel.entries.filter { entry in
-                    searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
-                }) { entry in
-                    
-                    NavigationLink {
-                        EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
-                            .environmentObject(entrieViewModel)
-                            .environmentObject(shishiViewModel)
-                    } label: {
-                        EntrieListItem(title: entry.title, email: entry.email,
-                            created: entry.created, website: entry.website ?? "")
-
-                    }
-                }
-            } // End VStack
-            .frame(maxWidth: .infinity)
+                TextField("Suche", text: $searchText)
+                    .customSearchField()
+            }.padding(.horizontal).padding(.vertical, 5)
             
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showComponentsView.toggle()
-                    } label: {
-                        Image(systemName: "line.3.horizontal")
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        entrieViewModel.createEntry(
-                            title: "Testeintrag \(zufall.randomElement() ?? 0)",
-                            username: "Max Mustermann", email: "text@meineDomain.com",
-                            password: "1234", passwordConfirm: "1234", notes: "TestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotes",
-                            website: "http://testserver.com/",
-                            customFields: [
-                                CustomField(name: "C1", value: "Test1"),
-                                CustomField(name: "C2", value: "Test2"),
-                                CustomField(name: "C3", value: "Test3")
-                            ])
+            ScrollView {
+                VStack {
+                    ForEach(entrieViewModel.entries.filter { entry in
+                        searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
+                    }) { entry in
                         
-                        if let key = shishiViewModel.symetricKey {
-                            Task {
-                                JSONHelper.shared.saveEntriesToJSON(
-                                    key: key,
-                                    entries: entrieViewModel.entries)
-                            }
+                        NavigationLink {
+                            EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
+                                .environmentObject(entrieViewModel)
+                                .environmentObject(shishiViewModel)
+                        } label: {
+                            EntrieListItem(title: entry.title, email: entry.email,
+                                           created: entry.created, website: entry.website ?? "")
+                            
                         }
-                        
-                        
-                    } label: {
-                        Image(systemName: "plus")
                     }
-                }
-            } // End Toolbar
-            
-        } // End ScrollView
+                } // End VStack
+                .frame(maxWidth: .infinity)
+                
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            entrieViewModel.createEntry(
+                                title: "Testeintrag \(zufall.randomElement() ?? 0)",
+                                username: "Max Mustermann", email: "text@meineDomain.com",
+                                password: "1234", passwordConfirm: "1234", notes: "TestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotes",
+                                website: "http://testserver.com/",
+                                customFields: [
+                                    CustomField(name: "C1", value: "Test1"),
+                                    CustomField(name: "C2", value: "Test2"),
+                                    CustomField(name: "C3", value: "Test3")
+                                ])
+                            
+                            if let key = shishiViewModel.symetricKey {
+                                Task {
+                                    JSONHelper.shared.saveEntriesToJSON(
+                                        key: key,
+                                        entries: entrieViewModel.entries)
+                                }
+                            }
+                            
+                            
+                        } label: {
+                            
+                        }
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showComponentsView.toggle()
+                        } label: {
+                            Image(systemName: "line.3.horizontal")
+                        }
+                    }
+                } // End Toolbar
+                
+            } // End ScrollView
+        }
+        
         .overlay(
             Button(action: {
                 showAddEntrieView.toggle()
@@ -108,11 +116,10 @@ struct HomeView: View {
                 .environmentObject(shishiViewModel)
         })
         .navigationDestination(isPresented: $showComponentsView, destination: {
-            ComponentsExampleView()
+            SettingsView()
+                .environmentObject(shishiViewModel)
         })
         
-        .navigationBarBackButtonHidden(true)
-        .navigationTitle("Shishi Vault")
         
         .onAppear {
             Task {
@@ -120,6 +127,9 @@ struct HomeView: View {
             }
         }
         
+        .navigationBarBackButtonHidden(true)
+        // .navigationTitle("Shishi Vault")
+        .foregroundStyle(Color.ShishiColorBlue)
     }
 }
 

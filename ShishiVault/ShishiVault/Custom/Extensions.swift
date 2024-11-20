@@ -11,6 +11,7 @@ import SwiftUI
 
 extension Color {
     static let ShishiColorRed = Color(red: 0.71, green: 0, blue: 0.21)
+    static let ShishiColorGreen = Color(red: 0.15, green: 0.55, blue: 0.20)
     static let ShishiColorBlue = Color(red: 0.15, green: 0.35, blue: 0.50)
     static let ShishiColorDarkGray = Color(red: 0.3, green: 0.3, blue: 0.3)
     static let ShishiColorGray = Color(red: 0.5, green: 0.5, blue: 0.5)
@@ -82,6 +83,27 @@ extension Text {
             .foregroundStyle(Color.ShishiColorBlack)
             .padding(.horizontal, 20)
             .padding(.vertical, 2)
+    }
+}
+
+// Formatierung Text für Paneltext in Fett
+extension Text {
+    func panelTextBold() -> some View {
+        self
+            .font(.callout).bold()
+            .foregroundStyle(Color.ShishiColorBlack)
+            .padding(.horizontal, 1)
+            .padding(.vertical, 0.5)
+    }
+}
+// Formatierung Text für Paneltext
+extension Text {
+    func panelText() -> some View {
+        self
+            .font(.footnote)
+            .foregroundStyle(Color.ShishiColorBlack)
+            .padding(.horizontal, 1)
+            .padding(.vertical, 0.5)
     }
 }
 
