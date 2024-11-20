@@ -162,9 +162,11 @@ struct EntrieAddView: View {
                                 customFields: entrieViewModel.customFieldsForEntrieToSave)
                            
                             if let key = shishiViewModel.symetricKey {
-                                JSONHelper.shared.saveEntriesToJSON(
-                                    key: key,
-                                    entries: entrieViewModel.entries)
+                                Task {
+                                    await JSONHelper.shared.saveEntriesToJSON(
+                                        key: key,
+                                        entries: entrieViewModel.entries)
+                                }
                             } else {
                                 print("JSON save failed")
                             }
