@@ -40,7 +40,7 @@ class JSONHelper {
     
     
     // Speichert die Daten verschlüsselt in JSON
-    func saveEntriesToJSON(key: SymmetricKey, entries: [EntryData]) async {
+    func saveEntriesToJSON(key: SymmetricKey, entries: [EntryData]) {
         let path = getJSONFilePath()
         do {
             guard let jsonData = convertToJSON(entries: entries) else { return }
@@ -66,17 +66,15 @@ class JSONHelper {
         }
     }
     
-    func deleteEntiresFromJSON(key: SymmetricKey, entrie: EntryData) async {
+    func deleteEntiresFromJSON(key: SymmetricKey, entrie: EntryData) {
         let path = getJSONFilePath()
         do {
             let encryptData = try Data(contentsOf: path)
             let decryptData = try CryptHelper.shared.decrypt(cipherText: encryptData, key: key)
             var decryptedEntries = try JSONDecoder().decode([EntryData].self, from: decryptData)
-            
             decryptedEntries.removeAll()
-        
         } catch {
-            
+            print("Failed to delete entries from JSON: \(error)")
         }
     }
     

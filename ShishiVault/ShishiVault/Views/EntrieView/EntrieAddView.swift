@@ -163,7 +163,7 @@ struct EntrieAddView: View {
                            
                             if let key = shishiViewModel.symetricKey {
                                 Task {
-                                    await JSONHelper.shared.saveEntriesToJSON(
+                                    JSONHelper.shared.saveEntriesToJSON(
                                         key: key,
                                         entries: entrieViewModel.entries)
                                 }
