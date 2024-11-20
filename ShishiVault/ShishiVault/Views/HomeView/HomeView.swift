@@ -56,11 +56,19 @@ struct HomeView: View {
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button { entrieViewModel.createEntry(
+                    Button {
+                        entrieViewModel.createEntry(
                             title: "Testeintrag \(zufall.randomElement() ?? 0)",
                             username: "Max Mustermann", email: "text@meineDomain.com",
                             password: "1234", passwordConfirm: "1234", notes: "TestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotes",
                             website: "http://testserver.com/", customFields: [])
+                        
+                        if let key = shishiViewModel.symetricKey {
+                            JSONHelper.shared.saveEntriesToJSON(key: key,
+                                entries: entrieViewModel.entries)
+                        }
+                        
+                        
                     } label: {
                         Image(systemName: "plus")
                     }

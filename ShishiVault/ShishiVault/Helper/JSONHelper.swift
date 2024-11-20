@@ -24,7 +24,7 @@ class JSONHelper {
             let encryptData = try Data(contentsOf: path)
             let decryptData = try CryptHelper.shared.decrypt(cipherText: encryptData, key: key)
             let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
+            decoder.dateDecodingStrategy = .secondsSince1970
             let entries = try decoder.decode([EntryData].self, from: decryptData)
             return entries
         } catch {
@@ -35,7 +35,7 @@ class JSONHelper {
     // Liefert den Pfad zur JSON datei
     private func getJSONFilePath() -> URL {
         let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return documentDirectory.appendingPathComponent("entries.json")
+        return documentDirectory.appendingPathComponent("shishiVaultEntriesDataAES.json")
     }
     
     
@@ -56,7 +56,7 @@ class JSONHelper {
     // Konvertiere Entries in JSON
     private func convertToJSON(entries: [EntryData]) -> Data? {
         let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
+        encoder.dateEncodingStrategy = .secondsSince1970
         
         do {
             let jsonData = try encoder.encode(entries)

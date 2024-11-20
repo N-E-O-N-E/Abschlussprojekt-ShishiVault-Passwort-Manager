@@ -21,7 +21,7 @@ class EntriesViewModel: ObservableObject {
         self.key = key
         
         if let key = key {
-            print("Key loaded")
+            print("Key loaded \(key)")
         } else {
             print("Key not loaded")
         }
