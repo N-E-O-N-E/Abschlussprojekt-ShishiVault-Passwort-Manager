@@ -10,13 +10,13 @@ import SwiftUI
 @main
 struct ShishiVaultApp: App {
     // Instanz des ViewModels zur Authentifizierung
-    @StateObject private var signInViewModel = ShishiViewModel()
+    @StateObject private var shishiViewModel = ShishiViewModel()
     
     var body: some Scene {
         WindowGroup {
             NavigationStack {
                 SignInView()
-                    .environmentObject(signInViewModel) // übergibt das ViewModel an die View(s)
+                    .environmentObject(shishiViewModel)
             }
         }
     }

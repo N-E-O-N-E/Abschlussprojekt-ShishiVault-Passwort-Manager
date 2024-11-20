@@ -8,14 +8,19 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject var signInViewModel: ShishiViewModel
-    @EnvironmentObject var entrieViewModel: EntriesViewModel
+    @EnvironmentObject var shishiViewModel: ShishiViewModel
+    @StateObject var entrieViewModel: EntriesViewModel
     
     @State private var showAddEntrieView: Bool = false
     @State private var entrieShowView: Bool = false
     @State private var showComponentsView: Bool = false
     @State private var searchText: String = ""
     let zufall = Range(0...100)
+    
+    init() {
+        let key = ShishiViewModel().symetricKey
+        _entrieViewModel = StateObject(wrappedValue: EntriesViewModel(key: key))
+    }
     
     var body: some View {
         VStack {
@@ -32,6 +37,7 @@ struct HomeView: View {
                     NavigationLink {
                         EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
                             .environmentObject(entrieViewModel)
+                            .environmentObject(shishiViewModel)
                     } label: {
                         EntrieListItem(title: entry.title, email: entry.email,
                             created: entry.created, website: entry.website ?? "")
@@ -83,6 +89,7 @@ struct HomeView: View {
         .navigationDestination(isPresented: $showAddEntrieView, destination: {
             EntrieAddView(showAddEntrieView: $showAddEntrieView)
                 .environmentObject(entrieViewModel)
+                .environmentObject(shishiViewModel)
         })
         .navigationDestination(isPresented: $showComponentsView, destination: {
             ComponentsExampleView()
@@ -91,11 +98,15 @@ struct HomeView: View {
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Shishi Vault")
         
+        .onAppear {
+            entrieViewModel.reloadEntries()
+        }
+        
     }
 }
 
 #Preview {
     HomeView()
         .environmentObject(ShishiViewModel())
-        .environmentObject(EntriesViewModel())
+        .environmentObject(EntriesViewModel(key: .init(nilLiteral: ())))
 }

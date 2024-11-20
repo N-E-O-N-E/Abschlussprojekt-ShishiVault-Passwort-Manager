@@ -13,8 +13,7 @@ import AuthenticationServices
 
 struct SignInView: View {
     // Bindet das ViewModel zur Authentifizierung ein
-    @EnvironmentObject var signInViewModel: ShishiViewModel
-    @StateObject var entrieViewModel = EntriesViewModel()
+    @EnvironmentObject var shishiViewModel: ShishiViewModel
     
     var body: some View {
         ZStack {
@@ -32,28 +31,21 @@ struct SignInView: View {
                     SignInWithAppleButton(
                         .signIn,
                         onRequest: { request in
-                            signInViewModel.configure(request: request)
+                            shishiViewModel.configure(request: request)
                         },
                         onCompletion: { completion in
-                            signInViewModel.handleLogin(result: completion)
+                            shishiViewModel.handleLogin(result: completion)
                         }
                     )
                     .frame(height: 50)
                     .padding()
                     
-                    .navigationDestination(isPresented: $signInViewModel.isLoggedIn) {
+                    .navigationDestination(isPresented: $shishiViewModel.isLoggedIn) {
                         HomeView()
-                            .environmentObject(signInViewModel)
-                            .environmentObject(entrieViewModel)
+                            .environmentObject(shishiViewModel)
                     }
                 }
             }
         }
     }
-}
-
-
-#Preview {
-    SignInView(entrieViewModel: EntriesViewModel())
-        .environmentObject(ShishiViewModel())
 }

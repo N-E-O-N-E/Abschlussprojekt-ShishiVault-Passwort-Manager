@@ -6,12 +6,32 @@
 //
 
 import SwiftUI
+import CryptoKit
 
 @MainActor
 class EntriesViewModel: ObservableObject {
     @Published var entries: [EntryData] = []
     @Published var customFieldsForEntrie: [CustomField] = []
     @Published var customFieldsForEntrieToSave: [CustomField] = []
+    
+    private let jsonHelper = JSONHelper.shared
+    private let key: SymmetricKey?
+    
+    init(key: SymmetricKey?) {
+        self.key = key
+        
+        if let key = key {
+            print("Key loaded")
+        } else {
+            print("Key not loaded")
+        }
+    }
+    
+    func reloadEntries() {
+        guard let key else { return }
+        self.entries = jsonHelper.loadEntriesFromJSON(key: key)
+        print("Fetch data")
+    }
     
     // Prüft ob die mindestFelder und eins der optionalen Felder ausgefüllt sind und den PasswortConfirm
     func entrieSaveButtomnCheck(title: String, username: String, email: String, password: String, passwordConfirm: String) -> String {

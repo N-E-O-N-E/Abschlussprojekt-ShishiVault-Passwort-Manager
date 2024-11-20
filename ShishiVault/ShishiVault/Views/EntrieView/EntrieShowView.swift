@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EntrieShowView: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var signInViewModel: ShishiViewModel
+    @EnvironmentObject var shishiViewModel: ShishiViewModel
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     
     @Binding var entrieShowView: Bool

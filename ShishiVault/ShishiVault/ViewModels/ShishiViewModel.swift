@@ -19,6 +19,11 @@ class ShishiViewModel: ObservableObject {
     @Published var symetricKey: SymmetricKey?
     private let userIDKey: String = "userIDKey"
     
+    init() {
+        checkLoginStatus()
+    }
+    
+   
     // SignInWithAppleID Button Funktion (configure)
     func configure(request: ASAuthorizationAppleIDRequest) {
         request.requestedScopes = [.fullName, .email] // Fordert Namen und die E-Mail-Adresse
@@ -61,8 +66,10 @@ class ShishiViewModel: ObservableObject {
             isLoggedIn = false
             return print("No UserID in Keychain found!")
         }
-            isLoggedIn = true
-            print("Login recognized")
+            
+        symetricKey = CryptHelper.shared.createSymetricKey(from: userIDKey)
+        print("Login recognized")
+        isLoggedIn = true
     }
     
     // Logout durch setzten des LoginStatus und löschen der Dateb aus der Keychain für den aktuelle UserKey

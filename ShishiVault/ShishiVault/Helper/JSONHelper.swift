@@ -12,39 +12,33 @@ class JSONHelper {
     static let shared = JSONHelper()
     private init() {}
     
-    // Liefert den Pfad zur JSON datei
-    func getJSONFilePath() -> URL {
-        let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return documentDirectory.appendingPathComponent("entries.json")
-    }
-    
-    // Konvertiere Entries in JSON
-    func convertToJSON(entries: [EntryData]) -> Data? {
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
-        
-        do {
-            let jsonData = try encoder.encode(entries)
-            return jsonData
-        } catch {
-            print("Failed to encode JSON: \(error)")
-            return nil
-        }
-    }
-    
     // Lädt verschlüsseltes JSON und entschlüsselt es
     func loadEntriesFromJSON(key: SymmetricKey) -> [EntryData] {
         let path = getJSONFilePath()
+        guard FileManager.default.fileExists(atPath: path.path) else {
+            print("No JSON file found at \(path.path)")
+            return []
+        }
+        
         do {
             let encryptData = try Data(contentsOf: path)
             let decryptData = try CryptHelper.shared.decrypt(cipherText: encryptData, key: key)
-            let entries = try JSONDecoder().decode([EntryData].self, from: decryptData)
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            let entries = try decoder.decode([EntryData].self, from: decryptData)
             return entries
         } catch {
             print("Failed to load entries from JSON: \(error)")
             return []
         }
     }
+    // Liefert den Pfad zur JSON datei
+    private func getJSONFilePath() -> URL {
+        let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return documentDirectory.appendingPathComponent("entries.json")
+    }
+    
+    
     
     // Speichert die Daten verschlüsselt in JSON
     func saveEntriesToJSON(key: SymmetricKey, entries: [EntryData]) {
@@ -59,4 +53,17 @@ class JSONHelper {
         }
     }
     
+    // Konvertiere Entries in JSON
+    private func convertToJSON(entries: [EntryData]) -> Data? {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        
+        do {
+            let jsonData = try encoder.encode(entries)
+            return jsonData
+        } catch {
+            print("Failed to encode JSON: \(error)")
+            return nil
+        }
+    }
 }
