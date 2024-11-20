@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CryptoKit
 
 @MainActor
 class EntriesViewModel: ObservableObject {
@@ -13,6 +14,26 @@ class EntriesViewModel: ObservableObject {
     @Published var customFieldsForEntrie: [CustomField] = []
     @Published var customFieldsForEntrieToSave: [CustomField] = []
     
+    private let jsonHelper = JSONHelper.shared
+    private let key: SymmetricKey?
+    
+    init(key: SymmetricKey?) {
+        self.key = key
+        
+        if let key = key {
+            print("Key loaded")
+        } else {
+            print("Key not loaded")
+        }
+    }
+    
+    func reloadEntries() {
+        guard let key else { return }
+        self.entries = jsonHelper.loadEntriesFromJSON(key: key)
+        print("Fetch data")
+    }
+    
+    // Prüft ob die mindestFelder und eins der optionalen Felder ausgefüllt sind und den PasswortConfirm
     func entrieSaveButtomnCheck(title: String, username: String, email: String, password: String, passwordConfirm: String) -> String {
         let mindestFelderNichtLeer = !title.isEmpty && !password.isEmpty && !passwordConfirm.isEmpty
         let wahlFelderNichtLeer = (!username.isEmpty || !email.isEmpty)
@@ -22,22 +43,19 @@ class EntriesViewModel: ObservableObject {
         if !mindestFelderNichtLeer {
             return "mindestLeer"
         }
-        
         if mindestFelderNichtLeer && !wahlFelderNichtLeer {
             return "wahlLeer"
         }
-        
         if !passConf {
             return "passConfirm"
         }
-        
         if mindestFelderNichtLeer && wahlFelderNichtLeer && passConf {
             return "ok"
         }
-        
         return "sonstiges"
     }
     
+    // Erstellt ein Entrie
     func createEntry(title: String, username: String, email: String, password: String, passwordConfirm: String, notes: String, website: String, customFields: [CustomField]) {
         guard password == passwordConfirm else {
             return print("Fehler beim angelegen der Daten")
@@ -48,58 +66,34 @@ class EntriesViewModel: ObservableObject {
         entries.append(newEntrie)
     }
     
-    func readEntry() {
-        
-    }
-    
-    func updateEntry() {
-        
-    }
-    
+    // Löscht ein EntrieObjekt
     func deleteEntry(entrie: EntryData) {
         entries.removeAll(where: { $0.id == entrie.id })
         print("Der Eintrag wurde gelöscht")
     }
     
-    // ------------------------------------------------------------------------------------
-    
+    // Erstellt ein CustomField für die Speicherung im Entrie
     func createCustomField(customField: CustomField) {
         customFieldsForEntrie.append(customField)
         print("Neues CustomFeld zwischengespeichert")
     }
     
-    func editCustomField() {
-        
-    }
-    
-    func updateCustomField() {
-        
-    }
-    
+    // Löscht ein Entrie aus der Liste
     func deleteCustomField() {
         customFieldsForEntrie.removeAll()
         print("CustomFeld gelöscht")
     }
     
-    // -------------------------------------------------------------------------------------
-    
+    // Erstellt ein ZwischenArray an CustomFields zur temporären Weitergabe
     func createCustomFieldToSave() {
         customFieldsForEntrieToSave.append(contentsOf: customFieldsForEntrie)
         print("CustomFeld für Speichering in Eintrag zwischengespeichert")
     }
     
-    func readCustomFieldToSave() {
-        
-    }
-    
-    func updateCustomFieldToSave() {
-        
-    }
-    
+    // Löscht das ZwischenArray
     func deleteCustomFieldToSave() {
         customFieldsForEntrieToSave.removeAll()
         print("CustomFeld für Speichering in Eintrag gelöscht")
     }
-    
     
 }

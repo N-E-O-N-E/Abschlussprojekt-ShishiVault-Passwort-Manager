@@ -81,7 +81,7 @@ class KeychainHelper {
         if status == errSecSuccess {
             return true
         } else if  status == errSecItemNotFound {
-            print("Keychain item not found! \(key)")
+            print("Keychain item not found!")
         } else {
             print("Update failed: \(status)")
         }
@@ -95,8 +95,9 @@ class KeychainHelper {
             kSecAttrAccount as String: key]
         
         let status = SecItemDelete(query as CFDictionary)
+        print("KeychainData deleted for Key: \(key)")
         if status != errSecSuccess {
-            print("The Keychain could not be deleted: \(key)")
+            print("The Keychain could not be deleted")
         }
     }
 }

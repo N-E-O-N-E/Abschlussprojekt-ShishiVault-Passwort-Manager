@@ -8,7 +8,7 @@ import SwiftUI
 
 struct EntrieListItem: View {
     
-    var titel: String = ""
+    var title: String = ""
     var email: String = ""
     var created = Date()
     var website: String = ""
@@ -28,7 +28,7 @@ struct EntrieListItem: View {
                     .padding(15)
                 
                 VStack(alignment: .leading) {
-                    Text(titel)
+                    Text(title)
                         .font(.title3)
                         .foregroundStyle(Color.ShishiColorBlack)
                         .bold()
@@ -42,7 +42,6 @@ struct EntrieListItem: View {
                             .font(.footnote)
                             .foregroundStyle(Color.ShishiColorBlack)
                             .padding(0)
-                        
                         Spacer()
                     }
                     HStack {
@@ -83,5 +82,5 @@ struct EntrieListItem: View {
 }
 
 #Preview {
-    EntrieListItem(titel: "Amazon Shopping", email: "markus@meinedomain.com", created: Date(), website: "http://www.meinedomain.com")
+    EntrieListItem(title: "Amazon Shopping", email: "markus@meinedomain.com", created: Date(), website: "http://www.meinedomain.com")
 }

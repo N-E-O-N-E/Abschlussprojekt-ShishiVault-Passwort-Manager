@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject var signInViewModel: SignInViewModel
-    @EnvironmentObject var entrieViewModel: EntriesViewModel
+    @EnvironmentObject var shishiViewModel: ShishiViewModel
+    @StateObject var entrieViewModel: EntriesViewModel
     
     @State private var showAddEntrieView: Bool = false
     @State private var entrieShowView: Bool = false
@@ -17,10 +17,15 @@ struct HomeView: View {
     @State private var searchText: String = ""
     let zufall = Range(0...100)
     
+    init() {
+        let key = ShishiViewModel().symetricKey
+        _entrieViewModel = StateObject(wrappedValue: EntriesViewModel(key: key))
+    }
+    
     var body: some View {
         VStack {
             TextField("Suche", text: $searchText)
-                .customTextField()
+                .customSearchField()
         }.padding(.horizontal).padding(.vertical, 5)
         
         ScrollView {
@@ -32,9 +37,11 @@ struct HomeView: View {
                     NavigationLink {
                         EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
                             .environmentObject(entrieViewModel)
+                            .environmentObject(shishiViewModel)
                     } label: {
-                        EntrieListItem(titel: entry.title, email: entry.email,
+                        EntrieListItem(title: entry.title, email: entry.email,
                             created: entry.created, website: entry.website ?? "")
+
                     }
                 }
             } // End VStack
@@ -64,6 +71,7 @@ struct HomeView: View {
         .overlay(
             Button(action: {
                 showAddEntrieView.toggle()
+                
             }) {
                 Image(systemName: "plus")
                     .foregroundColor(.white)
@@ -81,6 +89,7 @@ struct HomeView: View {
         .navigationDestination(isPresented: $showAddEntrieView, destination: {
             EntrieAddView(showAddEntrieView: $showAddEntrieView)
                 .environmentObject(entrieViewModel)
+                .environmentObject(shishiViewModel)
         })
         .navigationDestination(isPresented: $showComponentsView, destination: {
             ComponentsExampleView()
@@ -89,11 +98,15 @@ struct HomeView: View {
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Shishi Vault")
         
+        .onAppear {
+            entrieViewModel.reloadEntries()
+        }
+        
     }
 }
 
 #Preview {
     HomeView()
-        .environmentObject(SignInViewModel())
-        .environmentObject(EntriesViewModel())
+        .environmentObject(ShishiViewModel())
+        .environmentObject(EntriesViewModel(key: .init(nilLiteral: ())))
 }

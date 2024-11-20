@@ -9,7 +9,9 @@ import SwiftUI
 
 struct EntrieShowView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var shishiViewModel: ShishiViewModel
     @EnvironmentObject var entrieViewModel: EntriesViewModel
+    
     @Binding var entrieShowView: Bool
     var entry: EntryData
     
@@ -131,7 +133,6 @@ struct EntrieShowView: View {
             }
             Button("Abbrechen", role: .cancel) {
                 isDeleteAlert.toggle()
-                dismiss()
             }
         }, message: {
             Text("Möchten Sie den Eintrag wirklich löschen?")

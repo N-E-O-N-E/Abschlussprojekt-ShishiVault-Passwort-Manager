@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EntrieAddView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
+    @EnvironmentObject var shishiViewModel: ShishiViewModel
     
     @State private var isPasswordVisible: Bool = false
     @State private var isSavedAlert: Bool = false
@@ -159,6 +160,15 @@ struct EntrieAddView: View {
                                 notes: notes,
                                 website: website,
                                 customFields: entrieViewModel.customFieldsForEntrieToSave)
+                           
+                            if let key = shishiViewModel.symetricKey {
+                                JSONHelper.shared.saveEntriesToJSON(
+                                    key: key,
+                                    entries: entrieViewModel.entries)
+                            } else {
+                                print("JSON save failed")
+                            }
+                            
                             
                             entrieViewModel.deleteCustomField()
                             entrieViewModel.deleteCustomFieldToSave()
@@ -235,5 +245,6 @@ struct EntrieAddView: View {
 
 #Preview {
     EntrieAddView(showAddEntrieView: .constant(true))
-        .environmentObject(EntriesViewModel())
+        .environmentObject(EntriesViewModel(key: .init(data: [])))
+        .environmentObject(ShishiViewModel())
 }
