@@ -129,6 +129,14 @@ struct EntrieShowView: View {
         .alert("Gespeichert", isPresented: $isDeleteAlert, actions: {
             Button("Löschen", role: .destructive) {
                 entrieViewModel.deleteEntry(entrie: entry)
+                Task {
+                    if let key = shishiViewModel.symetricKey {
+                        await JSONHelper.shared.deleteEntiresFromJSON(
+                            key: key, entrie: entry)
+                        await JSONHelper.shared.saveEntriesToJSON(
+                            key: key, entries: entrieViewModel.entries)
+                    }
+                }
                 dismiss()
             }
             Button("Abbrechen", role: .cancel) {

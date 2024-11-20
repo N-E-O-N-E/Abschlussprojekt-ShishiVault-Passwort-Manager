@@ -64,8 +64,11 @@ struct HomeView: View {
                             website: "http://testserver.com/", customFields: [])
                         
                         if let key = shishiViewModel.symetricKey {
-                            JSONHelper.shared.saveEntriesToJSON(key: key,
-                                entries: entrieViewModel.entries)
+                            Task {
+                                await JSONHelper.shared.saveEntriesToJSON(
+                                    key: key,
+                                    entries: entrieViewModel.entries)
+                            }
                         }
                         
                         
@@ -107,7 +110,9 @@ struct HomeView: View {
         .navigationTitle("Shishi Vault")
         
         .onAppear {
-            entrieViewModel.reloadEntries()
+            Task {
+                await entrieViewModel.reloadEntries()
+            }
         }
         
     }

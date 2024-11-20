@@ -27,9 +27,9 @@ class EntriesViewModel: ObservableObject {
         }
     }
     
-    func reloadEntries() {
+    func reloadEntries() async {
         guard let key else { return }
-        self.entries = jsonHelper.loadEntriesFromJSON(key: key)
+        self.entries = await jsonHelper.loadEntriesFromJSON(key: key)
         print("Fetch data")
     }
     

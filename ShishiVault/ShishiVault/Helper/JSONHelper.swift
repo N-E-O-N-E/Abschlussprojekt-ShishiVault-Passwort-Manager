@@ -13,13 +13,12 @@ class JSONHelper {
     private init() {}
     
     // Lädt verschlüsseltes JSON und entschlüsselt es
-    func loadEntriesFromJSON(key: SymmetricKey) -> [EntryData] {
+    func loadEntriesFromJSON(key: SymmetricKey) async -> [EntryData] {
         let path = getJSONFilePath()
         guard FileManager.default.fileExists(atPath: path.path) else {
             print("No JSON file found at \(path.path)")
             return []
         }
-        
         do {
             let encryptData = try Data(contentsOf: path)
             let decryptData = try CryptHelper.shared.decrypt(cipherText: encryptData, key: key)
@@ -41,7 +40,7 @@ class JSONHelper {
     
     
     // Speichert die Daten verschlüsselt in JSON
-    func saveEntriesToJSON(key: SymmetricKey, entries: [EntryData]) {
+    func saveEntriesToJSON(key: SymmetricKey, entries: [EntryData]) async {
         let path = getJSONFilePath()
         do {
             guard let jsonData = convertToJSON(entries: entries) else { return }
@@ -66,4 +65,21 @@ class JSONHelper {
             return nil
         }
     }
+    
+    func deleteEntiresFromJSON(key: SymmetricKey, entrie: EntryData) async {
+        let path = getJSONFilePath()
+        do {
+            let encryptData = try Data(contentsOf: path)
+            let decryptData = try CryptHelper.shared.decrypt(cipherText: encryptData, key: key)
+            var decryptedEntries = try JSONDecoder().decode([EntryData].self, from: decryptData)
+            
+            decryptedEntries.removeAll()
+        
+        } catch {
+            
+        }
+    }
+    
+    
+    
 }
