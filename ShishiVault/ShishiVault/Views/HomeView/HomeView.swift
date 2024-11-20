@@ -61,11 +61,16 @@ struct HomeView: View {
                             title: "Testeintrag \(zufall.randomElement() ?? 0)",
                             username: "Max Mustermann", email: "text@meineDomain.com",
                             password: "1234", passwordConfirm: "1234", notes: "TestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotes",
-                            website: "http://testserver.com/", customFields: [])
+                            website: "http://testserver.com/",
+                            customFields: [
+                                CustomField(name: "C1", value: "Test1"),
+                                CustomField(name: "C2", value: "Test2"),
+                                CustomField(name: "C3", value: "Test3")
+                            ])
                         
                         if let key = shishiViewModel.symetricKey {
                             Task {
-                                await JSONHelper.shared.saveEntriesToJSON(
+                                JSONHelper.shared.saveEntriesToJSON(
                                     key: key,
                                     entries: entrieViewModel.entries)
                             }

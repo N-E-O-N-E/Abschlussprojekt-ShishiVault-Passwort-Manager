@@ -126,25 +126,29 @@ struct EntrieShowView: View {
             }
         }
         
-        .alert("Gespeichert", isPresented: $isDeleteAlert, actions: {
+        .alert("Hinweis\n", isPresented: $isDeleteAlert, actions: {
             Button("Löschen", role: .destructive) {
                 entrieViewModel.deleteEntry(entrie: entry)
                 Task {
                     if let key = shishiViewModel.symetricKey {
-                        await JSONHelper.shared.deleteEntiresFromJSON(
+                        JSONHelper.shared.deleteEntiresFromJSON(
                             key: key, entrie: entry)
-                        await JSONHelper.shared.saveEntriesToJSON(
+                        JSONHelper.shared.saveEntriesToJSON(
                             key: key, entries: entrieViewModel.entries)
+                        
                     }
                 }
+                entrieShowView = false
                 dismiss()
             }
             Button("Abbrechen", role: .cancel) {
                 isDeleteAlert.toggle()
             }
         }, message: {
-            Text("Möchten Sie den Eintrag wirklich löschen?")
+            Text("Sind sie sich sicher, dass sie diesen Eintrag löschen möchten?\nDiese Aktion kann nicht rückgängig gemacht werden. Möchten Sie fortfahren?")
+                
         })
+        
         
         .navigationTitle(entry.title)
     }
