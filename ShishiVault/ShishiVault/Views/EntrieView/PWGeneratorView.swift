@@ -8,21 +8,66 @@
 import SwiftUI
 
 struct PWGeneratorView: View {
-    @State private var lenght = 8.0
-    @State private var lowerCase: Bool = false
-    @State private var upperCase: Bool = false
+    @State private var lenght = 10.0
+    @State private var lowerCase: Bool = true
+    @State private var upperCase: Bool = true
     @State private var numbers: Bool = false
     @State private var symbols: Bool = false
     
-    private var sliderColor: Color {
-        if lenght <= 6 {
+    private var statusColor: Color {
+        if statusSumCalc() <= 30 {
             return Color.ShishiColorRed_
-        } else if lenght > 6 && lenght <= 10 {
+        } else if statusSumCalc() > 30 && statusSumCalc() <= 75 {
+            return Color.orange
+        } else if statusSumCalc() > 75 {
+            return Color.ShishiColorGreen
+        }
+        return Color.gray
+    }
+    private var sliderColor: Color {
+        if lenght < 6 {
+            return Color.ShishiColorRed_
+        } else if lenght >= 6 && lenght <= 10 {
             return Color.orange
         } else if lenght > 10 {
             return Color.ShishiColorGreen
         }
         return Color.ShishiColorRed_
+    }
+    private var statusWidthFromToggle: CGFloat {
+        var value: CGFloat = 0
+        if lowerCase {
+            value += 5
+        }
+        if upperCase {
+            value += 5
+        }
+        if numbers {
+            value += 5
+        }
+        if symbols {
+            value += 5
+        }
+        return value
+    }
+    private var statusWidthFromLength: CGFloat {
+        var value: CGFloat = 0
+        if lenght < 4 {
+            value = 10
+        } else if lenght >= 4 && lenght <= 6 {
+            value =  55
+        } else if lenght > 6 && lenght <= 10 {
+            value =  85
+        } else if lenght > 10 && lenght <= 16 {
+            value =  100
+        } else if lenght > 16 {
+            value =  130
+        }
+        return value
+    }
+    private func statusSumCalc() -> CGFloat {
+        var value = statusWidthFromLength + statusWidthFromToggle
+        return value
     }
     
     var body: some View {
@@ -60,14 +105,14 @@ struct PWGeneratorView: View {
             HStack {
                 Text("Security-Level")
                     .padding(.vertical, 5)
-                
                 Spacer()
                 
-                Rectangle().frame(width: 20, height: 20)
-                Rectangle().frame(width: 20, height: 20)
-                Rectangle().frame(width: 20, height: 20)
-                Rectangle().frame(width: 20, height: 20)
-                Rectangle().frame(width: 20, height: 20)
+                VStack {
+                    ZStack(alignment: .leading) {
+                        Capsule().frame(width: 150, height: 10).foregroundStyle(Color.gray.opacity(0.3))
+                        Capsule().frame(width: statusSumCalc(), height: 10).foregroundStyle(statusColor)
+                    }
+                }
             }
             
             Button {
@@ -93,14 +138,9 @@ struct PWGeneratorView: View {
                     .customTextFieldText()
             }.padding(5)
             
-            
         }.padding(.horizontal, 30)
         
-        
-        
-        
-        
-            .presentationDetents([.fraction(0.3)])
+        .presentationDetents([.fraction(0.3)])
     }
 }
 
