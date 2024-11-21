@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CryptoKit
+import UniformTypeIdentifiers
 
 class CryptHelper {
     // Singleton-Instanz um global darauf zureifen zu können - privat initialisiert
@@ -15,6 +16,13 @@ class CryptHelper {
     
     enum EncryptionError: Error {
         case message(reason: String)
+    }
+    
+    // Fügt einen String in die Zwischenablage
+    // Ouelle: https://stackoverflow.com/questions/61772282/swiftui-how-to-copy-text-to-clipboard
+    func copyToClipboard(input: String) {
+        let clipboard = UIPasteboard.general
+        clipboard.string = input
     }
     
     // Funktion zur erstellung eines zufälligen Passwortes

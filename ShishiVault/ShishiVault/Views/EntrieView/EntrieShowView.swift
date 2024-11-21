@@ -31,6 +31,7 @@ struct EntrieShowView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
+                
                 Text(entry.title)
                     .textFieldAlsText()
                 HStack {
@@ -39,21 +40,60 @@ struct EntrieShowView: View {
                     Spacer()
                 }
                 
-                Text(entry.username ?? "")
-                    .textFieldAlsText()
+                
+                
+                
+                HStack {
+                    Text(entry.username ?? "")
+                        .textFieldAlsText()
+                    
+                    Button(action: {
+                        if let username = entry.username {
+                            CryptHelper.shared.copyToClipboard(input: username)
+                        }
+                    }) {
+                        Image(systemName: "document.on.document")
+                            .foregroundColor(Color.ShishiColorBlue)
+                            .scaleEffect(1.2)
+                    }
+                    .frame(width: 25)
+                    .padding(.horizontal, 10)
+                }
                 HStack {
                     Text("Nutzername")
                         .customTextFieldText()
                     Spacer()
                 }
                 
-                Text(entry.email)
-                    .textFieldAlsText()
+                
+                
+                
+                HStack {
+                    Text(entry.email)
+                        .textFieldAlsText()
+                    
+                    Button(action: {
+                        if !entry.email.isEmpty {
+                            CryptHelper.shared.copyToClipboard(input: entry.email)
+                        }
+                    }) {
+                        Image(systemName: "document.on.document")
+                            .foregroundColor(Color.ShishiColorBlue)
+                            .scaleEffect(1.2)
+                    }
+                    .frame(width: 25)
+                    .padding(.horizontal, 10)
+                }
                 HStack {
                     Text("E-Mail")
                         .customTextFieldText()
                     Spacer()
+                    
                 }
+                
+                
+                
+                
                 
                 Text(entry.website ?? "")
                     .textFieldAlsText()
@@ -63,6 +103,10 @@ struct EntrieShowView: View {
                     Spacer()
                 }
                 
+                
+                
+                
+                
                 HStack {
                     Text(isPasswordVisible ? entry.password : "*********")
                         .textFieldAlsText()
@@ -71,18 +115,34 @@ struct EntrieShowView: View {
                         isPasswordVisible.toggle()
                     }) {
                         Image(systemName: isPasswordVisible ? "eye" : "eye.slash")
-                            .foregroundColor(isPasswordVisible ? Color.ShishiColorDarkGray : Color.ShishiColorGray)
+                            .foregroundColor(isPasswordVisible ? Color.ShishiColorBlue : Color.ShishiColorGray)
                             .scaleEffect(1.2)
                     }
                     .frame(width: 25)
                     .padding(.horizontal, 10)
+                    
+                    Button(action: {
+                        if !entry.password.isEmpty {
+                            CryptHelper.shared.copyToClipboard(input: entry.password)
+                        }
+                    }) {
+                        Image(systemName: "document.on.document")
+                            .foregroundColor(Color.ShishiColorBlue)
+                            .scaleEffect(1.2)
+                    }
+                    .frame(width: 25)
+                    .padding(.horizontal, 10)
+                    
                 }
-                      
                 HStack {
                     Text("Passwort")
                         .customTextFieldText()
                     Spacer()
                 }
+                
+                
+                
+                
                 
                 Text(entry.notes ?? "")
                     .notizenText()
@@ -91,6 +151,10 @@ struct EntrieShowView: View {
                         .customTextFieldText()
                     Spacer()
                 }
+                
+                
+                
+                
                 
                 ForEach(entry.customFields ) { fields in
                     Text(fields.value)
@@ -103,72 +167,88 @@ struct EntrieShowView: View {
                 }
                 
                 Divider()
+                
                 Text("\nErstellt am: \(entry.created.formatted(.dateTime))")
                     .customTextFieldText()
                 
             }
         }.padding(.horizontal).padding(.vertical, 5)
         
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "chevron.backward")
-                        .foregroundColor(Color.ShishiColorBlue)
-                    Text("Zurück")
-                        .foregroundColor(Color.ShishiColorBlue)
-                }
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    entrieEditView = true
-                } label: {
-                    Image(systemName: "square.and.pencil")
-                        .foregroundStyle(Color.ShishiColorBlue)
-                }
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    isDeleteAlert.toggle()
-                } label: {
-                    Image(systemName: "trash")
-                        .foregroundStyle(Color.ShishiColorRed)
-                }
-            }
-        }
         
-        .alert("Hinweis\n", isPresented: $isDeleteAlert, actions: {
-            Button("Löschen", role: .destructive) {
-                entrieViewModel.deleteEntry(entrie: entry)
-                Task {
-                    if let key = shishiViewModel.symetricKey {
-                        JSONHelper.shared.deleteEntiresFromJSON(
-                            key: key, entrie: entry)
-                        JSONHelper.shared.saveEntriesToJSON(
-                            key: key, entries: entrieViewModel.entries)
-                        
+        
+        
+        
+        
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.backward")
+                            .foregroundColor(Color.ShishiColorBlue)
+                        Text("Zurück")
+                            .foregroundColor(Color.ShishiColorBlue)
                     }
                 }
-                entrieShowView = false
-                dismiss()
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        entrieEditView = true
+                    } label: {
+                        Image(systemName: "square.and.pencil")
+                            .foregroundStyle(Color.ShishiColorBlue)
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isDeleteAlert.toggle()
+                    } label: {
+                        Image(systemName: "trash")
+                            .foregroundStyle(Color.ShishiColorRed)
+                    }
+                }
             }
-            Button("Abbrechen", role: .cancel) {
-                isDeleteAlert.toggle()
-            }
-        }, message: {
-            Text("Sind sie sich sicher, dass sie diesen Eintrag löschen möchten?\nDiese Aktion kann nicht rückgängig gemacht werden. Möchten Sie fortfahren?")
+        
+        
+        
+        
+        
+        
+            .alert("Hinweis\n", isPresented: $isDeleteAlert, actions: {
+                Button("Löschen", role: .destructive) {
+                    entrieViewModel.deleteEntry(entrie: entry)
+                    Task {
+                        if let key = shishiViewModel.symetricKey {
+                            JSONHelper.shared.deleteEntiresFromJSON(
+                                key: key, entrie: entry)
+                            JSONHelper.shared.saveEntriesToJSON(
+                                key: key, entries: entrieViewModel.entries)
+                            
+                        }
+                    }
+                    entrieShowView = false
+                    dismiss()
+                }
+                Button("Abbrechen", role: .cancel) {
+                    isDeleteAlert.toggle()
+                }
+            }, message: {
+                Text("Sind sie sich sicher, dass sie diesen Eintrag löschen möchten?\nDiese Aktion kann nicht rückgängig gemacht werden. Möchten Sie fortfahren?")
                 
-        })
+            })
         
-        .navigationDestination(isPresented: $entrieEditView, destination: {
-            EntrieEditView(entrieEditView: $entrieEditView, entry: entry)
-                .environmentObject(shishiViewModel)
-                .environmentObject(entrieViewModel)
-        })
         
-        .navigationBarBackButtonHidden(true)
-        .navigationTitle(entry.title)
-        .foregroundStyle(Color.ShishiColorBlue)
+        
+        
+        
+            .navigationDestination(isPresented: $entrieEditView, destination: {
+                EntrieEditView(entrieEditView: $entrieEditView, entry: entry)
+                    .environmentObject(shishiViewModel)
+                    .environmentObject(entrieViewModel)
+            })
+        
+            .navigationBarBackButtonHidden(true)
+            .navigationTitle(entry.title)
+            .foregroundStyle(Color.ShishiColorBlue)
+        
     }
 }
