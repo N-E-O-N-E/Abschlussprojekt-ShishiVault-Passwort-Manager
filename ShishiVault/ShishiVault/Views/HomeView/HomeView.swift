@@ -31,7 +31,7 @@ struct HomeView: View {
                 .padding(0)
             
             VStack {
-                TextField("Suche", text: $searchText)
+                TextField("\(Image(systemName: "magnifyingglass")) Suche (z.B. \"Apple\")", text: $searchText)
                     .customSearchField()
             }.padding(.horizontal).padding(.vertical, 5)
             
@@ -56,7 +56,7 @@ struct HomeView: View {
                 
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button {
+                        Button("") {
                             entrieViewModel.createEntry(
                                 title: "Testeintrag \(zufall.randomElement() ?? 0)",
                                 username: "Max Mustermann", email: "text@meineDomain.com",
@@ -76,8 +76,6 @@ struct HomeView: View {
                                 }
                             }
                             
-                            
-                        } label: {
                             
                         }
                     }
@@ -132,10 +130,4 @@ struct HomeView: View {
         // .navigationTitle("Shishi Vault")
         .foregroundStyle(Color.ShishiColorBlue)
     }
-}
-
-#Preview {
-    HomeView()
-        .environmentObject(ShishiViewModel())
-        .environmentObject(EntriesViewModel(key: .init(nilLiteral: ())))
 }

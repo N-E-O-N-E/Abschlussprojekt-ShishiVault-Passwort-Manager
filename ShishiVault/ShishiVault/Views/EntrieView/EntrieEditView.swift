@@ -13,9 +13,10 @@ struct EntrieEditView: View {
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     
     @State private var isPasswordVisible: Bool = false
-    @State private var isSavedAlert: Bool = false
+    @State private var savedAlert: Bool = false
     @State private var isEmptyFieldsAlert: Bool = false
     @State private var isEmptyOptFieldsAlert: Bool = false
+    @State private var isDeleteAlert: Bool = false
     @State private var customFieldSheet: Bool = false
     @Binding var entrieEditView: Bool
     
@@ -98,11 +99,20 @@ struct EntrieEditView: View {
                 
                 Divider().padding(.vertical, 10)
                 
-                // CustomFields ----------------------------
+                // CustomFields ------------------------------------------------------------------------------------------
                 
                 ForEach($customFields, id: \.id) { $customField in
-                    TextField(customField.name, text: $customField.value)
-                        .customTextField()
+                    HStack {
+                        TextField(customField.name, text: $customField.value)
+                            .customTextField()
+                        Button {
+                            customFields.removeAll(where: { $0.id == customField.id })
+                        } label: {
+                            Image(systemName: "x.circle")
+                                .foregroundStyle(Color.ShishiColorRed)
+                                .scaleEffect(1.2)
+                        }
+                    }
                     HStack {
                         Text(customField.name)
                             .customTextFieldText()
@@ -123,34 +133,7 @@ struct EntrieEditView: View {
                             isEmptyOptFieldsAlert.toggle()
                             
                         case "ok":
-                            customFields.append(contentsOf: entrieViewModel.customFieldsForEntrie)
-                            
-                            if let oldEntry = entry {
-                                let newEntrie = EntryData(
-                                    id: oldEntry.id,
-                                    title: title,
-                                    username: username,
-                                    email: email,
-                                    password: password,
-                                    notes: notes,
-                                    website: website,
-                                    customFields: customFields)
-                                entrieViewModel.updateEntry(newEntrie: newEntrie)
-                            }
-                            
-                            if let key = shishiViewModel.symetricKey {
-                                Task {
-                                    JSONHelper.shared.saveEntriesToJSON(
-                                        key: key,
-                                        entries: entrieViewModel.entries)
-                                }
-                            } else {
-                                print("JSON save failed")
-                            }
-                            
-                            
-                            entrieViewModel.deleteCustomField()
-                            isSavedAlert.toggle()
+                            savedAlert.toggle()
                             
                         default:
                             break
@@ -184,7 +167,8 @@ struct EntrieEditView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    customFieldSheet.toggle()
+                    customFieldSheet = true
+                    
                 } label: {
                     HStack {
                         Image(systemName: "rectangle.badge.plus")
@@ -199,10 +183,36 @@ struct EntrieEditView: View {
                 .environmentObject(entrieViewModel)
         }
         
-        .alert("Gespeichert", isPresented: $isSavedAlert, actions: {
-            Button("OK", role: .cancel) {
-                entrieEditView.toggle()
+        .alert("Hinweis", isPresented: $savedAlert, actions: {
+            Button("Aktualisieren", role: .destructive) {
+                if let oldEntry = entry {
+                    let newEntrie = EntryData(
+                        id: oldEntry.id,
+                        title: title,
+                        username: username,
+                        email: email,
+                        password: password,
+                        notes: notes,
+                        website: website,
+                        customFields: customFields)
+                    entrieViewModel.updateEntry(newEntrie: newEntrie)
+                }
+                
+                if let key = shishiViewModel.symetricKey {
+                    Task {
+                        JSONHelper.shared.saveEntriesToJSON(
+                            key: key,
+                            entries: entrieViewModel.entries)
+                    }
+                } else {
+                    print("JSON save failed")
+                }
+                entrieViewModel.deleteCustomField()
+                dismiss()
             }
+            Button("Abbrechen", role: .cancel) {}
+        }, message: {
+            Text("Die Aktualisierung der Daten kann nicht rückgängig gemacht werden!. Möchten Sie die Daten wirklich aktualisieren?")
         })
         
         .alert("Fehler", isPresented: $isEmptyFieldsAlert, actions: {
@@ -235,11 +245,14 @@ struct EntrieEditView: View {
                 self.customFields = entriesLoaded.customFields
             }
         }
-        .onChange(of: entrieViewModel.customFieldsForEntrie) { _, newFields in
-            customFields.append(contentsOf: newFields)
-            
-        }
         
+        .onChange(of: customFieldSheet) { _, isPresented in
+            if !isPresented {
+                customFields.append(contentsOf: entrieViewModel.customFieldsForEntrie)
+                entrieViewModel.deleteCustomField()
+            }
+        }
+
     }
 }
 

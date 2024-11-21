@@ -7,6 +7,7 @@
 
 import Foundation
 import Security
+import CryptoKit
 
 // Quelle zur Umsetzung: https://www.advancedswift.com/secure-private-data-keychain-swift/#save-data-to-keychain
 // Quelle zur Umsetzung: https://developer.apple.com/documentation/security/storing-keys-in-the-keychain
@@ -66,27 +67,27 @@ class KeychainHelper {
         return nil
     }
     
-    func update(data: String, for key: String) -> Bool {
-        let data = Data(data.utf8) // Konvertierung der String in daten
-        
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: key]
-        
-        let attributeUpdate: [String: Any] = [
-            kSecValueData as String: data]
-        
-        let status = SecItemUpdate(query as CFDictionary, attributeUpdate as CFDictionary)
-        
-        if status == errSecSuccess {
-            return true
-        } else if  status == errSecItemNotFound {
-            print("Keychain item not found!")
-        } else {
-            print("Update failed: \(status)")
-        }
-       return false
-    }
+//    func update(data: String, for key: String) -> Bool {
+//        let data = Data(data.utf8) // Konvertierung der String in daten
+//        
+//        let query: [String: Any] = [
+//            kSecClass as String: kSecClassGenericPassword,
+//            kSecAttrAccount as String: key]
+//        
+//        let attributeUpdate: [String: Any] = [
+//            kSecValueData as String: data]
+//        
+//        let status = SecItemUpdate(query as CFDictionary, attributeUpdate as CFDictionary)
+//        
+//        if status == errSecSuccess {
+//            return true
+//        } else if  status == errSecItemNotFound {
+//            print("Keychain item not found!")
+//        } else {
+//            print("Update failed: \(status)")
+//        }
+//       return false
+//    }
     
     // Löscht die Daten für einen Key
     func delete(for key: String) {
@@ -95,7 +96,7 @@ class KeychainHelper {
             kSecAttrAccount as String: key]
         
         let status = SecItemDelete(query as CFDictionary)
-        print("KeychainData deleted for Key: \(key)")
+        print("KeychainData deleted")
         if status != errSecSuccess {
             print("The Keychain could not be deleted")
         }

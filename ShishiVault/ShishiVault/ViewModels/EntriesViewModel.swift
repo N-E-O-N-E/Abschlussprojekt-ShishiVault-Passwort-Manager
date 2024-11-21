@@ -20,7 +20,7 @@ class EntriesViewModel: ObservableObject {
         self.key = key
         
         if let key = key {
-            print("SymmetricKey loaded \(key)")
+            print("SymmetricKey loaded \(key.bitCount) bit")
         } else {
             print("SymmetricKey not loaded")
         }
@@ -29,7 +29,7 @@ class EntriesViewModel: ObservableObject {
     func reloadEntries() async {
         guard let key else { return }
         self.entries = await jsonHelper.loadEntriesFromJSON(key: key)
-        print("Entries reloaded")
+        print("\(entries.count) Entries from JSON reloaded")
     }
     
     // Prüft ob die mindestFelder und eins der optionalen Felder ausgefüllt sind und den PasswortConfirm
@@ -88,14 +88,14 @@ class EntriesViewModel: ObservableObject {
     func updateEntry(newEntrie: EntryData) {
         if let index = entries.firstIndex(where: { $0.id == newEntrie.id }) {
             entries[index] = newEntrie
-            print("Entrie updated")
+            print("Entrie with ID \(newEntrie.id) updated")
         }
     }
     
     // Löscht ein EntrieObjekt
     func deleteEntry(entrie: EntryData) {
         entries.removeAll(where: { $0.id == entrie.id })
-        print("Entrie deleted")
+        print("Entrie with ID \(entrie.id) deleted")
     }
     
     
@@ -103,13 +103,19 @@ class EntriesViewModel: ObservableObject {
     // Erstellt ein CustomField für die Speicherung im Entrie
     func createCustomField(customField: CustomField) {
         customFieldsForEntrie.append(customField)
-        print("New CustomField added")
+        print("New CustomField with ID \(customField.id) added")
     }
     
-    // Löscht ein Entrie aus der Liste
+    // Löscht alle CustomFields in der Liste
     func deleteCustomField() {
         customFieldsForEntrie.removeAll()
         print("CustomFeld deleted")
+    }
+    
+    // Löscht ein CustomField über die ID aus der Liste
+    func deleteCustomFieldForID(forID id: UUID) {
+        customFieldsForEntrie.removeAll(where: { $0.id == id })
+        print("CustomFeld for ID \(id.uuidString) deleted")
     }
     
 }

@@ -47,7 +47,7 @@ class ShishiViewModel: ObservableObject {
         // Speichern der ID
         KeychainHelper.shared.save(data: credentials.user, for: userIDKey)
         print("UserID saved in Keychain")
-        symetricKey = CryptHelper.shared.createSymetricKey(from: credentials.user)
+        // symetricKey = CryptHelper.shared.createSymetricKey(from: credentials.user)
         isLoggedIn = true
     }
     
@@ -58,17 +58,14 @@ class ShishiViewModel: ObservableObject {
     
     // Prüft ob der Userkey in der Keychain vorhanden ist und nicht nil um den
     // LoginStatus beim start der App über den init() gleich auf true zu setzen
-    private func checkLoginStatus() {
-        print("Check login status...")
-        
+    func checkLoginStatus() {
         // Auslesen der Dateb
         guard KeychainHelper.shared.read(for: userIDKey) != nil else {
             isLoggedIn = false
-            return print("No UserID in Keychain found!")
+            return print("Check login status: No UserID in Keychain found!")
         }
-            
+        // Symetric KEy soeichern
         symetricKey = CryptHelper.shared.createSymetricKey(from: userIDKey)
-        print("Login recognized")
         isLoggedIn = true
     }
     
