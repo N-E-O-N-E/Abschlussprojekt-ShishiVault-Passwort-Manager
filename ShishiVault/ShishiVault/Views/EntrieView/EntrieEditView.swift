@@ -7,53 +7,54 @@
 
 import SwiftUI
 
-struct EntrieAddView: View {
+struct EntrieEditView: View {
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @EnvironmentObject var shishiViewModel: ShishiViewModel
-    @Environment(\.dismiss) private var dismiss
     
     @State private var isPasswordVisible: Bool = false
     @State private var isSavedAlert: Bool = false
     @State private var isEmptyFieldsAlert: Bool = false
     @State private var isEmptyOptFieldsAlert: Bool = false
-    @State private var isDiffPassAlert: Bool = false
     @State private var customFieldSheet: Bool = false
-    @Binding var showAddEntrieView: Bool
+    @Binding var entrieEditView: Bool
+    
+    var entry: EntryData?
     
     @State private var title: String = ""
     @State private var username: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var passwordConfirm: String = ""
     @State private var notes: String = ""
     @State private var website: String = ""
+    @State private var customFields: [CustomField] = []
     
     
     var body: some View {
         ScrollView {
             VStack {
-                TextField("Titel", text: $title)
+                TextField(title, text: $title)
                     .customTextField()
                 HStack {
                     Text("Bezeichnung")
                         .customTextFieldText()
                     Spacer()
                 }
-                TextField("Benutzername", text: $username)
+                TextField(username, text: $username)
                     .customTextField()
                 HStack {
                     Text("Benutzername")
                         .customTextFieldText()
                     Spacer()
                 }
-                TextField("E-Mail", text: $email)
+                TextField(email, text: $email)
                     .customTextField()
                 HStack {
                     Text("E-Mail Adresse")
                         .customTextFieldText()
                     Spacer()
                 }
-                TextField("Website", text: $website)
+                TextField(website, text: $website)
                     .customTextField()
                 HStack {
                     Text("Website")
@@ -70,10 +71,10 @@ struct EntrieAddView: View {
                 Divider().padding(.vertical, 10)
                 HStack {
                     if isPasswordVisible {
-                        TextField("Passwort", text: $password)
+                        TextField(password, text: $password)
                             .customPasswordField()
                     } else {
-                        SecureField("Passwort", text: $password)
+                        SecureField(password, text: $password)
                             .customSecureField()
                     }
                     Button(action: {
@@ -95,36 +96,12 @@ struct EntrieAddView: View {
                     Spacer()
                 }
                 
-                HStack {
-                    if isPasswordVisible {
-                        TextField("PasswortConfirm", text: $passwordConfirm)
-                            .customTextField()
-                    } else {
-                        SecureField("PasswortConfirm", text: $passwordConfirm)
-                            .customSecureField()
-                    }
-                    Button(action: {
-                        if !password.isEmpty {
-                            // ggf. Passwort Random erstellen lassen
-                        }
-                    }) {
-                        Image(systemName: "lock.rotation")
-                            .foregroundColor(Color.ShishiColorBlue)
-                            .scaleEffect(1.5)
-                    }
-                    .frame(width: 25)
-                    .padding(.horizontal, 10)
-                }
-                HStack {
-                    Text("Passwort bestätigen")
-                        .customTextFieldText()
-                    Spacer()
-                }
                 Divider().padding(.vertical, 10)
                 
                 // CustomFields ----------------------------
-                ForEach($entrieViewModel.customFieldsForEntrie) { $customField in
-                    TextField(customField.name, text: $customField.value )
+                
+                ForEach($customFields, id: \.id) { $customField in
+                    TextField(customField.name, text: $customField.value)
                         .customTextField()
                     HStack {
                         Text(customField.name)
@@ -136,30 +113,31 @@ struct EntrieAddView: View {
                 Spacer()
                 
                 Button {
-                    switch entrieViewModel.entrieSaveButtomnCheck(
-                        title: title, username: username,
-                        email: email, password: password, passwordConfirm: passwordConfirm) {
-                        
+                    switch entrieViewModel.entrieUpdateButtomnCheck(
+                        title: title, username: username, email: email, password: password) {
+                            
                         case "mindestLeer":
                             isEmptyFieldsAlert.toggle()
                             
                         case "wahlLeer":
                             isEmptyOptFieldsAlert.toggle()
                             
-                        case "passConfirm":
-                            isDiffPassAlert.toggle()
+                        case "ok":
+                            customFields.append(contentsOf: entrieViewModel.customFieldsForEntrie)
                             
-                        case "ok":    
-                            entrieViewModel.createEntry(
-                                title: title,
-                                username: username,
-                                email: email,
-                                password: password,
-                                passwordConfirm: passwordConfirm,
-                                notes: notes,
-                                website: website,
-                                customFields: entrieViewModel.customFieldsForEntrie)
-                           
+                            if let oldEntry = entry {
+                                let newEntrie = EntryData(
+                                    id: oldEntry.id,
+                                    title: title,
+                                    username: username,
+                                    email: email,
+                                    password: password,
+                                    notes: notes,
+                                    website: website,
+                                    customFields: customFields)
+                                entrieViewModel.updateEntry(newEntrie: newEntrie)
+                            }
+                            
                             if let key = shishiViewModel.symetricKey {
                                 Task {
                                     JSONHelper.shared.saveEntriesToJSON(
@@ -177,7 +155,7 @@ struct EntrieAddView: View {
                         default:
                             break
                     }
-
+                    
                 } label: {
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color.ShishiColorRed)
@@ -185,14 +163,14 @@ struct EntrieAddView: View {
                         .padding()
                         .foregroundColor(.white)
                         .overlay(
-                            Text("Eintrag speichern")
+                            Text("Eintrag aktualisieren")
                                 .font(.title3).bold()
                                 .foregroundColor(.white))
                 }
             }
         }
         .padding(.horizontal).padding(.vertical, 5)
-    
+        
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -223,10 +201,10 @@ struct EntrieAddView: View {
         
         .alert("Gespeichert", isPresented: $isSavedAlert, actions: {
             Button("OK", role: .cancel) {
-                showAddEntrieView.toggle()
+                entrieEditView.toggle()
             }
         })
-
+        
         .alert("Fehler", isPresented: $isEmptyFieldsAlert, actions: {
             Button("OK", role: .cancel) {}
         }, message: {
@@ -239,25 +217,34 @@ struct EntrieAddView: View {
             Text("Bitte füllen Sie die Felder Username oder E-Mail aus.")
         })
         
-        .alert("Fehler", isPresented: $isDiffPassAlert, actions: {
-            Button("OK", role: .cancel) {}
-        }, message: {
-            Text("Die Passwörter stimmen nicht überein")
-        })
-        
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("Eintrag hinzufügen")
+        .navigationTitle("Eintrag bearbeiten")
         .foregroundStyle(Color.ShishiColorBlue)
         
         .onAppear {
-            entrieViewModel.deleteCustomField()
             print("CustomField Daten wurden zurückgesetzt")
+            entrieViewModel.deleteCustomField()
+            
+            if let entriesLoaded = entry {
+                self.title = entriesLoaded.title
+                self.username = entriesLoaded.username ?? ""
+                self.email = entriesLoaded.email
+                self.password = entriesLoaded.password
+                self.notes = entriesLoaded.notes ?? ""
+                self.website = entriesLoaded.website ?? ""
+                self.customFields = entriesLoaded.customFields
+            }
         }
+        .onChange(of: entrieViewModel.customFieldsForEntrie) { _, newFields in
+            customFields.append(contentsOf: newFields)
+            
+        }
+        
     }
 }
 
 #Preview {
-    EntrieAddView(showAddEntrieView: .constant(true))
+    EntrieEditView(entrieEditView: .constant(true))
         .environmentObject(EntriesViewModel(key: .init(data: [])))
         .environmentObject(ShishiViewModel())
 }

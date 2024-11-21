@@ -17,7 +17,7 @@ struct SignInView: View {
     
     var body: some View {
         ZStack {
-            Color.ShishiColorRed.ignoresSafeArea()
+            Color.ShishiColorRed_.ignoresSafeArea()
             
             NavigationStack {
                 VStack {

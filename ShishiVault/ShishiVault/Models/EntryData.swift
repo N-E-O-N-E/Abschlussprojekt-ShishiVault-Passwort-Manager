@@ -20,8 +20,8 @@ struct EntryData: Identifiable, Codable {
     var website: String?
     var customFields: [CustomField] = []
     
-    init(title: String, username: String? = nil, email: String, password: String, notes: String? = nil, website: String? = nil, customFields: [CustomField] = []) {
-        self.id = UUID()
+    init(id: UUID = UUID(), title: String, username: String? = nil, email: String, password: String, notes: String? = nil, website: String? = nil, customFields: [CustomField] = []) {
+        self.id = id
         self.title = title
         self.username = username
         self.email = email
@@ -35,7 +35,7 @@ struct EntryData: Identifiable, Codable {
     
 }
 
-struct CustomField: Identifiable, Codable {
+struct CustomField: Identifiable, Codable, Equatable {
     var id = UUID()
     var name: String
     var value: String

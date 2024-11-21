@@ -13,10 +13,12 @@ struct EntrieShowView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     
     @Binding var entrieShowView: Bool
+    @State var entrieEditView: Bool = false
     var entry: EntryData
     
     @State private var isDeleteAlert: Bool = false
     @State private var isPasswordVisible: Bool = false
+    
     @State private var title: String = ""
     @State private var username: String = ""
     @State private var email: String = ""
@@ -29,14 +31,14 @@ struct EntrieShowView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
-//                Text(entry.title)
-//                    .textFieldAlsText()
-//                HStack {
-//                    Text("Title")
-//                        .customTextFieldText()
-//                    Spacer()
-//                }
-//                
+                Text(entry.title)
+                    .textFieldAlsText()
+                HStack {
+                    Text("Title")
+                        .customTextFieldText()
+                    Spacer()
+                }
+                
                 Text(entry.username ?? "")
                     .textFieldAlsText()
                 HStack {
@@ -69,7 +71,7 @@ struct EntrieShowView: View {
                         isPasswordVisible.toggle()
                     }) {
                         Image(systemName: isPasswordVisible ? "eye" : "eye.slash")
-                            .foregroundColor(isPasswordVisible ? Color.ShishiColorDarkGray : Color.ShishiColorRed)
+                            .foregroundColor(isPasswordVisible ? Color.ShishiColorDarkGray : Color.ShishiColorGray)
                             .scaleEffect(1.2)
                     }
                     .frame(width: 25)
@@ -108,12 +110,22 @@ struct EntrieShowView: View {
         }.padding(.horizontal).padding(.vertical, 5)
         
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.backward")
+                        .foregroundColor(Color.ShishiColorBlue)
+                    Text("Zurück")
+                        .foregroundColor(Color.ShishiColorBlue)
+                }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    // Edit
+                    entrieEditView = true
                 } label: {
                     Image(systemName: "square.and.pencil")
-                        .foregroundStyle(Color.ShishiColorBlack)
+                        .foregroundStyle(Color.ShishiColorBlue)
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
@@ -149,7 +161,14 @@ struct EntrieShowView: View {
                 
         })
         
+        .navigationDestination(isPresented: $entrieEditView, destination: {
+            EntrieEditView(entrieEditView: $entrieEditView, entry: entry)
+                .environmentObject(shishiViewModel)
+                .environmentObject(entrieViewModel)
+        })
         
+        .navigationBarBackButtonHidden(true)
         .navigationTitle(entry.title)
+        .foregroundStyle(Color.ShishiColorBlue)
     }
 }
