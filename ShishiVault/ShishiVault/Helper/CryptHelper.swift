@@ -17,6 +17,17 @@ class CryptHelper {
         case message(reason: String)
     }
     
+    // Funktion zur erstellung eines zufälligen Passwortes
+    func randomPasswordMaker() -> String {
+        let length = 12
+        let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&()0123456789"
+        var password = ""
+        for _ in 0..<length {
+            password.append(letters.randomElement()!)
+        }
+        return password
+    }
+    
     // Erstellt ein SymetricKey auf Basis eines Strings der gehasht wird
     func createSymetricKey(from userID: String) -> SymmetricKey {
         let hashedData = SHA256.hash(data: Data(userID.utf8))

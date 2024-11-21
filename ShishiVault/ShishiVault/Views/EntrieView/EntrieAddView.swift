@@ -28,7 +28,6 @@ struct EntrieAddView: View {
     @State private var notes: String = ""
     @State private var website: String = ""
     
-    
     var body: some View {
         ScrollView {
             VStack {
@@ -88,6 +87,17 @@ struct EntrieAddView: View {
                     }
                     .frame(width: 25)
                     .padding(.horizontal, 10)
+                    Button(action: {
+                        password = CryptHelper.shared.randomPasswordMaker()
+                        passwordConfirm = password
+                        
+                    }) {
+                        Image(systemName: "lock.rotation")
+                            .foregroundColor(Color.ShishiColorBlue)
+                            .scaleEffect(1.5)
+                    }
+                    .frame(width: 25)
+                    .padding(10)
                 }
                 HStack {
                     Text("Passworteinagabe")
@@ -103,17 +113,6 @@ struct EntrieAddView: View {
                         SecureField("PasswortConfirm", text: $passwordConfirm)
                             .customSecureField()
                     }
-                    Button(action: {
-                        if !password.isEmpty {
-                            // ggf. Passwort Random erstellen lassen
-                        }
-                    }) {
-                        Image(systemName: "lock.rotation")
-                            .foregroundColor(Color.ShishiColorBlue)
-                            .scaleEffect(1.5)
-                    }
-                    .frame(width: 25)
-                    .padding(.horizontal, 10)
                 }
                 HStack {
                     Text("Passwort bestätigen")
@@ -148,7 +147,7 @@ struct EntrieAddView: View {
                     switch entrieViewModel.entrieSaveButtomnCheck(
                         title: title, username: username,
                         email: email, password: password, passwordConfirm: passwordConfirm) {
-                        
+                            
                         case "mindestLeer":
                             isEmptyFieldsAlert.toggle()
                             
@@ -158,7 +157,7 @@ struct EntrieAddView: View {
                         case "passConfirm":
                             isDiffPassAlert.toggle()
                             
-                        case "ok":    
+                        case "ok":
                             entrieViewModel.createEntry(
                                 title: title,
                                 username: username,
@@ -168,7 +167,7 @@ struct EntrieAddView: View {
                                 notes: notes,
                                 website: website,
                                 customFields: entrieViewModel.customFieldsForEntrie)
-                           
+                            
                             if let key = shishiViewModel.symetricKey {
                                 Task {
                                     JSONHelper.shared.saveEntriesToJSON(
@@ -179,14 +178,13 @@ struct EntrieAddView: View {
                                 print("JSON save failed")
                             }
                             
-                            
                             entrieViewModel.deleteCustomField()
                             isSavedAlert.toggle()
                             
                         default:
                             break
                     }
-
+                    
                 } label: {
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color.ShishiColorRed)
@@ -201,7 +199,7 @@ struct EntrieAddView: View {
             }
         }
         .padding(.horizontal).padding(.vertical, 5)
-    
+        
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -234,8 +232,10 @@ struct EntrieAddView: View {
             Button("OK", role: .cancel) {
                 showAddEntrieView.toggle()
             }
+        }, message: {
+                Text("Die Daten wurden erfolgreich gespeichert.")
         })
-
+        
         .alert("Fehler", isPresented: $isEmptyFieldsAlert, actions: {
             Button("OK", role: .cancel) {}
         }, message: {
