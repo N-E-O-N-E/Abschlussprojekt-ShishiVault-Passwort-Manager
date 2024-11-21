@@ -123,8 +123,6 @@ struct EntrieEditView: View {
                             isEmptyOptFieldsAlert.toggle()
                             
                         case "ok":
-                            customFields.append(contentsOf: entrieViewModel.customFieldsForEntrie)
-                            
                             if let oldEntry = entry {
                                 let newEntrie = EntryData(
                                     id: oldEntry.id,
@@ -184,7 +182,8 @@ struct EntrieEditView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    customFieldSheet.toggle()
+                    customFieldSheet = true
+                    
                 } label: {
                     HStack {
                         Image(systemName: "rectangle.badge.plus")
@@ -235,11 +234,14 @@ struct EntrieEditView: View {
                 self.customFields = entriesLoaded.customFields
             }
         }
-        .onChange(of: entrieViewModel.customFieldsForEntrie) { _, newFields in
-            customFields.append(contentsOf: newFields)
-            
-        }
         
+        .onChange(of: customFieldSheet) { _, isPresented in
+            if !isPresented {
+                customFields.append(contentsOf: entrieViewModel.customFieldsForEntrie)
+                entrieViewModel.deleteCustomField()
+            }
+        }
+
     }
 }
 
