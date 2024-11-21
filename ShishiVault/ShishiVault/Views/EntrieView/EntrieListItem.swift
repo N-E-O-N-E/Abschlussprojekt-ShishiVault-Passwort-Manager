@@ -24,8 +24,8 @@ struct EntrieListItem: View {
             HStack {
                 Image(systemName: "lock.document.fill")
                     .foregroundStyle(Color.ShishiColorBlue)
-                    .scaleEffect(2.2)
-                    .padding(.horizontal, 15)
+                    .scaleEffect(2.4)
+                    .padding(.horizontal, 20)
                 
                 VStack(alignment: .leading) {
                     Text(title)
@@ -33,14 +33,14 @@ struct EntrieListItem: View {
                     HStack {
                         Text("Mail:")
                             .panelText()
-                        Text(email.count > 25 ? String(email.prefix(25)) + " ..." : email)
+                        Text(email.count > 28 ? String(email.prefix(28)) + " ..." : email)
                             .panelText()
                         Spacer()
                     }
                     HStack {
                         Text("Link:")
                             .panelText()
-                        Text(website.count > 26 ? String(website.prefix(26)) + " ..." : website)
+                        Text(website.count > 29 ? String(website.prefix(29)) + " ..." : website)
                             .panelText()
                         
                         Spacer()
@@ -55,10 +55,10 @@ struct EntrieListItem: View {
                 }
                 Spacer()
                 
-                Image(systemName: "info.circle")
-                    .scaleEffect(1.2)
-                    .foregroundColor(Color.ShishiColorDarkGray)
-                    .padding(10)
+//                Image(systemName: "info.circle")
+//                    .scaleEffect(1.2)
+//                    .foregroundColor(Color.ShishiColorDarkGray)
+//                    .padding(10)
                 
             }
             .padding(10)
