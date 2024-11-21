@@ -31,6 +31,7 @@ struct EntrieAddView: View {
     var body: some View {
         ScrollView {
             VStack {
+                
                 TextField("Titel", text: $title)
                     .customTextField()
                 HStack {
@@ -38,6 +39,7 @@ struct EntrieAddView: View {
                         .customTextFieldText()
                     Spacer()
                 }
+                
                 TextField("Benutzername", text: $username)
                     .customTextField()
                 HStack {
@@ -45,6 +47,7 @@ struct EntrieAddView: View {
                         .customTextFieldText()
                     Spacer()
                 }
+                
                 TextField("E-Mail", text: $email)
                     .customTextField()
                 HStack {
@@ -52,6 +55,7 @@ struct EntrieAddView: View {
                         .customTextFieldText()
                     Spacer()
                 }
+                
                 TextField("Website", text: $website)
                     .customTextField()
                 HStack {
@@ -59,6 +63,7 @@ struct EntrieAddView: View {
                         .customTextFieldText()
                     Spacer()
                 }
+                
                 TextEditor(text: $notes)
                     .customTextFieldNotes()
                 HStack {
@@ -66,8 +71,12 @@ struct EntrieAddView: View {
                         .customTextFieldText()
                     Spacer()
                 }
-                Divider().padding(.vertical, 10)
+                
+                Divider()
+                    .padding(.vertical, 15)
+                
                 HStack {
+                    
                     if isPasswordVisible {
                         TextField("Passwort", text: $password)
                             .customPasswordField()
@@ -75,18 +84,19 @@ struct EntrieAddView: View {
                         SecureField("Passwort", text: $password)
                             .customSecureField()
                     }
+                    
                     Button(action: {
-                        if !password.isEmpty {
-                            isPasswordVisible.toggle()
-                        }
+                        isPasswordVisible.toggle()
                     }) {
                         Image(systemName: isPasswordVisible ? "eye" : "eye.slash")
                             .foregroundColor(isPasswordVisible ? Color.ShishiColorBlue : Color.ShishiColorDarkGray)
                             .scaleEffect(1.2)
-                        
                     }
                     .frame(width: 25)
                     .padding(.horizontal, 10)
+                    
+                    
+                    
                     Button(action: {
                         password = CryptHelper.shared.randomPasswordMaker()
                         passwordConfirm = password
@@ -105,6 +115,8 @@ struct EntrieAddView: View {
                     Spacer()
                 }
                 
+                
+                
                 HStack {
                     if isPasswordVisible {
                         TextField("PasswortConfirm", text: $passwordConfirm)
@@ -119,7 +131,12 @@ struct EntrieAddView: View {
                         .customTextFieldText()
                     Spacer()
                 }
-                Divider().padding(.vertical, 10)
+                
+                Divider()
+                    .padding(.vertical, 10)
+                
+                
+                
                 
                 // CustomFields ----------------------------
                 ForEach($entrieViewModel.customFieldsForEntrie) { $customField in
@@ -140,6 +157,9 @@ struct EntrieAddView: View {
                         Spacer()
                     }
                 }
+                
+                
+                
                 
                 Spacer()
                 
@@ -184,7 +204,6 @@ struct EntrieAddView: View {
                         default:
                             break
                     }
-                    
                 } label: {
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color.ShishiColorRed)
@@ -199,6 +218,9 @@ struct EntrieAddView: View {
             }
         }
         .padding(.horizontal).padding(.vertical, 5)
+        
+        
+        
         
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -223,10 +245,17 @@ struct EntrieAddView: View {
             }
         }
         
+        
+        
+        
+        
         .sheet(isPresented: $customFieldSheet) {
             CustomFieldAddView(customFieldSheet: $customFieldSheet)
                 .environmentObject(entrieViewModel)
         }
+        
+        
+        
         
         .alert("Gespeichert", isPresented: $isSavedAlert, actions: {
             Button("OK", role: .cancel) {
@@ -254,14 +283,22 @@ struct EntrieAddView: View {
             Text("Die Passwörter stimmen nicht überein")
         })
         
+        
+        
+        
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Eintrag hinzufügen")
         .foregroundStyle(Color.ShishiColorBlue)
+        
+        
         
         .onAppear {
             entrieViewModel.deleteCustomField()
             print("CustomField data array cleared")
         }
+        
+        
+        
     }
 }
 

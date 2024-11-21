@@ -232,3 +232,51 @@ extension SecureField {
             .textInputAutocapitalization(.never)
     }
 }
+
+
+/**
+ 
+TextField("Titel", text: $title)
+    .customTextField()
+HStack {
+    Text("Bezeichnung")
+        .customTextFieldText()
+    Spacer()
+}
+
+
+TextEditor(text: $notes)
+    .customTextFieldNotes()
+HStack {
+    Text("Notizen")
+        .customTextFieldText()
+    Spacer()
+}
+
+TextEditor(text: $notes)
+    .customTextFieldNotes()
+HStack {
+    Text("Notizen")
+        .customTextFieldText()
+    Spacer()
+}
+
+
+Button {
+    
+    
+} label: {
+    RoundedRectangle(cornerRadius: 25)
+        .fill(Color.ShishiColorRed)
+        .frame(height: 50)
+        .padding()
+        .foregroundColor(.white)
+        .overlay(
+            Text("Eintrag speichern")
+                .font(.title3).bold()
+                .foregroundColor(.white))
+}
+.padding(.horizontal).padding(.vertical, 5)
+
+
+**/
