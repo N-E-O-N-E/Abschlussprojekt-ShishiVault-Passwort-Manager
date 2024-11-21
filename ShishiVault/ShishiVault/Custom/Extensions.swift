@@ -10,14 +10,19 @@ import SwiftUI
 // Shishi Vault spezifische Farben, Text- und TextFeld formatierungen
 
 extension Color {
-    static let ShishiColorRed = Color(red: 0.71, green: 0, blue: 0.21)
+    static let ShishiColorRed_ = Color(red: 0.71, green: 0, blue: 0.21)
+    static let ShishiColorRed =
+    Gradient(colors: [Color(red: 0.71, green: 0, blue: 0.21, opacity: 0.85),
+                      Color(red: 0.71, green: 0, blue: 0.21)])
     static let ShishiColorGreen = Color(red: 0.15, green: 0.55, blue: 0.20)
     static let ShishiColorBlue = Color(red: 0.15, green: 0.35, blue: 0.50)
     static let ShishiColorDarkGray = Color(red: 0.3, green: 0.3, blue: 0.3)
     static let ShishiColorGray = Color(red: 0.5, green: 0.5, blue: 0.5)
     static let ShishiColorBlack = Color(red: 0.0, green: 0.0, blue: 0.0)
-    static let ShishiColorPanelBackground = Color(red: 240/255, green: 250/255, blue: 255/255)
-    static let ShishiColorPanelBackground_backup = Color(red: 205/255, green: 240/255, blue: 255/255)
+    static let ShishiColorPanelBackground_ = Color(red: 240/255, green: 245/255, blue: 255/255)
+    static let ShishiColorPanelBackground =
+    Gradient(colors: [Color(red: 235/255, green: 245/255, blue: 255/255),
+                      Color(red: 245/255, green: 250/255, blue: 255/255)])
 }
 
 // Formatierung Text für fette Überschrift
@@ -116,6 +121,7 @@ extension Text {
             .padding(.vertical, 10)
             .background(RoundedRectangle(cornerRadius: 8)
                 .stroke(Color.ShishiColorGray, lineWidth: 1 ))
+            .foregroundStyle(Color.ShishiColorGray)
             .padding(1)
     }
 }

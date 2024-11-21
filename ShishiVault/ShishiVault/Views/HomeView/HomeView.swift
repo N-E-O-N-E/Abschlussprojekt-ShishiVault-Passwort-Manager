@@ -27,6 +27,7 @@ struct HomeView: View {
             Image("ShishiLogo_Home")
                 .resizable()
                 .scaledToFit()
+                .shadow(radius: 2, x: 0, y: 2)
                 .padding(0)
             
             VStack {
@@ -84,7 +85,7 @@ struct HomeView: View {
                         Button {
                             showComponentsView.toggle()
                         } label: {
-                            Image(systemName: "line.3.horizontal")
+                            Image(systemName: "gearshape")
                         }
                     }
                 } // End Toolbar

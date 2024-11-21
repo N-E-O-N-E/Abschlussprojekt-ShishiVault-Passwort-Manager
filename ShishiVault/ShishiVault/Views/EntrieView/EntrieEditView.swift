@@ -29,6 +29,7 @@ struct EntrieEditView: View {
     @State private var website: String = ""
     @State private var customFields: [CustomField] = []
     
+    
     var body: some View {
         ScrollView {
             VStack {
@@ -98,8 +99,9 @@ struct EntrieEditView: View {
                 Divider().padding(.vertical, 10)
                 
                 // CustomFields ----------------------------
-                ForEach($entrieViewModel.customFieldsForEntrie) { $customField in
-                    TextField(customField.name, text: $customField.value )
+                
+                ForEach($customFields, id: \.id) { $customField in
+                    TextField(customField.name, text: $customField.value)
                         .customTextField()
                     HStack {
                         Text(customField.name)
@@ -121,7 +123,7 @@ struct EntrieEditView: View {
                             isEmptyOptFieldsAlert.toggle()
                             
                         case "ok":
-                            entrieViewModel.createCustomFieldToSave()
+                            customFields.append(contentsOf: entrieViewModel.customFieldsForEntrie)
                             
                             if let oldEntry = entry {
                                 let newEntrie = EntryData(
@@ -132,7 +134,7 @@ struct EntrieEditView: View {
                                     password: password,
                                     notes: notes,
                                     website: website,
-                                    customFields: oldEntry.customFields + entrieViewModel.customFieldsForEntrie)
+                                    customFields: customFields)
                                 entrieViewModel.updateEntry(newEntrie: newEntrie)
                             }
                             
@@ -148,7 +150,6 @@ struct EntrieEditView: View {
                             
                             
                             entrieViewModel.deleteCustomField()
-                            entrieViewModel.deleteCustomFieldToSave()
                             isSavedAlert.toggle()
                             
                         default:
@@ -221,9 +222,8 @@ struct EntrieEditView: View {
         .foregroundStyle(Color.ShishiColorBlue)
         
         .onAppear {
-            entrieViewModel.deleteCustomField()
-            entrieViewModel.deleteCustomFieldToSave()
             print("CustomField Daten wurden zurückgesetzt")
+            entrieViewModel.deleteCustomField()
             
             if let entriesLoaded = entry {
                 self.title = entriesLoaded.title
@@ -235,6 +235,11 @@ struct EntrieEditView: View {
                 self.customFields = entriesLoaded.customFields
             }
         }
+        .onChange(of: entrieViewModel.customFieldsForEntrie) { _, newFields in
+            customFields.append(contentsOf: newFields)
+            
+        }
+        
     }
 }
 

@@ -35,7 +35,7 @@ struct EntryData: Identifiable, Codable {
     
 }
 
-struct CustomField: Identifiable, Codable {
+struct CustomField: Identifiable, Codable, Equatable {
     var id = UUID()
     var name: String
     var value: String

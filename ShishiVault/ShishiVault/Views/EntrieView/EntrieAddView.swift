@@ -149,9 +149,7 @@ struct EntrieAddView: View {
                         case "passConfirm":
                             isDiffPassAlert.toggle()
                             
-                        case "ok":
-                            entrieViewModel.createCustomFieldToSave()
-                            
+                        case "ok":    
                             entrieViewModel.createEntry(
                                 title: title,
                                 username: username,
@@ -174,7 +172,6 @@ struct EntrieAddView: View {
                             
                             
                             entrieViewModel.deleteCustomField()
-//                            entrieViewModel.deleteCustomFieldToSave()
                             isSavedAlert.toggle()
                             
                         default:
@@ -254,7 +251,6 @@ struct EntrieAddView: View {
         
         .onAppear {
             entrieViewModel.deleteCustomField()
-//            entrieViewModel.deleteCustomFieldToSave()
             print("CustomField Daten wurden zurückgesetzt")
         }
     }

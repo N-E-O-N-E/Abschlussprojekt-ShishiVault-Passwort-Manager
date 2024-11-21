@@ -12,7 +12,6 @@ import CryptoKit
 class EntriesViewModel: ObservableObject {
     @Published var entries: [EntryData] = []
     @Published var customFieldsForEntrie: [CustomField] = []
-    @Published var customFieldsForEntrieToSave: [CustomField] = []
     
     private let jsonHelper = JSONHelper.shared
     private let key: SymmetricKey?
@@ -89,7 +88,7 @@ class EntriesViewModel: ObservableObject {
     func updateEntry(newEntrie: EntryData) {
         if let index = entries.firstIndex(where: { $0.id == newEntrie.id }) {
             entries[index] = newEntrie
-            print("")
+            print("Entrie updated")
         }
     }
     
@@ -98,6 +97,8 @@ class EntriesViewModel: ObservableObject {
         entries.removeAll(where: { $0.id == entrie.id })
         print("Entrie deleted")
     }
+    
+    
     
     // Erstellt ein CustomField für die Speicherung im Entrie
     func createCustomField(customField: CustomField) {
@@ -109,18 +110,6 @@ class EntriesViewModel: ObservableObject {
     func deleteCustomField() {
         customFieldsForEntrie.removeAll()
         print("CustomFeld deleted")
-    }
-    
-    // Erstellt ein ZwischenArray an CustomFields zur temporären Weitergabe
-    func createCustomFieldToSave() {
-        customFieldsForEntrieToSave.append(contentsOf: customFieldsForEntrie)
-        print("Temporary CustomFeld saved")
-    }
-    
-    // Löscht das ZwischenArray
-    func deleteCustomFieldToSave() {
-        customFieldsForEntrieToSave.removeAll()
-        print("Temporary CustomFeld deleted")
     }
     
 }
