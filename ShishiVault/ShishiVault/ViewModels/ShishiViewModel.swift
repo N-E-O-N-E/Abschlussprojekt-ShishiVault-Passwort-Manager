@@ -66,7 +66,7 @@ class ShishiViewModel: ObservableObject {
             isLoggedIn = false
             return print("No UserID in Keychain found!")
         }
-            
+        // Symetric KEy soeichern
         symetricKey = CryptHelper.shared.createSymetricKey(from: userIDKey)
         print("Login recognized")
         isLoggedIn = true

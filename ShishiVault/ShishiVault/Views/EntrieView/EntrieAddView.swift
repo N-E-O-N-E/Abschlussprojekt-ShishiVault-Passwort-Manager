@@ -124,8 +124,17 @@ struct EntrieAddView: View {
                 
                 // CustomFields ----------------------------
                 ForEach($entrieViewModel.customFieldsForEntrie) { $customField in
-                    TextField(customField.name, text: $customField.value )
-                        .customTextField()
+                    HStack {
+                        TextField(customField.name, text: $customField.value)
+                            .customTextField()
+                        Button {
+                            entrieViewModel.deleteCustomFieldForID(forID: $customField.id)
+                        } label: {
+                            Image(systemName: "x.circle")
+                                .foregroundStyle(Color.ShishiColorRed)
+                                .scaleEffect(1.2)
+                        }
+                    }
                     HStack {
                         Text(customField.name)
                             .customTextFieldText()
@@ -251,7 +260,7 @@ struct EntrieAddView: View {
         
         .onAppear {
             entrieViewModel.deleteCustomField()
-            print("CustomField Daten wurden zurückgesetzt")
+            print("CustomField data array cleared")
         }
     }
 }

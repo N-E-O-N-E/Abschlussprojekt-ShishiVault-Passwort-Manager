@@ -12,8 +12,7 @@ import AuthenticationServices
 // Quellen für die Umsetzung: https://developer.apple.com/documentation/authenticationservices/signinwithapplebutton/init(_:onrequest:oncompletion:)
 
 struct SignInView: View {
-    // Bindet das ViewModel zur Authentifizierung ein
-    @EnvironmentObject var shishiViewModel: ShishiViewModel
+    @StateObject private var shishiViewModel = ShishiViewModel()
     
     var body: some View {
         ZStack {

@@ -95,7 +95,7 @@ class KeychainHelper {
             kSecAttrAccount as String: key]
         
         let status = SecItemDelete(query as CFDictionary)
-        print("KeychainData deleted for Key: \(key)")
+        print("KeychainData deleted")
         if status != errSecSuccess {
             print("The Keychain could not be deleted")
         }
