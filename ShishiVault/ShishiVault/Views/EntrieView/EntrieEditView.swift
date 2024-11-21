@@ -90,6 +90,18 @@ struct EntrieEditView: View {
                     }
                     .frame(width: 25)
                     .padding(.horizontal, 10)
+                    
+                    Button(action: {
+                        
+                        password = CryptHelper.shared.randomPasswordMaker()
+                        
+                    }) {
+                        Image(systemName: "lock.rotation")
+                            .foregroundColor(Color.ShishiColorBlue)
+                            .scaleEffect(1.5)
+                    }
+                    .frame(width: 25)
+                    .padding(.horizontal, 10)
                 }
                 HStack {
                     Text("Passworteinagabe")
@@ -252,7 +264,7 @@ struct EntrieEditView: View {
                 entrieViewModel.deleteCustomField()
             }
         }
-
+        
     }
 }
 
