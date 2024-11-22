@@ -131,3 +131,8 @@ struct HomeView: View {
         .foregroundStyle(Color.ShishiColorBlue)
     }
 }
+
+#Preview {
+    HomeView()
+        .environmentObject(ShishiViewModel())
+}

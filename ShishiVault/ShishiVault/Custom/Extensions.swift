@@ -98,7 +98,7 @@ extension Text {
             .font(.callout).bold()
             .foregroundStyle(Color.ShishiColorBlack)
             .padding(.horizontal, 1)
-            .padding(.vertical, 0.5)
+            .padding(.vertical, 0)
     }
 }
 // Formatierung Text für Paneltext
@@ -108,7 +108,7 @@ extension Text {
             .font(.footnote)
             .foregroundStyle(Color.ShishiColorBlack)
             .padding(.horizontal, 1)
-            .padding(.vertical, 0.5)
+            .padding(.vertical, 0.1)
     }
 }
 
