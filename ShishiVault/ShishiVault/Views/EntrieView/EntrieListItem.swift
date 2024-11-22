@@ -19,7 +19,7 @@ struct EntrieListItem: View {
             Rectangle()
                 .foregroundStyle(Color.ShishiColorPanelBackground)
                 .clipShape(.rect(cornerRadius: 10))
-                .shadow(radius: 2, x: 0, y: 2)
+                .shadow(radius: 1, x: 0, y: 1)
             
             HStack {
                 Image(systemName: "lock.document.fill")
