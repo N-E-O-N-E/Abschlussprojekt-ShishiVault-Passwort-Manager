@@ -117,6 +117,7 @@ struct HomeView: View {
         .navigationDestination(isPresented: $showComponentsView, destination: {
             SettingsView()
                 .environmentObject(shishiViewModel)
+                .environmentObject(entrieViewModel)
         })
         
         

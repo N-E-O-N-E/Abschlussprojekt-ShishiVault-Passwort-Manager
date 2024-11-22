@@ -36,7 +36,7 @@ struct EntrieShowView: View {
                     .textFieldAlsText()
                 HStack {
                     Text("Title")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 
@@ -61,7 +61,7 @@ struct EntrieShowView: View {
                 }
                 HStack {
                     Text("Nutzername")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 
@@ -86,7 +86,7 @@ struct EntrieShowView: View {
                 }
                 HStack {
                     Text("E-Mail")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                     
                 }
@@ -99,7 +99,7 @@ struct EntrieShowView: View {
                     .textFieldAlsText()
                 HStack {
                     Text("Website")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 
@@ -136,7 +136,7 @@ struct EntrieShowView: View {
                 }
                 HStack {
                     Text("Passwort")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 
@@ -148,7 +148,7 @@ struct EntrieShowView: View {
                     .notizenText()
                 HStack {
                     Text("Notizen")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 
@@ -161,7 +161,7 @@ struct EntrieShowView: View {
                         .textFieldAlsText()
                     HStack {
                         Text(fields.name)
-                            .customTextFieldText()
+                            .customTextFieldTextLow()
                         Spacer()
                     }
                 }
@@ -169,7 +169,7 @@ struct EntrieShowView: View {
                 Divider()
                 
                 Text("\nErstellt am: \(entry.created.formatted(.dateTime))")
-                    .customTextFieldText()
+                    .customTextFieldTextLow()
                 
             }
         }.padding(.horizontal).padding(.vertical, 5)

@@ -39,35 +39,35 @@ struct EntrieEditView: View {
                     .customTextField()
                 HStack {
                     Text("Bezeichnung")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 TextField(username, text: $username)
                     .customTextField()
                 HStack {
                     Text("Benutzername")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 TextField(email, text: $email)
                     .customTextField()
                 HStack {
                     Text("E-Mail Adresse")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 TextField(website, text: $website)
                     .customTextField()
                 HStack {
                     Text("Website")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 TextEditor(text: $notes)
                     .customTextFieldNotes()
                 HStack {
                     Text("Notizen")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 Divider().padding(.vertical, 10)
@@ -106,7 +106,7 @@ struct EntrieEditView: View {
                 }
                 HStack {
                     Text("Passworteinagabe")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 
@@ -128,7 +128,7 @@ struct EntrieEditView: View {
                     }
                     HStack {
                         Text(customField.name)
-                            .customTextFieldText()
+                            .customTextFieldTextLow()
                         Spacer()
                     }
                 }
