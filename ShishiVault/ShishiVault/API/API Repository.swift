@@ -27,7 +27,7 @@ final class APIRepository {
         var urlRequest = URLRequest(url: url)
         
         urlRequest.allHTTPHeaderFields = [
-            "x-rapidapi-key": "b66eeaaea8msha9deb190fad247ap1b7fe9jsnd8d053a90485",
+            "x-rapidapi-key": APIKey.apiKeyPWGen,
             "x-rapidapi-host": "random-password-generator5.p.rapidapi.com"
         ]
         
