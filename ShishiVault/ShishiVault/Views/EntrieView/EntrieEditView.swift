@@ -98,9 +98,9 @@ struct EntrieEditView: View {
                     }) {
                         Image(systemName: "lock.rotation")
                             .foregroundColor(Color.ShishiColorBlue)
-                            .scaleEffect(1.5)
+                            .scaleEffect(1.4)
                     }
-                    .frame(width: 25)
+                    .frame(width: 20)
                     .padding(.horizontal, 10)
                 }
                 HStack {
