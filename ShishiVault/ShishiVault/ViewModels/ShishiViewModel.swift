@@ -23,7 +23,6 @@ class ShishiViewModel: ObservableObject {
         checkLoginStatus()
     }
     
-   
     // SignInWithAppleID Button Funktion (configure)
     func configure(request: ASAuthorizationAppleIDRequest) {
         request.requestedScopes = [.fullName, .email] // Fordert Namen und die E-Mail-Adresse

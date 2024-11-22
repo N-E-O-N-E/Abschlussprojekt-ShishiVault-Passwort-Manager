@@ -18,6 +18,7 @@ struct EntrieAddView: View {
     @State private var isEmptyOptFieldsAlert: Bool = false
     @State private var isDiffPassAlert: Bool = false
     @State private var customFieldSheet: Bool = false
+    @State private var pwGeneratorSheet: Bool = false
     @Binding var showAddEntrieView: Bool
     
     @State private var title: String = ""
@@ -92,8 +93,8 @@ struct EntrieAddView: View {
                             .foregroundColor(isPasswordVisible ? Color.ShishiColorBlue : Color.ShishiColorDarkGray)
                             .scaleEffect(1.2)
                     }
-                    .frame(width: 25)
-                    .padding(.horizontal, 10)
+                    .frame(width: 20)
+                    .padding(.horizontal, 5)
                     
                     
                     
@@ -104,10 +105,11 @@ struct EntrieAddView: View {
                     }) {
                         Image(systemName: "lock.rotation")
                             .foregroundColor(Color.ShishiColorBlue)
-                            .scaleEffect(1.5)
+                            .scaleEffect(1.4)
                     }
-                    .frame(width: 25)
-                    .padding(10)
+                    .frame(width: 20)
+                    .padding(5)
+                    
                 }
                 HStack {
                     Text("Passworteinagabe")
@@ -234,12 +236,22 @@ struct EntrieAddView: View {
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    customFieldSheet.toggle()
-                } label: {
-                    HStack {
-                        Image(systemName: "rectangle.badge.plus")
-                            .foregroundStyle(Color.ShishiColorBlue)
+                HStack {
+                    Button {
+                        customFieldSheet.toggle()
+                    } label: {
+                        HStack {
+                            Image(systemName: "rectangle.badge.plus")
+                                .foregroundStyle(Color.ShishiColorBlue)
+                        }
+                    }
+                    Button(action: {
+                        pwGeneratorSheet.toggle()
+                        
+                    }) {
+                        Image(systemName: "lock.square")
+                            .foregroundColor(Color.ShishiColorBlue)
+                            .scaleEffect(1.1)
                     }
                 }
             }
@@ -251,6 +263,10 @@ struct EntrieAddView: View {
         
         .sheet(isPresented: $customFieldSheet) {
             CustomFieldAddView(customFieldSheet: $customFieldSheet)
+                .environmentObject(entrieViewModel)
+        }
+        .sheet(isPresented: $pwGeneratorSheet) {
+            PWGeneratorView(customFieldSheet: $customFieldSheet)
                 .environmentObject(entrieViewModel)
         }
         

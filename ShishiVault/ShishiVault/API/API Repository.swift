@@ -7,32 +7,49 @@
 
 import Foundation
 
-func makeURLForRequest(lenght: Int, lowerCase: Bool, upperCase: Bool, numbers: Bool, symbols: Bool) -> String {
-    let urlMain = "https://random-password-generator5.p.rapidapi.com/random-password/index.php"
-    let length = "lenght\(lenght)"
-    let lowerCase = "lower_case\(lowerCase)"
-    let upperCase = "upper_case\(upperCase)"
-    let numbers = "numbers\(numbers)"
-    let symbols = "symbols\(symbols)"
+final class APIRepository {
     
-    let url = "\(urlMain)?\(length)&\(lowerCase)&\(upperCase)&\(numbers)&\(symbols)"
-    return url
-}
+    func getPassword(length: Int, lowerCase: Bool, upperCase: Bool, numbers: Bool, symbols: Bool) async throws -> APIData {
+        let baseURL = "https://random-password-generator5.p.rapidapi.com/random-password/index.php"
+        let length = "length=\(length)"
+        let lowerCase = "lower_case=\(lowerCase)"
+        let upperCase = "upper_case=\(upperCase)"
+        let numbers = "numbers=\(numbers)"
+        let symbols = "symbols=\(symbols)"
+        
+        let stringURL = "\(baseURL)?\(length)&\(lowerCase)&\(upperCase)&\(numbers)&\(symbols)"
+        print("\(stringURL)")
+        
+        guard let url = URL(string: stringURL) else {
+            throw APIError.invalidUrl
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        
+        urlRequest.allHTTPHeaderFields = [
+            "x-rapidapi-key": "b66eeaaea8msha9deb190fad247ap1b7fe9jsnd8d053a90485",
+            "x-rapidapi-host": "random-password-generator5.p.rapidapi.com"
+        ]
+        
+        let data = try await self.handleDataResponse(forRequest: urlRequest)
 
-func APIRequest(bakedURL: String) async throws -> APIData {
-    guard let url = URL(string: bakedURL) else {
-        throw APIError.invalidUrl
+        let results = try JSONDecoder().decode(APIData.self, from: data)
+
+        return results
     }
     
-    let headers = [
-        "x-rapidapi-key": "b66eeaaea8msha9deb190fad247ap1b7fe9jsnd8d053a90485",
-        "x-rapidapi-host": "random-password-generator5.p.rapidapi.com"
-    ]
+    private func handleDataResponse(forRequest request: URLRequest) async throws -> Data {
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            throw APIError.invalidResponse
+        }
+
+        guard !data.isEmpty else {
+            throw APIError.dataNotFound
+        }
+
+        return data
+    }
     
-    var request = URLRequest(url: url)
-    request.httpMethod = "GET"
-    request.allHTTPHeaderFields = headers
-   
-    let (data, _) = try await URLSession.shared.data(from: url)
-    return try JSONDecoder().decode(APIData.self, from: data)
 }

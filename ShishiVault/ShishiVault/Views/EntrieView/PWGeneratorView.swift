@@ -8,28 +8,33 @@
 import SwiftUI
 
 struct PWGeneratorView: View {
-    @State private var lenght = 10.0
+    @EnvironmentObject var entrieViewModel: EntriesViewModel
+    @Binding var customFieldSheet: Bool
+    private let apiRepository = APIRepository()
+    
+    @State private var length = 10.0
     @State private var lowerCase: Bool = true
     @State private var upperCase: Bool = true
-    @State private var numbers: Bool = false
-    @State private var symbols: Bool = false
+    @State private var numbers: Bool = true
+    @State private var symbols: Bool = true
+    @State private var generatedPassword: String = ""
     
     private var statusColor: Color {
         if statusSumCalc() <= 30 {
             return Color.ShishiColorRed_
-        } else if statusSumCalc() > 30 && statusSumCalc() <= 75 {
+        } else if statusSumCalc() > 30 && statusSumCalc() <= 70 {
             return Color.orange
-        } else if statusSumCalc() > 75 {
+        } else if statusSumCalc() > 70 {
             return Color.ShishiColorGreen
         }
         return Color.gray
     }
     private var sliderColor: Color {
-        if lenght < 6 {
+        if length < 6 {
             return Color.ShishiColorRed_
-        } else if lenght >= 6 && lenght <= 10 {
+        } else if length >= 6 && length <= 10 {
             return Color.orange
-        } else if lenght > 10 {
+        } else if length > 10 {
             return Color.ShishiColorGreen
         }
         return Color.ShishiColorRed_
@@ -52,21 +57,21 @@ struct PWGeneratorView: View {
     }
     private var statusWidthFromLength: CGFloat {
         var value: CGFloat = 0
-        if lenght < 4 {
+        if length < 4 {
             value = 10
-        } else if lenght >= 4 && lenght <= 6 {
+        } else if length >= 4 && length <= 6 {
             value =  55
-        } else if lenght > 6 && lenght <= 10 {
+        } else if length > 6 && length <= 10 {
             value =  85
-        } else if lenght > 10 && lenght <= 16 {
+        } else if length > 10 && length <= 16 {
             value =  100
-        } else if lenght > 16 {
+        } else if length > 16 {
             value =  130
         }
         return value
     }
     private func statusSumCalc() -> CGFloat {
-        var value = statusWidthFromLength + statusWidthFromToggle
+        let value = statusWidthFromLength + statusWidthFromToggle
         return value
     }
     
@@ -79,13 +84,33 @@ struct PWGeneratorView: View {
         
         VStack {
             Text("PASSWORT GENERATOR")
-                .ueberschriftenTextBold()
-                .padding(.vertical, 20)
+                .font(.system(size: 25)).bold()
+                .padding(.vertical, 10)
             
             HStack {
-                Text("Länge (\(lenght.formatted(.number))) ")
-                Slider(value: $lenght, in: 1...32, step: 1.0) {
-                    Text("Länge: \(lenght)")
+                TextField("Passwort", text: $generatedPassword)
+                    .customTextField()
+                
+                Button(action: {
+                    if !generatedPassword.isEmpty {
+                        CryptHelper.shared.copyToClipboard(input: generatedPassword)
+                    }
+                }) {
+                    Image(systemName: "document.on.document")
+                        .foregroundColor(Color.ShishiColorBlue)
+                        .scaleEffect(1.2)
+                }
+                .frame(width: 25)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 20)
+            }
+            
+            Divider()
+            
+            HStack {
+                Text("Länge (\(length.formatted(.number))) ")
+                Slider(value: $length, in: 1...32, step: 1.0) {
+                    Text("Länge: \(length)")
                 }.tint(sliderColor)
             }
             
@@ -116,6 +141,19 @@ struct PWGeneratorView: View {
             }
             
             Button {
+                Task {
+                    do {
+                        let data = try await apiRepository.getPassword(
+                            length: Int(length), lowerCase: lowerCase,
+                            upperCase: upperCase, numbers: numbers, symbols: symbols
+                        )
+                        let password = data
+                        generatedPassword = password.password
+                        
+                    } catch {
+                        print("Fehler: \(error)")
+                    }
+                }
                 
             } label: {
                 RoundedRectangle(cornerRadius: 25)
@@ -140,10 +178,10 @@ struct PWGeneratorView: View {
             
         }.padding(.horizontal, 30)
         
-        .presentationDetents([.fraction(0.3)])
+        .presentationDetents([.fraction(0.8)])
     }
 }
 
 #Preview {
-    PWGeneratorView()
+    PWGeneratorView(customFieldSheet: .constant(true))
 }
