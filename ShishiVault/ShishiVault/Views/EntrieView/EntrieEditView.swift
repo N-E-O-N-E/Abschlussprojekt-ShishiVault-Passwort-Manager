@@ -18,6 +18,7 @@ struct EntrieEditView: View {
     @State private var isEmptyOptFieldsAlert: Bool = false
     @State private var isDeleteAlert: Bool = false
     @State private var customFieldSheet: Bool = false
+    @State private var pwGeneratorSheet: Bool = false
     @Binding var entrieEditView: Bool
     
     var entry: EntryData?
@@ -178,13 +179,23 @@ struct EntrieEditView: View {
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    customFieldSheet = true
-                    
-                } label: {
-                    HStack {
-                        Image(systemName: "rectangle.badge.plus")
-                            .foregroundStyle(Color.ShishiColorBlue)
+                HStack {
+                    Button {
+                        customFieldSheet = true
+                        
+                    } label: {
+                        HStack {
+                            Image(systemName: "rectangle.badge.plus")
+                                .foregroundStyle(Color.ShishiColorBlue)
+                        }
+                    }
+                    Button(action: {
+                        pwGeneratorSheet.toggle()
+                        
+                    }) {
+                        Image(systemName: "lock.square")
+                            .foregroundColor(Color.ShishiColorBlue)
+                            .scaleEffect(1.1)
                     }
                 }
             }
@@ -192,6 +203,10 @@ struct EntrieEditView: View {
         
         .sheet(isPresented: $customFieldSheet) {
             CustomFieldAddView(customFieldSheet: $customFieldSheet)
+                .environmentObject(entrieViewModel)
+        }
+        .sheet(isPresented: $pwGeneratorSheet) {
+            PWGeneratorView(customFieldSheet: $customFieldSheet)
                 .environmentObject(entrieViewModel)
         }
         
