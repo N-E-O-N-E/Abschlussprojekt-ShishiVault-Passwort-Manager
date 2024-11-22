@@ -10,6 +10,8 @@ import SwiftUI
 struct SettingsView: View {
     // Exemplarisches Einbinden des ViewModels zur Anmeldung mit Apple ID
     @EnvironmentObject var shishiViewModel: ShishiViewModel
+    @EnvironmentObject var entrieViewModel: EntriesViewModel
+    
     @Environment(\.dismiss) private var dismiss
     
     @State private var isLogoutAlert: Bool = false
@@ -33,7 +35,15 @@ struct SettingsView: View {
             VStack(alignment: .leading) {
                 Text("Unverschlüsselter Export der Daten")
                 Button {
-                    //
+                    if let key = shishiViewModel.symetricKey {
+                        Task {
+                            JSONHelper.shared.saveEntriesToJSONDecrypted(
+                                key: key,
+                                entries: entrieViewModel.entries)
+                        }
+                    } else {
+                        print("JSON save failed")
+                    }
                 } label: {
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color.ShishiColorRed)
