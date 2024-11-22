@@ -32,7 +32,7 @@ struct CustomFieldAddView: View {
                 .customTextField()
             HStack {
                 Text(name)
-                    .customTextFieldText()
+                    .customTextFieldTextLow()
                 
                 Spacer()
             }

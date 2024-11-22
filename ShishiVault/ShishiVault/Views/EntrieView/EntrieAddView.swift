@@ -37,7 +37,7 @@ struct EntrieAddView: View {
                     .customTextField()
                 HStack {
                     Text("Bezeichnung")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 
@@ -45,7 +45,7 @@ struct EntrieAddView: View {
                     .customTextField()
                 HStack {
                     Text("Benutzername")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 
@@ -53,7 +53,7 @@ struct EntrieAddView: View {
                     .customTextField()
                 HStack {
                     Text("E-Mail Adresse")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 
@@ -61,7 +61,7 @@ struct EntrieAddView: View {
                     .customTextField()
                 HStack {
                     Text("Website")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 
@@ -69,7 +69,7 @@ struct EntrieAddView: View {
                     .customTextFieldNotes()
                 HStack {
                     Text("Notizen")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 
@@ -113,7 +113,7 @@ struct EntrieAddView: View {
                 }
                 HStack {
                     Text("Passworteinagabe")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 
@@ -130,7 +130,7 @@ struct EntrieAddView: View {
                 }
                 HStack {
                     Text("Passwort bestätigen")
-                        .customTextFieldText()
+                        .customTextFieldTextLow()
                     Spacer()
                 }
                 
@@ -155,7 +155,7 @@ struct EntrieAddView: View {
                     }
                     HStack {
                         Text(customField.name)
-                            .customTextFieldText()
+                            .customTextFieldTextLow()
                         Spacer()
                     }
                 }

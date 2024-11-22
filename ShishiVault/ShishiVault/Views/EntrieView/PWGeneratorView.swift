@@ -173,7 +173,7 @@ struct PWGeneratorView: View {
                     .foregroundColor(Color.ShishiColorRed_)
                     .padding(0)
                 Text("Hinweis: Zur Erstellung dieses Passwortes wird eine externe API angesteuert.")
-                    .customTextFieldText()
+                    .customTextFieldTextLow()
             }.padding(5)
             
         }.padding(.horizontal, 30)

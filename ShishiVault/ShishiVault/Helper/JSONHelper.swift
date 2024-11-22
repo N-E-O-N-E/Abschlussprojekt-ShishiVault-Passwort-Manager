@@ -106,6 +106,15 @@ class JSONHelper {
         }
     }
     
+    func eraseJSONFile() {
+        let path = getJSONFilePath()
+        do {
+            try FileManager.default.removeItem(at: path)
+        } catch {
+            print("Failed to erase JSON file: \(error)")
+        }
+    }
+    
     // Konvertiere Entries in JSON
     func setDataToJSON(entries: [EntryData]) -> Data? {
         let encoder = JSONEncoder()

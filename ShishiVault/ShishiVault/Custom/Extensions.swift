@@ -52,7 +52,7 @@ extension Text {
     func ueberschriftenText() -> some View {
         self
             .font(.title3)
-            .foregroundStyle(Color.ShishiColorDarkGray)
+            .foregroundStyle(Color.black)
             .padding(.horizontal, 20)
             .padding(.vertical, 1)
     }
@@ -63,7 +63,7 @@ extension Text {
     func ueberschriftenTextBold() -> some View {
         self
             .font(.title3).bold()
-            .foregroundStyle(Color.ShishiColorDarkGray)
+            .foregroundStyle(Color.black)
             .padding(.horizontal, 20)
             .padding(.vertical, 1)
     }
@@ -191,9 +191,19 @@ extension TextField {
 
 // Passender kleiner Text für Textfelder
 extension Text {
-    func customTextFieldText() -> some View {
+    func customTextFieldTextLow() -> some View {
         self
             .font(.caption)
+            .foregroundStyle(Color.ShishiColorDarkGray)
+            .padding(.horizontal, 20)
+    }
+}
+
+// Passender kleiner Text für Beschreibungen
+extension Text {
+    func customTextFieldTextMid() -> some View {
+        self
+            .font(.caption2)
             .foregroundStyle(Color.ShishiColorDarkGray)
             .padding(.horizontal, 20)
     }
