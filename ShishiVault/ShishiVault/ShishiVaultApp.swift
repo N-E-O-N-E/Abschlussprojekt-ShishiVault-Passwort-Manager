@@ -12,7 +12,7 @@ struct ShishiVaultApp: App {
     
     var body: some Scene {
         WindowGroup {
-                SignInView()
+            SignInView()
         }
     }
 }
