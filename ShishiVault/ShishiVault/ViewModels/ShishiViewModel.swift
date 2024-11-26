@@ -16,8 +16,7 @@ import CryptoKit
 class ShishiViewModel: ObservableObject {
     // Published Variable um die View zu Steuern
     @Published var isLoggedIn = false
-    @Published var symetricKey: SymmetricKey?
-    private let userIDKey: String = "userIDKey"
+    @Published var symmetricKeyString: String = "symmetricKey"
     
     init() {
         checkLoginStatus()
@@ -41,41 +40,39 @@ class ShishiViewModel: ObservableObject {
         }
     }
     
-    // Speichert den Userkey in die Variable und setzt den LoginStatus auf true
     private func handleSuccessfulLogin(with credentials: ASAuthorizationAppleIDCredential) {
-        // Speichern der ID
-        KeychainHelper.shared.save(data: credentials.user, for: userIDKey)
-        print("UserID saved in Keychain")
-        // symetricKey = CryptHelper.shared.createSymetricKey(from: credentials.user)
-        isLoggedIn = true
+        let userID = credentials.user.replacingOccurrences(of: ".", with: "")
+        
+        do {
+            let symetricKey = try CryptHelper.shared.createSymetricKey(from: userID)
+            KeychainHelper.shared.saveSymmetricKeyInKeychain(symmetricKey: symetricKey, keychainKey: symmetricKeyString)
+            isLoggedIn = true
+            
+        } catch {
+            print("Cannot create symetric key: \(error.localizedDescription)")
+            isLoggedIn = false
+        }
     }
     
     // Printet ein Error aus
     private func handleLoginError(with error: Error) {
+        isLoggedIn = false
         print("Could not authenticate: \(error.localizedDescription)")
     }
     
-    // Prüft ob der Userkey in der Keychain vorhanden ist und nicht nil um den
+    // Prüft ob Daten in der Keychain vorhanden ist und nicht nil um den
     // LoginStatus beim start der App über den init() gleich auf true zu setzen
     func checkLoginStatus() {
-        // Auslesen der Dateb
-        guard KeychainHelper.shared.read(for: userIDKey) != nil else {
+        guard KeychainHelper.shared.read(for: symmetricKeyString) != nil else {
             isLoggedIn = false
-            return print("Check login status: No UserID in Keychain found!")
+            return print("Check login status: No Data in Keychain found!")
         }
-        // Symetric KEy soeichern
-        do {
-            try symetricKey = CryptHelper.shared.createSymetricKey(from: userIDKey)
-            isLoggedIn = true
-        } catch {
-            print("Cannot create symetric key: \(error.localizedDescription)")
-        }
+        isLoggedIn = true
     }
     
     // Logout durch setzten des LoginStatus und löschen der Dateb aus der Keychain für den aktuelle UserKey
     func logout() {
-        // Lösche die Daten
-        KeychainHelper.shared.delete(for: userIDKey)
+        KeychainHelper.shared.delete(for: symmetricKeyString)
         isLoggedIn = false
         print("Logout successful")
     }

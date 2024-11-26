@@ -190,7 +190,7 @@ struct EntrieAddView: View {
                                 website: website,
                                 customFields: entrieViewModel.customFieldsForEntrie)
                             
-                            if let key = shishiViewModel.symetricKey {
+                            if let key = KeychainHelper.shared.loadSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeyString) {
                                 Task {
                                     JSONHelper.shared.saveEntriesToJSON(
                                         key: key,
@@ -320,6 +320,6 @@ struct EntrieAddView: View {
 
 #Preview {
     EntrieAddView(showAddEntrieView: .constant(true))
-        .environmentObject(EntriesViewModel(key: .init(data: [])))
+        .environmentObject(EntriesViewModel(symmetricKeyString: .init([])))
         .environmentObject(ShishiViewModel())
 }

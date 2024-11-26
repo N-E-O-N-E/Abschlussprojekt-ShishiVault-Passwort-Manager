@@ -194,11 +194,9 @@ struct SettingsView: View {
         
             .alert("! Unverschlüsselter Export !\n", isPresented: $isExportAlert, actions: {
                 Button("Exportieren", role: .destructive) {
-                    if let key = shishiViewModel.symetricKey {
+                    if let key = KeychainHelper.shared.loadSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeyString) {
                         Task {
-                            JSONHelper.shared.saveEntriesToJSONDecrypted(
-                                key: key,
-                                entries: entrieViewModel.entries)
+                            JSONHelper.shared.saveEntriesToJSONDecrypted(key: key, entries: entrieViewModel.entries)
                         }
                     } else {
                         print("JSON save failed")

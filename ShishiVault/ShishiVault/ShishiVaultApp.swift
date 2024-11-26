@@ -9,10 +9,19 @@ import SwiftUI
 
 @main
 struct ShishiVaultApp: App {
+    @StateObject private var shishiViewModel = ShishiViewModel() // im Init wird der Status des Logins geprüft
     
     var body: some Scene {
         WindowGroup {
-            SignInView()
+            NavigationStack {
+                if shishiViewModel.isLoggedIn {
+                    HomeView()
+                        .environmentObject(shishiViewModel)
+                } else {
+                    SignInView()
+                        .environmentObject(shishiViewModel)
+                }
+            }
         }
     }
 }
