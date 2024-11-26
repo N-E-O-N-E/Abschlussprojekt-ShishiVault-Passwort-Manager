@@ -225,7 +225,7 @@ struct EntrieEditView: View {
                     entrieViewModel.updateEntry(newEntrie: newEntrie)
                 }
                 
-                if let key = shishiViewModel.symetricKey {
+                if let key = KeychainHelper.shared.loadSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeyString) {
                     Task {
                         JSONHelper.shared.saveEntriesToJSON(
                             key: key,
@@ -285,6 +285,6 @@ struct EntrieEditView: View {
 
 #Preview {
     EntrieEditView(entrieEditView: .constant(true))
-        .environmentObject(EntriesViewModel(key: .init(data: [])))
+        .environmentObject(EntriesViewModel(symmetricKeyString: .init([])))
         .environmentObject(ShishiViewModel())
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CryptoKit
 
 struct HomeView: View {
     @EnvironmentObject var shishiViewModel: ShishiViewModel
@@ -18,12 +19,11 @@ struct HomeView: View {
     let zufall = Range(0...100)
     
     init() {
-        let key = ShishiViewModel().symetricKey
-        _entrieViewModel = StateObject(wrappedValue: EntriesViewModel(key: key))
+        let key = ShishiViewModel().symmetricKeyString
+        _entrieViewModel = StateObject(wrappedValue: EntriesViewModel(symmetricKeyString: key))
     }
     
     var body: some View {
-        NavigationStack {
             VStack {
                 Image("ShishiLogo_Home")
                     .resizable()
@@ -72,7 +72,7 @@ struct HomeView: View {
                                         CustomField(name: "C3", value: "Test3")
                                     ])
                                 
-                                if let key = shishiViewModel.symetricKey {
+                                if let key = KeychainHelper.shared.loadSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeyString) {
                                     Task {
                                         JSONHelper.shared.saveEntriesToJSON(
                                             key: key,
@@ -94,7 +94,6 @@ struct HomeView: View {
                     
                 } // End ScrollView
             }
-        }
         .overlay(
             Button(action: {
                 showAddEntrieView.toggle()
@@ -132,7 +131,6 @@ struct HomeView: View {
         }
         
         .navigationBarBackButtonHidden(true)
-        // .navigationTitle("Shishi Vault")
         .foregroundStyle(Color.ShishiColorBlue)
     }
 }

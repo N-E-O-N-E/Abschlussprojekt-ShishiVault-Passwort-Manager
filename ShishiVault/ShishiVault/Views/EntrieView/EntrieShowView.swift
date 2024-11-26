@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CryptoKit
 
 struct EntrieShowView: View {
     @Environment(\.dismiss) private var dismiss
@@ -232,12 +233,9 @@ struct EntrieShowView: View {
                 Button("Löschen", role: .destructive) {
                     entrieViewModel.deleteEntry(entrie: entry)
                     Task {
-                        if let key = shishiViewModel.symetricKey {
-                            JSONHelper.shared.deleteEntiresFromJSON(
-                                key: key, entrie: entry)
-                            JSONHelper.shared.saveEntriesToJSON(
-                                key: key, entries: entrieViewModel.entries)
-                            
+                        if let key = KeychainHelper.shared.loadSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeyString) {
+                            JSONHelper.shared.deleteEntiresFromJSON(key: key, entrie: entry)
+                            JSONHelper.shared.saveEntriesToJSON(key: key, entries: entrieViewModel.entries)
                         }
                     }
                     entrieShowView = false
