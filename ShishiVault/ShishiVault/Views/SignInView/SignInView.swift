@@ -12,13 +12,12 @@ import AuthenticationServices
 // Quellen für die Umsetzung: https://www.createwithswift.com/sign-in-with-apple-on-a-swiftui-application/
 
 struct SignInView: View {
-    @StateObject private var shishiViewModel = ShishiViewModel()
+    @StateObject private var shishiViewModel = ShishiViewModel() // im Init wird der Status des Logins geprüft
     
     var body: some View {
-        ZStack {
-            Color.ShishiColorRed_.ignoresSafeArea()
-            
-            NavigationStack {
+        NavigationStack {
+            ZStack {
+                Color.ShishiColorRed_.ignoresSafeArea(.all)
                 VStack {
                     Image("ShishiLogo_600")
                         .resizable()

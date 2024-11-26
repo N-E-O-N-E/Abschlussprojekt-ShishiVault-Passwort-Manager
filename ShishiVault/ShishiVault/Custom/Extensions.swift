@@ -25,7 +25,17 @@ extension Color {
                       Color(red: 245/255, green: 250/255, blue: 255/255)])
 }
 
-// Formatierung Text für fette Überschrift
+// Formatierung Text für Warnhinweise in Rot
+extension Text {
+    func warningTextLarge() -> some View {
+        self
+            .font(.body)
+            .foregroundStyle(Color.ShishiColorRed_)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 1)
+    }
+}
+
 extension Text {
     func ueberschriftLarge() -> some View {
         self

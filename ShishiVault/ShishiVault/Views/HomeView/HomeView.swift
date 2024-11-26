@@ -38,18 +38,21 @@ struct HomeView: View {
                 
                 ScrollView {
                     VStack {
-                        ForEach(entrieViewModel.entries.filter { entry in
-                            searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
-                        }) { entry in
-                            
-                            NavigationLink {
-                                EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
-                                    .environmentObject(entrieViewModel)
-                                    .environmentObject(shishiViewModel)
-                            } label: {
-                                EntrieListItem(title: entry.title, email: entry.email,
-                                               created: entry.created, website: entry.website ?? "")
-                                
+                        if entrieViewModel.entries.isEmpty {
+                            Text("\n\n\nNoch keine Daten gespeichert.")
+                                .warningTextLarge()
+                        } else {
+                            ForEach(entrieViewModel.entries.filter { entry in
+                                searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
+                            }) { entry in
+                                NavigationLink {
+                                    EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
+                                        .environmentObject(entrieViewModel)
+                                        .environmentObject(shishiViewModel)
+                                } label: {
+                                    EntrieListItem(title: entry.title, email: entry.email,
+                                                   created: entry.created, website: entry.website ?? "")
+                                }
                             }
                         }
                     } // End VStack
