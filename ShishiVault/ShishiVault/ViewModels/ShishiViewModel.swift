@@ -64,8 +64,12 @@ class ShishiViewModel: ObservableObject {
             return print("Check login status: No UserID in Keychain found!")
         }
         // Symetric KEy soeichern
-        symetricKey = CryptHelper.shared.createSymetricKey(from: userIDKey)
-        isLoggedIn = true
+        do {
+            try symetricKey = CryptHelper.shared.createSymetricKey(from: userIDKey)
+            isLoggedIn = true
+        } catch {
+            print("Cannot create symetric key: \(error.localizedDescription)")
+        }
     }
     
     // Logout durch setzten des LoginStatus und löschen der Dateb aus der Keychain für den aktuelle UserKey

@@ -14,13 +14,14 @@ class CryptHelper {
     static let shared = CryptHelper()
     private init() {}
     
-    enum EncryptionError: Error {
-        case message(reason: String)
-    }
+    
     
     // Fügt einen String in die Zwischenablage
     // Ouelle: https://stackoverflow.com/questions/61772282/swiftui-how-to-copy-text-to-clipboard
-    func copyToClipboard(input: String) {
+    func copyToClipboard(input: String) throws {
+        guard !input.isEmpty else {
+            throw EncryptionError.emptyClipboard
+        }
         let clipboard = UIPasteboard.general
         clipboard.string = input
     }
@@ -37,7 +38,10 @@ class CryptHelper {
     }
     
     // Erstellt ein SymetricKey auf Basis eines Strings der gehasht wird
-    func createSymetricKey(from userID: String) -> SymmetricKey {
+    func createSymetricKey(from userID: String) throws -> SymmetricKey {
+        guard !userID.isEmpty else {
+            throw EncryptionError.emptyUserID
+        }
         let hashedData = SHA256.hash(data: Data(userID.utf8))
         return SymmetricKey(data: Data(hashedData))
     }
@@ -48,11 +52,11 @@ class CryptHelper {
         do {
             let blackBox = try AES.GCM.seal(data, using: key)
             guard let combined = blackBox.combined else {
-                throw EncryptionError.message(reason: "Failed to combine ciphertext")
+                throw EncryptionError.encryptionFailed(reason: "Failed to combine ciphertext")
             }
             return combined
         } catch {
-            throw EncryptionError.message(reason: error.localizedDescription)
+            throw EncryptionError.encryptionFailed(reason: error.localizedDescription)
         }
     }
     
@@ -62,7 +66,7 @@ class CryptHelper {
             let blackBox = try AES.GCM.SealedBox(combined: cipherText)
             return try AES.GCM.open(blackBox, using: key)
         } catch {
-            throw EncryptionError.message(reason: error.localizedDescription)
+            throw EncryptionError.decryptionFailed(reason: error.localizedDescription)
         }
     }
     

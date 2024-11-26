@@ -93,7 +93,12 @@ struct PWGeneratorView: View {
                 
                 Button(action: {
                     if !generatedPassword.isEmpty {
-                        CryptHelper.shared.copyToClipboard(input: generatedPassword)
+                        do {
+                            try CryptHelper.shared.copyToClipboard(input: generatedPassword)
+                            print("Copy to clipboard: \(generatedPassword)")
+                        } catch {
+                            print("Cannot copy to clipboard: \(error.localizedDescription)")
+                        }
                     }
                 }) {
                     Image(systemName: "document.on.document")
