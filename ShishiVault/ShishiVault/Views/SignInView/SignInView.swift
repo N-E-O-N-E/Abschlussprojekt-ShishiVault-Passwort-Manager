@@ -7,10 +7,9 @@
 
 import SwiftUI
 import AuthenticationServices
-import CryptoKit
 
 // Quellen für die Umsetzung: https://developer.apple.com/documentation/authenticationservices/signinwithapplebutton
-// Quellen für die Umsetzung: https://developer.apple.com/documentation/authenticationservices/signinwithapplebutton/init(_:onrequest:oncompletion:)
+// Quellen für die Umsetzung: https://www.createwithswift.com/sign-in-with-apple-on-a-swiftui-application/
 
 struct SignInView: View {
     @StateObject private var shishiViewModel = ShishiViewModel()

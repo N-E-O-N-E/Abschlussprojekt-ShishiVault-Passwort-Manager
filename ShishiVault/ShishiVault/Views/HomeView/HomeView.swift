@@ -23,74 +23,75 @@ struct HomeView: View {
     }
     
     var body: some View {
-        VStack {
-            Image("ShishiLogo_Home")
-                .resizable()
-                .scaledToFit()
-                .shadow(radius: 2, x: 0, y: 2)
-                .padding(0)
-            
+        NavigationStack {
             VStack {
-                TextField("\(Image(systemName: "magnifyingglass")) Suche (z.B. \"Apple\")", text: $searchText)
-                    .customSearchField()
-            }.padding(.horizontal).padding(.vertical, 5)
-            
-            ScrollView {
+                Image("ShishiLogo_Home")
+                    .resizable()
+                    .scaledToFit()
+                    .shadow(radius: 2, x: 0, y: 2)
+                    .padding(0)
+                
                 VStack {
-                    ForEach(entrieViewModel.entries.filter { entry in
-                        searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
-                    }) { entry in
-                        
-                        NavigationLink {
-                            EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
-                                .environmentObject(entrieViewModel)
-                                .environmentObject(shishiViewModel)
-                        } label: {
-                            EntrieListItem(title: entry.title, email: entry.email,
-                                           created: entry.created, website: entry.website ?? "")
-                            
-                        }
-                    }
-                } // End VStack
-                .frame(maxWidth: .infinity)
+                    TextField("\(Image(systemName: "magnifyingglass")) Suche (z.B. \"Apple\")", text: $searchText)
+                        .customSearchField()
+                }.padding(.horizontal).padding(.vertical, 5)
                 
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button("") {
-                            entrieViewModel.createEntry(
-                                title: "Testeintrag \(zufall.randomElement() ?? 0)",
-                                username: "Max Mustermann", email: "text@meineDomain.com",
-                                password: "1234", passwordConfirm: "1234", notes: "TestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotes",
-                                website: "http://testserver.com/",
-                                customFields: [
-                                    CustomField(name: "C1", value: "Test1"),
-                                    CustomField(name: "C2", value: "Test2"),
-                                    CustomField(name: "C3", value: "Test3")
-                                ])
+                ScrollView {
+                    VStack {
+                        ForEach(entrieViewModel.entries.filter { entry in
+                            searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
+                        }) { entry in
                             
-                            if let key = shishiViewModel.symetricKey {
-                                Task {
-                                    JSONHelper.shared.saveEntriesToJSON(
-                                        key: key,
-                                        entries: entrieViewModel.entries)
-                                }
+                            NavigationLink {
+                                EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
+                                    .environmentObject(entrieViewModel)
+                                    .environmentObject(shishiViewModel)
+                            } label: {
+                                EntrieListItem(title: entry.title, email: entry.email,
+                                               created: entry.created, website: entry.website ?? "")
+                                
                             }
-                            
-                            
                         }
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            showComponentsView.toggle()
-                        } label: {
-                            Image(systemName: "gearshape")
+                    } // End VStack
+                    .frame(maxWidth: .infinity)
+                    
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button("") {
+                                entrieViewModel.createEntry(
+                                    title: "Testeintrag \(zufall.randomElement() ?? 0)",
+                                    username: "Max Mustermann", email: "text@meineDomain.com",
+                                    password: "1234", passwordConfirm: "1234", notes: "TestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotes",
+                                    website: "http://testserver.com/",
+                                    customFields: [
+                                        CustomField(name: "C1", value: "Test1"),
+                                        CustomField(name: "C2", value: "Test2"),
+                                        CustomField(name: "C3", value: "Test3")
+                                    ])
+                                
+                                if let key = shishiViewModel.symetricKey {
+                                    Task {
+                                        JSONHelper.shared.saveEntriesToJSON(
+                                            key: key,
+                                            entries: entrieViewModel.entries)
+                                    }
+                                }
+                                
+                                
+                            }
                         }
-                    }
-                } // End Toolbar
-                
-            } // End ScrollView
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                showComponentsView.toggle()
+                            } label: {
+                                Image(systemName: "gearshape")
+                            }
+                        }
+                    } // End Toolbar
+                    
+                } // End ScrollView
+            }
         }
-        
         .overlay(
             Button(action: {
                 showAddEntrieView.toggle()

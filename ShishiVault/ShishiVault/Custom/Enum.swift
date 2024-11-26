@@ -12,3 +12,9 @@ enum APIError: Error {
     case dataNotFound
     case invalidResponse
 }
+
+enum EncryptionError: Error {
+    case emptyClipboard, emptyUserID,
+         encryptionFailed(reason: String),
+         decryptionFailed(reason: String)
+}

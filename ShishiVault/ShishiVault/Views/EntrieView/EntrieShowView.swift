@@ -49,7 +49,12 @@ struct EntrieShowView: View {
                     
                     Button(action: {
                         if let username = entry.username {
-                            CryptHelper.shared.copyToClipboard(input: username)
+                            do {
+                                try CryptHelper.shared.copyToClipboard(input: username)
+                                print("Copy to clipboard: \(username)")
+                            } catch {
+                                print("Cannot copy to clipboard: \(error.localizedDescription)")
+                            }
                         }
                     }) {
                         Image(systemName: "document.on.document")
@@ -74,7 +79,12 @@ struct EntrieShowView: View {
                     
                     Button(action: {
                         if !entry.email.isEmpty {
-                            CryptHelper.shared.copyToClipboard(input: entry.email)
+                            do {
+                                try CryptHelper.shared.copyToClipboard(input: entry.email)
+                                print("Copy to clipboard: \(entry.email)")
+                            } catch {
+                                print("Cannot copy to clipboard: \(error.localizedDescription)")
+                            }
                         }
                     }) {
                         Image(systemName: "document.on.document")
@@ -123,7 +133,12 @@ struct EntrieShowView: View {
                     
                     Button(action: {
                         if !entry.password.isEmpty {
-                            CryptHelper.shared.copyToClipboard(input: entry.password)
+                            do {
+                                try CryptHelper.shared.copyToClipboard(input: entry.password)
+                                print("Copy to clipboard: \(entry.password)")
+                            } catch {
+                                print("Cannot copy to clipboard: \(error.localizedDescription)")
+                            }
                         }
                     }) {
                         Image(systemName: "document.on.document")
