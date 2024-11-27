@@ -38,7 +38,7 @@ class CryptHelper {
     }
     
     // Erstellt ein SymetricKey auf Basis eines Strings der gehasht wird
-    func createSymetricKey(from userID: String) throws -> SymmetricKey {
+    func createSymetricKey(from userID: String, salt: Data) throws -> SymmetricKey {
         guard !userID.isEmpty else {
             throw EncryptionError.emptyUserID
         }

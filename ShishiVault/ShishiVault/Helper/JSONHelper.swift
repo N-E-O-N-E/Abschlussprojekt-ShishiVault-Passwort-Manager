@@ -60,7 +60,6 @@ class JSONHelper {
         }
     }
     
-    
     // Speichert die Daten verschlüsselt in JSON
     func saveEntriesToJSON(key: SymmetricKey, entries: [EntryData]) {
         let path = getJSONFilePath()

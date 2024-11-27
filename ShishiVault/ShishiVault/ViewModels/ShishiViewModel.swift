@@ -40,10 +40,14 @@ class ShishiViewModel: ObservableObject {
         }
     }
     
+    
+    
+    
     private func handleSuccessfulLogin(with credentials: ASAuthorizationAppleIDCredential) {
         let userID = credentials.user.replacingOccurrences(of: ".", with: "")
-        
+        // User ID wird verkürzt - Sie enthällt normal 44 Zeichen inkl. 2 Punkten am Anfang und am Ende
         do {
+            // SymmetricKey wird erstellt für die weiteren Verschlüsselungen
             let symetricKey = try CryptHelper.shared.createSymetricKey(from: userID)
             KeychainHelper.shared.saveSymmetricKeyInKeychain(symmetricKey: symetricKey, keychainKey: symmetricKeyString)
             isLoggedIn = true
@@ -59,6 +63,9 @@ class ShishiViewModel: ObservableObject {
         isLoggedIn = false
         print("Could not authenticate: \(error.localizedDescription)")
     }
+    
+    
+    
     
     // Prüft ob Daten in der Keychain vorhanden ist und nicht nil um den
     // LoginStatus beim start der App über den init() gleich auf true zu setzen
