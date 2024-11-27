@@ -12,6 +12,7 @@ struct HomeView: View {
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     @StateObject var entrieViewModel: EntriesViewModel
     
+    @State private var viewSetSaltKey: Bool = false
     @State private var showAddEntrieView: Bool = false
     @State private var entrieShowView: Bool = false
     @State private var showComponentsView: Bool = false
@@ -19,7 +20,7 @@ struct HomeView: View {
     let zufall = Range(0...100)
     
     init() {
-        let key = ShishiViewModel().symmetricKeyString
+        let key = ShishiViewModel().symmetricKeychainString
         _entrieViewModel = StateObject(wrappedValue: EntriesViewModel(symmetricKeyString: key))
     }
     
@@ -72,15 +73,13 @@ struct HomeView: View {
                                         CustomField(name: "C3", value: "Test3")
                                     ])
                                 
-                                if let key = KeychainHelper.shared.loadSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeyString) {
+                                if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
                                     Task {
                                         JSONHelper.shared.saveEntriesToJSON(
                                             key: key,
                                             entries: entrieViewModel.entries)
                                     }
                                 }
-                                
-                                
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
@@ -132,6 +131,11 @@ struct HomeView: View {
         
         .navigationBarBackButtonHidden(true)
         .foregroundStyle(Color.ShishiColorBlue)
+        
+        .navigationDestination(isPresented: $viewSetSaltKey) {
+            SetSaltKeyView(viewSetSaltKey: $viewSetSaltKey)
+                .environmentObject(shishiViewModel)
+        }
     }
 }
 

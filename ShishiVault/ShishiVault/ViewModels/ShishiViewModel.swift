@@ -16,7 +16,11 @@ import CryptoKit
 class ShishiViewModel: ObservableObject {
     // Published Variable um die View zu Steuern
     @Published var isLoggedIn = false
-    @Published var symmetricKeyString: String = "symmetricKey"
+    @Published var symmetricDataSaved = false
+    @Published var saltDataIsSaved = false
+    @Published var symmetricKeychainString: String = "shishiVault_symm_key_data"
+    private var keychainUserIDString: Data?
+    private var keychainUserSaltString: Data?
     
     init() {
         checkLoginStatus()
@@ -31,26 +35,33 @@ class ShishiViewModel: ObservableObject {
     func handleLogin(result: Result<ASAuthorization, Error>) {
         switch result {
             case .success(let auth):
-                print("Login successful!")
                 if let appleIDCredential = auth.credential as? ASAuthorizationAppleIDCredential {
+                    
                     handleSuccessfulLogin(with: appleIDCredential)
+                    print("SignInWithAppleID successful!")
                 }
             case .failure(let error):
                 handleLoginError(with: error)
         }
     }
-    
-    
-    
-    
+      
     private func handleSuccessfulLogin(with credentials: ASAuthorizationAppleIDCredential) {
-        let userID = credentials.user.replacingOccurrences(of: ".", with: "")
-        // User ID wird verkürzt - Sie enthällt normal 44 Zeichen inkl. 2 Punkten am Anfang und am Ende
         do {
-            // SymmetricKey wird erstellt für die weiteren Verschlüsselungen
-            let symetricKey = try CryptHelper.shared.createSymetricKey(from: userID)
-            KeychainHelper.shared.saveSymmetricKeyInKeychain(symmetricKey: symetricKey, keychainKey: symmetricKeyString)
-            isLoggedIn = true
+            let userID = credentials.user.replacingOccurrences(of: ".", with: "")
+            let userIDHashed = try CryptHelper.shared.generateUserIDHash(from: userID)
+            self.keychainUserIDString = userIDHashed
+            
+            guard keychainUserIDString != nil, keychainUserSaltString != nil else {
+                print("String UserID or UserSalt is nil in handleSuccessfulLogin")
+                return
+            }
+            
+            KeychainHelper.shared.saveCombinedSymmetricKeyInKeychain(
+                symmetricKey: keychainUserIDString!,
+                userSaltKey: keychainUserSaltString!,
+                keychainKey: symmetricKeychainString)
+            
+            checkLoginStatus()
             
         } catch {
             print("Cannot create symetric key: \(error.localizedDescription)")
@@ -64,24 +75,32 @@ class ShishiViewModel: ObservableObject {
         print("Could not authenticate: \(error.localizedDescription)")
     }
     
-    
-    
+    func saveTempUserSalt(data: Data) {
+        self.keychainUserSaltString = data
+        saltDataIsSaved = true
+    }
     
     // Prüft ob Daten in der Keychain vorhanden ist und nicht nil um den
     // LoginStatus beim start der App über den init() gleich auf true zu setzen
     func checkLoginStatus() {
-        guard KeychainHelper.shared.read(for: symmetricKeyString) != nil else {
-            isLoggedIn = false
-            return print("Check login status: No Data in Keychain found!")
+        
+        if KeychainHelper.shared.read(for: symmetricKeychainString) != nil {
+            if saltDataIsSaved {
+                isLoggedIn = true
+            } else {
+                print("Check SaltData: No UserSalt in Keychain found!")
+            }
+        } else {
+            print("Check login status: No SymmetricKey in Keychain found!")
         }
-        isLoggedIn = true
     }
     
     // Logout durch setzten des LoginStatus und löschen der Dateb aus der Keychain für den aktuelle UserKey
     func logout() {
-        KeychainHelper.shared.delete(for: symmetricKeyString)
+        // KeychainHelper.shared.delete(for: symmetricKeyString)
+        KeychainHelper.shared.delete(for: symmetricKeychainString)
         isLoggedIn = false
-        print("Logout successful")
+        print("Logout successful - Salt deleted from Keychain!")
     }
 
 }

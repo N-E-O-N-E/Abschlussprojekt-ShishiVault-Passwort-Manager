@@ -14,15 +14,15 @@ class EntriesViewModel: ObservableObject {
     @Published var customFieldsForEntrie: [CustomField] = []
     
     private let jsonHelper = JSONHelper.shared
-    private let symmetricKeyString: String?
+    private let keychainString: String?
     
     init(symmetricKeyString: String?) {
-        self.symmetricKeyString = symmetricKeyString
+        self.keychainString = symmetricKeyString
     }
     
     func reloadEntries() async {
-        guard let symmetricKeyString = symmetricKeyString,
-              let symmetricKey = KeychainHelper.shared.loadSymmetricKeyFromKeychain(keychainKey: symmetricKeyString) else {
+        guard let symmetricKeyString = keychainString,
+              let symmetricKey = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: symmetricKeyString) else {
             print("Failed to reload entries. Symmetric key not found")
             return
         }

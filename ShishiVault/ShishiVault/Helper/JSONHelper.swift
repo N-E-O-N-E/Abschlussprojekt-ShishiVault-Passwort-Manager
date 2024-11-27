@@ -27,7 +27,7 @@ class JSONHelper {
     
     // Liefert den Geräte DokumentPfad zur (un)verschlüsselten JSON datei
     private func getJSONFilePathForDecrypted() -> URL {
-        let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let documentDirectory = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
         let passwordFolder = documentDirectory.appendingPathComponent("export_shishiVault_Passwortliste_Klartext")
         
         do {

@@ -14,7 +14,7 @@ struct ShishiVaultApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                if shishiViewModel.isLoggedIn {
+                if shishiViewModel.isLoggedIn && shishiViewModel.symmetricDataSaved {
                     HomeView()
                         .environmentObject(shishiViewModel)
                 } else {
