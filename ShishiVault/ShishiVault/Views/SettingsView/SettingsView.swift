@@ -147,8 +147,6 @@ struct SettingsView: View {
                 Divider()
                 
                 
-                
-                
                 Spacer()
                 
                     .navigationBarBackButtonHidden(true)
