@@ -13,6 +13,12 @@ enum APIError: Error {
     case invalidResponse
 }
 
+enum AppState {
+    case login
+    case saltKey
+    case home
+}
+
 enum EncryptionError: Error {
     case emptyClipboard, emptyUserID,
          encryptionFailed(reason: String),

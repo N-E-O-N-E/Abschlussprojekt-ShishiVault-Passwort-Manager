@@ -14,12 +14,13 @@ struct HomeView: View {
     
     @State private var showAddEntrieView: Bool = false
     @State private var entrieShowView: Bool = false
-    @State private var showComponentsView: Bool = false
+    @State private var showSettingsView: Bool = false
+    
     @State private var searchText: String = ""
     let zufall = Range(0...100)
     
     init() {
-        let key = ShishiViewModel().symmetricKeyString
+        let key = ShishiViewModel().symmetricKeychainString
         _entrieViewModel = StateObject(wrappedValue: EntriesViewModel(symmetricKeyString: key))
     }
     
@@ -72,20 +73,18 @@ struct HomeView: View {
                                         CustomField(name: "C3", value: "Test3")
                                     ])
                                 
-                                if let key = KeychainHelper.shared.loadSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeyString) {
+                                if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
                                     Task {
                                         JSONHelper.shared.saveEntriesToJSON(
                                             key: key,
                                             entries: entrieViewModel.entries)
                                     }
                                 }
-                                
-                                
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button {
-                                showComponentsView.toggle()
+                                showSettingsView.toggle()
                             } label: {
                                 Image(systemName: "gearshape")
                             }
@@ -117,12 +116,11 @@ struct HomeView: View {
                 .environmentObject(entrieViewModel)
                 .environmentObject(shishiViewModel)
         })
-        .navigationDestination(isPresented: $showComponentsView, destination: {
+        .navigationDestination(isPresented: $showSettingsView, destination: {
             SettingsView()
                 .environmentObject(shishiViewModel)
                 .environmentObject(entrieViewModel)
         })
-        
         
         .onAppear {
             Task {
@@ -132,6 +130,7 @@ struct HomeView: View {
         
         .navigationBarBackButtonHidden(true)
         .foregroundStyle(Color.ShishiColorBlue)
+        
     }
 }
 

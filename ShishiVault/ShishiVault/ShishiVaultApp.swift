@@ -14,12 +14,16 @@ struct ShishiVaultApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                if shishiViewModel.isLoggedIn {
-                    HomeView()
-                        .environmentObject(shishiViewModel)
-                } else {
-                    SignInView()
-                        .environmentObject(shishiViewModel)
+                switch shishiViewModel.appState {
+                    case .login:
+                        SignInView()
+                            .environmentObject(shishiViewModel)
+                    case .saltKey:
+                        SetSaltKeyView(shishiViewModel: shishiViewModel)
+                            .environmentObject(shishiViewModel)
+                    case .home:
+                        HomeView()
+                            .environmentObject(shishiViewModel)
                 }
             }
         }

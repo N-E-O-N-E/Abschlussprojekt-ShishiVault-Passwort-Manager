@@ -10,24 +10,27 @@ import Security
 import CryptoKit
 
 // Quelle zur Umsetzung: https://www.advancedswift.com/secure-private-data-keychain-swift/#save-data-to-keychain
-// Quelle zur Umsetzung: https://developer.apple.com/documentation/security/storing-keys-in-the-keychain
-// Quelle zur Umsetzung: https://developer.apple.com/documentation/security/using-the-keychain-to-manage-user-secrets
-// Quelle zur Umsetzung: https://developer.apple.com/documentation/security/updating-and-deleting-keychain-items
+// Quelle zur Umsetzung: https://peerdh.com/blogs/programming-insights/secure-data-storage-in-swiftui-with-keychain
 
 class KeychainHelper {
     // Singleton-Instanz um global darauf zureifen zu können - privat initialisiert
     static let shared = KeychainHelper()
     private init() {}
     
-    func saveSymmetricKeyInKeychain(symmetricKey: SymmetricKey, keychainKey: String) {
-        let data = symmetricKey.withUnsafeBytes { Data($0) }
-        save(data: data, for: "symmetricKey")
-        print("Data successfully saved in Keychain.")
+    func saveCombinedSymmetricKeyInKeychain(symmetricKey: Data, userSaltKey: Data, keychainKey: String) {
+        let data = SHA256.hash(data: symmetricKey + userSaltKey)
+        let symmetricKey = Data(data)
+        
+        save(data: symmetricKey, for: keychainKey)
+        print("Combined SymmetricKey successfully saved in Keychain.")
     }
     
-    func loadSymmetricKeyFromKeychain(keychainKey: String) -> SymmetricKey? {
-        guard let data = read(for: "symmetricKey") else { return nil }
-        print("Data successfully loaded from Keychain.")
+    func loadCombinedSymmetricKeyFromKeychain(keychainKey: String) -> SymmetricKey? {
+        guard let data = read(for: keychainKey) else {
+            print("SymmetricKey not found in Keychain.")
+            return nil
+        }
+        print("SymmetricKey successfully loaded from Keychain.")
         return SymmetricKey(data: data)
     }
     
@@ -50,7 +53,6 @@ class KeychainHelper {
             print("Data successfully saved in Keychain for the first time.")
         }
     }
-    
     // Diese Funktion liest die Daten für einen bestimmten Key
     func read(for key: String) -> Data? {
         let query: [String: Any] = [

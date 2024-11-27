@@ -233,7 +233,7 @@ struct EntrieShowView: View {
                 Button("Löschen", role: .destructive) {
                     entrieViewModel.deleteEntry(entrie: entry)
                     Task {
-                        if let key = KeychainHelper.shared.loadSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeyString) {
+                        if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
                             JSONHelper.shared.deleteEntiresFromJSON(key: key, entrie: entry)
                             JSONHelper.shared.saveEntriesToJSON(key: key, entries: entrieViewModel.entries)
                         }

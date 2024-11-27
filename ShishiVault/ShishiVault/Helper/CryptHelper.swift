@@ -14,8 +14,6 @@ class CryptHelper {
     static let shared = CryptHelper()
     private init() {}
     
-    
-    
     // Fügt einen String in die Zwischenablage
     // Ouelle: https://stackoverflow.com/questions/61772282/swiftui-how-to-copy-text-to-clipboard
     func copyToClipboard(input: String) throws {
@@ -37,13 +35,14 @@ class CryptHelper {
         return password
     }
     
-    // Erstellt ein SymetricKey auf Basis eines Strings der gehasht wird
-    func createSymetricKey(from userID: String) throws -> SymmetricKey {
-        guard !userID.isEmpty else {
-            throw EncryptionError.emptyUserID
-        }
+    func generateSaltedHash(from userInput: String) throws -> Data {
+        let hashedData = SHA256.hash(data: Data(userInput.utf8))
+        return Data(hashedData)
+    }
+    
+    func generateUserIDHash(from userID: String) throws -> Data {
         let hashedData = SHA256.hash(data: Data(userID.utf8))
-        return SymmetricKey(data: Data(hashedData))
+        return Data(hashedData)
     }
     
     // Quelle: https://medium.com/@garg.vivek/a-comprehensive-guide-to-using-the-crypto-framework-with-swift-341a2ccfc08f

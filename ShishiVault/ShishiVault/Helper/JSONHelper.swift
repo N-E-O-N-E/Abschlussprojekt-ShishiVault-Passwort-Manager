@@ -27,7 +27,7 @@ class JSONHelper {
     
     // Liefert den Geräte DokumentPfad zur (un)verschlüsselten JSON datei
     private func getJSONFilePathForDecrypted() -> URL {
-        let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let documentDirectory = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
         let passwordFolder = documentDirectory.appendingPathComponent("export_shishiVault_Passwortliste_Klartext")
         
         do {
@@ -60,18 +60,17 @@ class JSONHelper {
         }
     }
     
-    
     // Speichert die Daten verschlüsselt in JSON
     func saveEntriesToJSON(key: SymmetricKey, entries: [EntryData]) {
         let path = getJSONFilePath()
         do {
-            if let jsonData = setDataToJSON(entries: entries) {
+            if let jsonData = setDateToJSON(entries: entries) {
                 let encryptData = try CryptHelper.shared.encrypt(data: jsonData, key: key)
                 try encryptData.write(to: path)
                 print("Entries saved to JSON")
             }
         } catch {
-            print("Faild to save entries to JSON: \(error)")
+            print("Faild to save entries to JSON: \(error.localizedDescription)")
         }
     }
     
@@ -79,7 +78,7 @@ class JSONHelper {
     func saveEntriesToJSONDecrypted(key: SymmetricKey, entries: [EntryData]) {
         let path = getJSONFilePathForDecrypted()
         do {
-            if let jsonData = setDataToJSON(entries: entries) {
+            if let jsonData = setDateToJSON(entries: entries) {
                 try jsonData.write(to: path)
                 print("Entries saved to JSON")
             }
@@ -97,7 +96,7 @@ class JSONHelper {
             
             decryptedEntries.removeAll { $0.id == entrie.id }
             
-            if let jsonData = setDataToJSON(entries: decryptedEntries) {
+            if let jsonData = setDateToJSON(entries: decryptedEntries) {
                 let encryptedData = try CryptHelper.shared.encrypt(data: jsonData, key: key)
                 try encryptedData.write(to: path)
             }
@@ -116,7 +115,7 @@ class JSONHelper {
     }
     
     // Konvertiere Entries in JSON
-    func setDataToJSON(entries: [EntryData]) -> Data? {
+    func setDateToJSON(entries: [EntryData]) -> Data? {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .secondsSince1970
         do {

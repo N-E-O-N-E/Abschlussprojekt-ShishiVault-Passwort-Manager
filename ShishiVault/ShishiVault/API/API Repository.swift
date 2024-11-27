@@ -9,6 +9,22 @@ import Foundation
 
 final class APIRepository {
     
+    func getPasswordHashes() {
+        
+        // Passwort entgegen nehmen
+        // Passwort in einen Hash SHA-1 umwandeln
+        
+        // Die ersten 5 Zeichen an die URL hängen
+        // GET https://api.pwnedpasswords.com/range/{first 5 hash chars}
+        
+        // Suffix mit Treffern wird zurückgegeben und muss iteriert werden
+        
+        // Es wird der komplette SHA1 String des passwortes auf ein Match geprüft.
+        
+        // Gibt es ein Treffer ist das Passwort kompromitiert
+        
+    }
+    
     func getPassword(length: Int, lowerCase: Bool, upperCase: Bool, numbers: Bool, symbols: Bool) async throws -> APIData {
         let baseURL = "https://random-password-generator5.p.rapidapi.com/random-password/index.php"
         let length = "length=\(length)"
@@ -51,5 +67,6 @@ final class APIRepository {
 
         return data
     }
+    
     
 }

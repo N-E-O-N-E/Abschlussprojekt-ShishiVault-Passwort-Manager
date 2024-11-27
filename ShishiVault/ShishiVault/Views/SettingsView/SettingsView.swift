@@ -19,6 +19,7 @@ struct SettingsView: View {
     @State private var isEraseAll: Bool = false
     
     var body: some View {
+        ScrollView {
             HStack {
                 Text("Einstellungen")
                     .ueberschriftLargeBold()
@@ -31,10 +32,10 @@ struct SettingsView: View {
                     .padding(.horizontal, 25)
             }.padding(.vertical, 15)
             
-        VStack(alignment: .leading) {
-
+            VStack(alignment: .leading) {
+                
                 Text("Unverschlüsselte Sicherung")
-                    .ueberschriftenTextBold()
+                    .ueberschriftenText()
                 
                 Button {
                     isExportAlert.toggle()
@@ -45,19 +46,20 @@ struct SettingsView: View {
                         .foregroundColor(.white)
                         .overlay(
                             Text("Export in Dokumente  \(Image(systemName: "square.and.arrow.up.trianglebadge.exclamationmark.fill"))")
-                                .font(.title3).bold()
+                                .font(.subheadline).bold()
                                 .foregroundColor(.white))
-                }.padding(20)
+                }.padding(.horizontal, 20)
+                    .padding(.vertical, 10)
                 
-                Text("Alle Daten werden '_unverschlüsselt_' als JSON-Datei in Ihrem Dokumentenverzeichnis gespeichert.")
+                Text("Alle Daten werden in Klartext als JSON-Datei im Downloadverzeichnis gespeichert.")
                     .customTextFieldTextMid()
-            
-            
-            Divider()
-            
-
+                
+                
+                Divider()
+                
+                
                 Text("Speichern in der iCloud")
-                    .ueberschriftenTextBold()
+                    .ueberschriftenText()
                 
                 HStack {
                     Button {
@@ -69,7 +71,7 @@ struct SettingsView: View {
                             .foregroundColor(.white)
                             .overlay(
                                 Text("Upload  \(Image(systemName: "square.and.arrow.up.fill"))")
-                                    .font(.title3).bold()
+                                    .font(.subheadline).bold()
                                     .foregroundColor(.white))
                     }.padding(.vertical, 10)
                         .disabled(true)
@@ -83,21 +85,21 @@ struct SettingsView: View {
                             .foregroundColor(.white)
                             .overlay(
                                 Text("Download   \(Image(systemName: "square.and.arrow.down.fill"))")
-                                    .font(.title3).bold()
+                                    .font(.subheadline).bold()
                                     .foregroundColor(.white))
                     }.padding(.vertical, 10)
                         .disabled(true)
                     
                 }.padding(.horizontal, 20)
                 
-                Text("Laden oder Speichern Sie die verschlüsselten Daten als JSON-Datei aus Ihrer iCloud. Vergewissern Sie sich, dass Sie die iCloud Datenspeicherung auf ihrem Gerät aktivieren haben.")
+                Text("Verschlüsselte JSON-Daten aus der iCloud laden oder speichern. iCloud Datenspeicherung auf ihrem Gerät muss aktiviert sein.")
                     .customTextFieldTextMid()
                 
-            Divider()
-            
-
+                Divider()
+                
+                
                 Text("Alle Daten löschen")
-                    .ueberschriftenTextBold()
+                    .ueberschriftenText()
                 
                 Button {
                     isEraseAll.toggle()
@@ -109,19 +111,20 @@ struct SettingsView: View {
                         .foregroundColor(.white)
                         .overlay(
                             Text("Alles löschen   \(Image(systemName: "exclamationmark.triangle"))")
-                                .font(.title3).bold()
+                                .font(.subheadline).bold()
                                 .foregroundColor(.white))
-                }.padding(20)
+                }.padding(.horizontal, 20)
+                    .padding(.vertical, 10)
                 
-                Text("Alle Daten werden auf dem Gerät unwiederruflich gelöscht - jedoch nicht in der Cloud!")
+                Text("Alle Daten werden auf diesem Gerät unwiederruflich gelöscht - Daten in der iCloud bleiben bestehen!")
                     .customTextFieldTextMid()
-
-            
-            Divider()
-            
-
+                
+                
+                Divider()
+                
+                
                 Text("Abmelden")
-                    .ueberschriftenTextBold()
+                    .ueberschriftenText()
                 
                 Button {
                     isLogoutAlert.toggle()
@@ -133,24 +136,26 @@ struct SettingsView: View {
                         .foregroundColor(.white)
                         .overlay(
                             Text("Abmelden   \(Image(systemName: "door.left.hand.open"))")
-                                .font(.title3).bold()
+                                .font(.subheadline).bold()
                                 .foregroundColor(.white))
-                }.padding(20)
+                }.padding(.horizontal, 20)
+                    .padding(.vertical, 10)
                 
                 Text("Wenn sie sich Abmelden, werden keine Daten gelöscht. Sie können Ihre Daten durch eine erneute Anmeldung wieder einsehen.")
                     .customTextFieldTextMid()
                 
-
-            Divider()
-            
-            
-            Spacer()
-            
-                .navigationBarBackButtonHidden(true)
-            // .navigationTitle("Einstellungen")
-            
+                Divider()
+                
+                
+                
+                
+                Spacer()
+                
+                    .navigationBarBackButtonHidden(true)
+                // .navigationTitle("Einstellungen")
+                
+            }
         }
-        
         
         
             .toolbar {
@@ -171,6 +176,7 @@ struct SettingsView: View {
             .alert("Abmelden\n", isPresented: $isLogoutAlert, actions: {
                 Button("Abmelden", role: .destructive) {
                     shishiViewModel.logout()
+                    dismiss()
                 }
                 Button("Abbrechen", role: .cancel) {
                     isLogoutAlert = false
@@ -194,7 +200,7 @@ struct SettingsView: View {
         
             .alert("! Unverschlüsselter Export !\n", isPresented: $isExportAlert, actions: {
                 Button("Exportieren", role: .destructive) {
-                    if let key = KeychainHelper.shared.loadSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeyString) {
+                    if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
                         Task {
                             JSONHelper.shared.saveEntriesToJSONDecrypted(key: key, entries: entrieViewModel.entries)
                         }

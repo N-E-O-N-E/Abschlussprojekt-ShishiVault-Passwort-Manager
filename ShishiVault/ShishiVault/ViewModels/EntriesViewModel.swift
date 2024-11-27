@@ -14,22 +14,20 @@ class EntriesViewModel: ObservableObject {
     @Published var customFieldsForEntrie: [CustomField] = []
     
     private let jsonHelper = JSONHelper.shared
-    private let symmetricKeyString: String?
+    private let keychainString: String?
     
     init(symmetricKeyString: String?) {
-        self.symmetricKeyString = symmetricKeyString
+        self.keychainString = symmetricKeyString
     }
     
     func reloadEntries() async {
-        guard let symmetricKeyString = symmetricKeyString,
-              let symmetricKey = KeychainHelper.shared.loadSymmetricKeyFromKeychain(keychainKey: symmetricKeyString) else {
+        guard let symmetricKeyString = keychainString,
+              let symmetricKey = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: symmetricKeyString) else {
             print("Failed to reload entries. Symmetric key not found")
             return
         }
-              
-        let key = SymmetricKey(data: symmetricKey)
-              
-        self.entries = await jsonHelper.loadEntriesFromJSON(key: key)
+//        let key = SymmetricKey(data: symmetricKey)
+        self.entries = await jsonHelper.loadEntriesFromJSON(key: symmetricKey)
         print("\(entries.count) Entries from JSON reloaded")
         
     }
@@ -99,8 +97,6 @@ class EntriesViewModel: ObservableObject {
         entries.removeAll(where: { $0.id == entrie.id })
         print("Entrie with ID \(entrie.id) deleted")
     }
-    
-    
     
     // Erstellt ein CustomField für die Speicherung im Entrie
     func createCustomField(customField: CustomField) {
