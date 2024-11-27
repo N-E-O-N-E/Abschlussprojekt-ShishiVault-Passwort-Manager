@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct SetSaltKeyView: View {
-    @EnvironmentObject var shishiViewModel: ShishiViewModel
+    @ObservedObject var shishiViewModel: ShishiViewModel
     @State private var userSaltInput: String = ""
-    @Binding var viewSetSaltKey: Bool
     
     var body: some View {
         VStack {
@@ -45,13 +44,17 @@ struct SetSaltKeyView: View {
                 Button {
                     if !userSaltInput.isEmpty {
                         Task {
-                            let userInputHash = try CryptHelper.shared.generateSaltedHash(from: userSaltInput)
-                            shishiViewModel.saveTempUserSalt(data: userInputHash)
-                            viewSetSaltKey = false
+                            do {
+                                let userInputHash = try CryptHelper.shared.generateSaltedHash(from: userSaltInput)
+                                shishiViewModel.saveTempUserSalt(data: userInputHash)
+                            } catch {
+                                print("Error while generating hash: \(error.localizedDescription)")
+                            }
                         }
                     } else {
                         print("Salt is empty?")
                     }
+                    
                 } label: {
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color.ShishiColorRed)
@@ -71,6 +74,6 @@ struct SetSaltKeyView: View {
 }
 
 #Preview {
-    SetSaltKeyView(viewSetSaltKey: .constant(true))
+    SetSaltKeyView(shishiViewModel: ShishiViewModel())
         .environmentObject(ShishiViewModel())
 }

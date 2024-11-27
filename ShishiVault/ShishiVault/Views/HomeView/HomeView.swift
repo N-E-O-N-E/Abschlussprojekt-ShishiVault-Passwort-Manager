@@ -12,10 +12,10 @@ struct HomeView: View {
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     @StateObject var entrieViewModel: EntriesViewModel
     
-    @State private var viewSetSaltKey: Bool = false
     @State private var showAddEntrieView: Bool = false
     @State private var entrieShowView: Bool = false
-    @State private var showComponentsView: Bool = false
+    @State private var showSettingsView: Bool = false
+    
     @State private var searchText: String = ""
     let zufall = Range(0...100)
     
@@ -84,7 +84,7 @@ struct HomeView: View {
                         }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button {
-                                showComponentsView.toggle()
+                                showSettingsView.toggle()
                             } label: {
                                 Image(systemName: "gearshape")
                             }
@@ -116,12 +116,11 @@ struct HomeView: View {
                 .environmentObject(entrieViewModel)
                 .environmentObject(shishiViewModel)
         })
-        .navigationDestination(isPresented: $showComponentsView, destination: {
+        .navigationDestination(isPresented: $showSettingsView, destination: {
             SettingsView()
                 .environmentObject(shishiViewModel)
                 .environmentObject(entrieViewModel)
         })
-        
         
         .onAppear {
             Task {
@@ -132,10 +131,6 @@ struct HomeView: View {
         .navigationBarBackButtonHidden(true)
         .foregroundStyle(Color.ShishiColorBlue)
         
-        .navigationDestination(isPresented: $viewSetSaltKey) {
-            SetSaltKeyView(viewSetSaltKey: $viewSetSaltKey)
-                .environmentObject(shishiViewModel)
-        }
     }
 }
 

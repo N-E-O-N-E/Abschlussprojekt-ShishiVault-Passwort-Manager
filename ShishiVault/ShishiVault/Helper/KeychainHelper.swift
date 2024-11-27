@@ -18,13 +18,18 @@ class KeychainHelper {
     private init() {}
     
     func saveCombinedSymmetricKeyInKeychain(symmetricKey: Data, userSaltKey: Data, keychainKey: String) {
-        let data = symmetricKey + userSaltKey
-        save(data: data, for: keychainKey)
+        let data = SHA256.hash(data: symmetricKey + userSaltKey)
+        let symmetricKey = Data(data)
+        
+        save(data: symmetricKey, for: keychainKey)
         print("Combined SymmetricKey successfully saved in Keychain.")
     }
     
     func loadCombinedSymmetricKeyFromKeychain(keychainKey: String) -> SymmetricKey? {
-        guard let data = read(for: keychainKey) else { return nil }
+        guard let data = read(for: keychainKey) else {
+            print("SymmetricKey not found in Keychain.")
+            return nil
+        }
         print("SymmetricKey successfully loaded from Keychain.")
         return SymmetricKey(data: data)
     }

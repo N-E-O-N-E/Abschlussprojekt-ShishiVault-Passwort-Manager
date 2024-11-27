@@ -147,15 +147,7 @@ struct SettingsView: View {
                 Divider()
                 
                 
-                    Text("saltKey")
-                        .textFieldAlsText()
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
                 
-                Text("Dieser Schlüssel ist für die Verschlüsselung der Daten. Er darf nicht geändert werden oder in fremde Hände gegeben werden! Notieren Sie ihn an einem sicheren Ort.")
-                    .customTextFieldTextMid()
-                    
-                 
                 
                 Spacer()
                 
@@ -184,6 +176,7 @@ struct SettingsView: View {
             .alert("Abmelden\n", isPresented: $isLogoutAlert, actions: {
                 Button("Abmelden", role: .destructive) {
                     shishiViewModel.logout()
+                    dismiss()
                 }
                 Button("Abbrechen", role: .cancel) {
                     isLogoutAlert = false

@@ -26,10 +26,8 @@ class EntriesViewModel: ObservableObject {
             print("Failed to reload entries. Symmetric key not found")
             return
         }
-              
-        let key = SymmetricKey(data: symmetricKey)
-              
-        self.entries = await jsonHelper.loadEntriesFromJSON(key: key)
+//        let key = SymmetricKey(data: symmetricKey)
+        self.entries = await jsonHelper.loadEntriesFromJSON(key: symmetricKey)
         print("\(entries.count) Entries from JSON reloaded")
         
     }
@@ -99,8 +97,6 @@ class EntriesViewModel: ObservableObject {
         entries.removeAll(where: { $0.id == entrie.id })
         print("Entrie with ID \(entrie.id) deleted")
     }
-    
-    
     
     // Erstellt ein CustomField für die Speicherung im Entrie
     func createCustomField(customField: CustomField) {

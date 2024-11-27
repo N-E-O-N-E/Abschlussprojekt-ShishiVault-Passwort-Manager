@@ -45,15 +45,6 @@ class CryptHelper {
         return Data(hashedData)
     }
     
-    // Erstellt ein SymetricKey auf Basis eines Strings der gehasht wird
-    func createSymetricKey(from userID: String, userSalt: Data) throws -> SymmetricKey {
-        guard !userID.isEmpty else {
-            throw EncryptionError.emptyUserID
-        }
-        let hashedData = SHA256.hash(data: Data(userID.utf8))
-        return SymmetricKey(data: Data(hashedData))
-    }
-    
     // Quelle: https://medium.com/@garg.vivek/a-comprehensive-guide-to-using-the-crypto-framework-with-swift-341a2ccfc08f
     // AES Verschlüsselung
     func encrypt(data: Data, key: SymmetricKey) throws -> Data {

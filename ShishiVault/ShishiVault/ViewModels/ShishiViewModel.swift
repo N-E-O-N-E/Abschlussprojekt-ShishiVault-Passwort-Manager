@@ -14,13 +14,12 @@ import CryptoKit
 
 @MainActor
 class ShishiViewModel: ObservableObject {
-    // Published Variable um die View zu Steuern
-    @Published var isLoggedIn = false
-    @Published var symmetricDataSaved = false
-    @Published var saltDataIsSaved = false
+    @Published var appState: AppState = .login
     @Published var symmetricKeychainString: String = "shishiVault_symm_key_data"
-    private var keychainUserIDString: Data?
-    private var keychainUserSaltString: Data?
+    @Published var userSaltString: String = "shishiVault_salt_input_data"
+    
+    private var keychainUserIDHash: Data?
+    private var keychainUserSaltHash: Data?
     
     init() {
         checkLoginStatus()
@@ -36,7 +35,6 @@ class ShishiViewModel: ObservableObject {
         switch result {
             case .success(let auth):
                 if let appleIDCredential = auth.credential as? ASAuthorizationAppleIDCredential {
-                    
                     handleSuccessfulLogin(with: appleIDCredential)
                     print("SignInWithAppleID successful!")
                 }
@@ -49,49 +47,63 @@ class ShishiViewModel: ObservableObject {
         do {
             let userID = credentials.user.replacingOccurrences(of: ".", with: "")
             let userIDHashed = try CryptHelper.shared.generateUserIDHash(from: userID)
-            self.keychainUserIDString = userIDHashed
+            self.keychainUserIDHash = userIDHashed
             
-            guard keychainUserIDString != nil, keychainUserSaltString != nil else {
-                print("String UserID or UserSalt is nil in handleSuccessfulLogin")
-                return
+            if keychainUserSaltHash != nil {
+                print("SaltKey found, symmetric key will be generated.")
+                
+                KeychainHelper.shared.saveCombinedSymmetricKeyInKeychain(
+                    symmetricKey: keychainUserIDHash!,
+                    userSaltKey: keychainUserSaltHash!,
+                    keychainKey: symmetricKeychainString)
+                
+                appState = .home
+                
+            } else {
+                print("SaltKey not found, no symmetric key will be generated.")
+                appState = .saltKey
             }
-            
-            KeychainHelper.shared.saveCombinedSymmetricKeyInKeychain(
-                symmetricKey: keychainUserIDString!,
-                userSaltKey: keychainUserSaltString!,
-                keychainKey: symmetricKeychainString)
-            
-            checkLoginStatus()
-            
         } catch {
-            print("Cannot create symetric key: \(error.localizedDescription)")
-            isLoggedIn = false
+            print("UserLogin cannot be completed: \(error.localizedDescription) ")
+            appState = .login
         }
     }
     
     // Printet ein Error aus
     private func handleLoginError(with error: Error) {
-        isLoggedIn = false
+        appState = .login
         print("Could not authenticate: \(error.localizedDescription)")
     }
     
     func saveTempUserSalt(data: Data) {
-        self.keychainUserSaltString = data
-        saltDataIsSaved = true
+        KeychainHelper.shared.save(data: data, for: userSaltString)
+        self.keychainUserSaltHash = data
+        print("SaltData successful saved")
+        
+        if keychainUserIDHash != nil {
+            KeychainHelper.shared.saveCombinedSymmetricKeyInKeychain(
+                symmetricKey: keychainUserIDHash!,
+                userSaltKey: keychainUserSaltHash!,
+                keychainKey: symmetricKeychainString)
+            
+            print("Symmetric Key successfully saved")
+            appState = .home
+        } else {
+            print("Cannont save Symmetric Key")
+            appState = .login
+        }
     }
     
     // Prüft ob Daten in der Keychain vorhanden ist und nicht nil um den
     // LoginStatus beim start der App über den init() gleich auf true zu setzen
     func checkLoginStatus() {
-        
-        if KeychainHelper.shared.read(for: symmetricKeychainString) != nil {
-            if saltDataIsSaved {
-                isLoggedIn = true
-            } else {
-                print("Check SaltData: No UserSalt in Keychain found!")
-            }
+        if KeychainHelper.shared.read(for: symmetricKeychainString) != nil &&
+            KeychainHelper.shared.read(for: userSaltString) != nil {
+            print("Symmetric Key and SaltData found in Keychain)")
+            appState = .home
         } else {
-            print("Check login status: No SymmetricKey in Keychain found!")
+            print("No Symmetric Key and SaltData found in Keychain")
+            appState = .login
         }
     }
     
@@ -99,8 +111,12 @@ class ShishiViewModel: ObservableObject {
     func logout() {
         // KeychainHelper.shared.delete(for: symmetricKeyString)
         KeychainHelper.shared.delete(for: symmetricKeychainString)
-        isLoggedIn = false
-        print("Logout successful - Salt deleted from Keychain!")
+        KeychainHelper.shared.delete(for: userSaltString)
+        keychainUserIDHash = nil
+        keychainUserSaltHash = nil
+
+        print("Logout successful - KeyData deleted from Keychain!")
+        appState = .login
     }
 
 }
