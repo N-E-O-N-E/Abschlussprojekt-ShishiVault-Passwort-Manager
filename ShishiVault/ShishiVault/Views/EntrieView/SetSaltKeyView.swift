@@ -10,6 +10,7 @@ import SwiftUI
 struct SetSaltKeyView: View {
     @ObservedObject var shishiViewModel: ShishiViewModel
     @State private var userSaltInput: String = ""
+    @State private var keyAlert: Bool = false
     
     var body: some View {
         VStack {
@@ -53,6 +54,7 @@ struct SetSaltKeyView: View {
                         }
                     } else {
                         print("Salt is empty?")
+                        keyAlert.toggle()
                     }
                     
                 } label: {
@@ -70,6 +72,12 @@ struct SetSaltKeyView: View {
             }.padding(.horizontal).padding(.vertical, 5)
         }
         .navigationBarBackButtonHidden()
+        
+        .alert("Master-Key\n", isPresented: $keyAlert, actions: {
+            Button("OK", role: .cancel) {}
+        }, message: {
+                Text("Der MasterKey darf nicht leer sein!")
+        })
     }
 }
 

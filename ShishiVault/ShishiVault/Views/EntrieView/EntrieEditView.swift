@@ -11,7 +11,6 @@ struct EntrieEditView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @EnvironmentObject var shishiViewModel: ShishiViewModel
-    private let apiHavebeenPwnedRepository = APIhaveibeenpwned()
     
     @State private var savedAlert: Bool = false
     @State private var isEmptyFieldsAlert: Bool = false
@@ -106,7 +105,7 @@ struct EntrieEditView: View {
                     Button(action: {
                         Task {
                             password = CryptHelper.shared.randomPasswordMaker()
-                            passwordPwnedState = try await apiHavebeenPwnedRepository.checkPasswordPwned(password: password)
+                            passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
                             if passwordPwnedState == 1 {
                                 pwnedAlert = true
                             }
@@ -163,7 +162,7 @@ struct EntrieEditView: View {
                             
                         case "ok":
                             Task {
-                                passwordPwnedState = try await apiHavebeenPwnedRepository.checkPasswordPwned(password: password)
+                                passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
                                 
                                 if passwordPwnedState == 2 {
                                     savedAlert.toggle()
@@ -274,7 +273,6 @@ struct EntrieEditView: View {
             Text("Bitte füllen Sie die Pflichtfelder Titel und Passwort aus.")
         })
         
-        
         .alert("Fehler", isPresented: $isEmptyOptFieldsAlert, actions: {
             Button("OK", role: .cancel) {}
         }, message: {
@@ -286,12 +284,6 @@ struct EntrieEditView: View {
         }, message: {
             Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.")
         })
-        
-        
-        
-        .navigationBarBackButtonHidden(true)
-        .navigationTitle("Eintrag bearbeiten")
-        .foregroundStyle(Color.ShishiColorBlue)
         
         .onAppear {
             print("CustomField Daten wurden zurückgesetzt")
@@ -314,6 +306,10 @@ struct EntrieEditView: View {
                 entrieViewModel.deleteCustomField()
             }
         }
+        
+        .navigationBarBackButtonHidden(true)
+        .navigationTitle("Eintrag bearbeiten")
+        .foregroundStyle(Color.ShishiColorBlue)
         
     }
 }

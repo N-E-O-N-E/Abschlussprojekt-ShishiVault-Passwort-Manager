@@ -43,7 +43,7 @@ struct PWLevelColorView: View {
     var body: some View {
         VStack {
             ZStack(alignment: .leading) {
-                Capsule().frame(width: .infinity, height: 12).foregroundStyle(Color.gray.opacity(0.35))
+                Capsule().frame(width: 330, height: 12).foregroundStyle(Color.gray.opacity(0.35))
                 Capsule().frame(width: levelValue(for: password), height: 10).foregroundStyle(levelColor(for: password))
             }
         }.padding(.horizontal, 20)

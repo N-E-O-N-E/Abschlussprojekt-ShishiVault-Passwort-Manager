@@ -57,7 +57,7 @@ struct HomeView: View {
                             }
                         }
                     } // End VStack
-                    .frame(maxWidth: .infinity)
+                    
                     
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {

@@ -10,8 +10,6 @@ import SwiftUI
 struct PWGeneratorView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @Binding var customFieldSheet: Bool
-    private let apiRepository = APIRepository()
-    private let apiHavebeenPwnedRepository = APIhaveibeenpwned()
     
     @State private var length = 10.0
     @State private var lowerCase: Bool = true
@@ -124,17 +122,17 @@ struct PWGeneratorView: View {
                             lowerCase.toggle()
                             numbers.toggle()
                         }
-                        let data = try await apiRepository.getPassword(
+                        let data = try await APIRepository().getPassword(
                             length: Int(length), lowerCase: lowerCase,
                             upperCase: upperCase, numbers: numbers, symbols: symbols
                         )
                         let password = data
                         generatedPassword = password.password
-                        passwordPwnedState = try await apiHavebeenPwnedRepository.checkPasswordPwned(password: generatedPassword)
+                        passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: generatedPassword)
                         
                         passwordPwnedState = 0
                         
-                        passwordPwnedState = try await apiHavebeenPwnedRepository.checkPasswordPwned(password: generatedPassword)
+                        passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: generatedPassword)
                         if passwordPwnedState == 1 {
                             pwnedAlert = true
                         }

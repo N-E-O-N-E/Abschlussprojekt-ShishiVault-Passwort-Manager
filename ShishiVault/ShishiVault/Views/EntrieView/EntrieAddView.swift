@@ -10,7 +10,6 @@ import SwiftUI
 struct EntrieAddView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @EnvironmentObject var shishiViewModel: ShishiViewModel
-    private let apiHavebeenPwnedRepository = APIhaveibeenpwned()
     @Environment(\.dismiss) private var dismiss
     
 //    @State private var isPasswordVisible: Bool = false
@@ -114,7 +113,7 @@ struct EntrieAddView: View {
                         passwordPwnedState = 0
                         
                         Task {
-                            passwordPwnedState = try await apiHavebeenPwnedRepository.checkPasswordPwned(password: password)
+                            passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
                             if passwordPwnedState == 1 {
                                 pwnedAlert = true
                             }
@@ -193,7 +192,7 @@ struct EntrieAddView: View {
                         case "ok":
                             
                             Task {
-                                passwordPwnedState = try await apiHavebeenPwnedRepository.checkPasswordPwned(password: password)
+                                passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
                             }
                             if passwordPwnedState == 2 {
                                 entrieViewModel.createEntry(
