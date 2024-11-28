@@ -12,13 +12,14 @@ struct EntrieEditView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     
-    @State private var isPasswordVisible: Bool = false
     @State private var savedAlert: Bool = false
     @State private var isEmptyFieldsAlert: Bool = false
     @State private var isEmptyOptFieldsAlert: Bool = false
     @State private var isDeleteAlert: Bool = false
     @State private var customFieldSheet: Bool = false
     @State private var pwGeneratorSheet: Bool = false
+    @State private var pwnedAlert: Bool = false
+    @State private var passwordPwnedState: Int = 0
     @Binding var entrieEditView: Bool
     
     var entry: EntryData?
@@ -70,31 +71,45 @@ struct EntrieEditView: View {
                         .customTextFieldTextLow()
                     Spacer()
                 }
-                Divider().padding(.vertical, 10)
+                Divider()
+                
+                PWLevelColorView(password: $password)
+                    .padding(.vertical, 20)
+                
+                
                 HStack {
-                    if isPasswordVisible {
-                        TextField(password, text: $password)
-                            .customPasswordField()
-                    } else {
-                        SecureField(password, text: $password)
-                            .customSecureField()
+                    TextField(password, text: $password)
+                        .customPasswordField()
+                    
+                    
+                    
+                    
+                    switch passwordPwnedState {
+                        case 1:
+                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                .foregroundColor(Color.ShishiColorRed_)
+                                .scaleEffect(1.4)
+                                .padding(.horizontal, 15)
+                        case 2:
+                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                .foregroundColor(Color.ShishiColorGreen)
+                                .scaleEffect(1.4)
+                                .padding(.horizontal, 15)
+                        default:
+                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                .foregroundColor(Color.ShishiColorGray)
+                                .scaleEffect(1.4)
+                                .padding(.horizontal, 15)
                     }
-                    Button(action: {
-                        if !password.isEmpty {
-                            isPasswordVisible.toggle()
-                        }
-                    }) {
-                        Image(systemName: isPasswordVisible ? "eye" : "eye.slash")
-                            .foregroundColor(isPasswordVisible ? Color.ShishiColorBlue : Color.ShishiColorDarkGray)
-                            .scaleEffect(1.2)
-                        
-                    }
-                    .frame(width: 25)
-                    .padding(.horizontal, 10)
                     
                     Button(action: {
-                        
-                        password = CryptHelper.shared.randomPasswordMaker()
+                        Task {
+                            password = CryptHelper.shared.randomPasswordMaker()
+                            passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
+                            if passwordPwnedState == 1 {
+                                pwnedAlert = true
+                            }
+                        }
                         
                     }) {
                         Image(systemName: "lock.rotation")
@@ -146,7 +161,15 @@ struct EntrieEditView: View {
                             isEmptyOptFieldsAlert.toggle()
                             
                         case "ok":
-                            savedAlert.toggle()
+                            Task {
+                                passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
+                                
+                                if passwordPwnedState == 2 {
+                                    savedAlert.toggle()
+                                } else if passwordPwnedState == 1 {
+                                    pwnedAlert = true
+                                }
+                            }
                             
                         default:
                             break
@@ -210,8 +233,10 @@ struct EntrieEditView: View {
                 .environmentObject(entrieViewModel)
         }
         
+        
         .alert("Hinweis", isPresented: $savedAlert, actions: {
             Button("Aktualisieren", role: .destructive) {
+                
                 if let oldEntry = entry {
                     let newEntrie = EntryData(
                         id: oldEntry.id,
@@ -224,23 +249,23 @@ struct EntrieEditView: View {
                         customFields: customFields)
                     entrieViewModel.updateEntry(newEntrie: newEntrie)
                 }
-                
-                if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
-                    Task {
-                        JSONHelper.shared.saveEntriesToJSON(
-                            key: key,
-                            entries: entrieViewModel.entries)
+                Task {
+                    if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
+                        JSONHelper.shared.saveEntriesToJSON(key: key, entries: entrieViewModel.entries)
+                    } else {
+                        print("JSON save failed")
                     }
-                } else {
-                    print("JSON save failed")
                 }
+                
                 entrieViewModel.deleteCustomField()
                 dismiss()
             }
+            
             Button("Abbrechen", role: .cancel) {}
         }, message: {
             Text("Die Aktualisierung der Daten kann nicht rückgängig gemacht werden!. Möchten Sie die Daten wirklich aktualisieren?")
         })
+        
         
         .alert("Fehler", isPresented: $isEmptyFieldsAlert, actions: {
             Button("OK", role: .cancel) {}
@@ -254,9 +279,11 @@ struct EntrieEditView: View {
             Text("Bitte füllen Sie die Felder Username oder E-Mail aus.")
         })
         
-        .navigationBarBackButtonHidden(true)
-        .navigationTitle("Eintrag bearbeiten")
-        .foregroundStyle(Color.ShishiColorBlue)
+        .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
+            Button("OK", role: .cancel) {}
+        }, message: {
+            Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.")
+        })
         
         .onAppear {
             print("CustomField Daten wurden zurückgesetzt")
@@ -279,6 +306,10 @@ struct EntrieEditView: View {
                 entrieViewModel.deleteCustomField()
             }
         }
+        
+        .navigationBarBackButtonHidden(true)
+        .navigationTitle("Eintrag bearbeiten")
+        .foregroundStyle(Color.ShishiColorBlue)
         
     }
 }
