@@ -73,3 +73,7 @@ struct CustomFieldAddView: View {
         
     }
 }
+
+#Preview {
+    CustomFieldAddView(customFieldSheet: .constant(true))
+}

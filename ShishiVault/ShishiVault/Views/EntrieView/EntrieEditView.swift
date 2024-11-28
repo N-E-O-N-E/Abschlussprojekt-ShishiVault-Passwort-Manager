@@ -70,7 +70,12 @@ struct EntrieEditView: View {
                         .customTextFieldTextLow()
                     Spacer()
                 }
-                Divider().padding(.vertical, 10)
+                Divider()
+                
+                PWLevelColorView(password: $password)
+                    .padding(.vertical, 20)
+                
+                
                 HStack {
                     if isPasswordVisible {
                         TextField(password, text: $password)

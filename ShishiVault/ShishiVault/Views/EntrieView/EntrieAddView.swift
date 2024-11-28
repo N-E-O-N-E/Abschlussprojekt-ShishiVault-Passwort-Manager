@@ -73,8 +73,18 @@ struct EntrieAddView: View {
                     Spacer()
                 }
                 
+                
+                
+                
                 Divider()
+                    .padding(.vertical, 1)
+                
+                PWLevelColorView(password: $password)
                     .padding(.vertical, 15)
+                
+                
+                
+                
                 
                 HStack {
                     
@@ -94,8 +104,7 @@ struct EntrieAddView: View {
                             .scaleEffect(1.2)
                     }
                     .frame(width: 20)
-                    .padding(.horizontal, 5)
-                    
+                    .padding(.horizontal, 15)
                     
                     
                     Button(action: {
@@ -116,9 +125,6 @@ struct EntrieAddView: View {
                         .customTextFieldTextLow()
                     Spacer()
                 }
-                
-                
-                
                 HStack {
                     if isPasswordVisible {
                         TextField("PasswortConfirm", text: $passwordConfirm)
@@ -135,7 +141,7 @@ struct EntrieAddView: View {
                 }
                 
                 Divider()
-                    .padding(.vertical, 10)
+                    .padding(.vertical, 5)
                 
                 
                 
@@ -162,8 +168,9 @@ struct EntrieAddView: View {
                 
                 
                 
-                
                 Spacer()
+                
+                
                 
                 Button {
                     switch entrieViewModel.entrieSaveButtomnCheck(
@@ -219,7 +226,7 @@ struct EntrieAddView: View {
                 }
             }
         }
-        .padding(.horizontal).padding(.vertical, 5)
+        .padding(.horizontal).padding(.vertical, 15)
         
         
         

@@ -19,16 +19,7 @@ struct PWGeneratorView: View {
     @State private var symbols: Bool = true
     @State private var generatedPassword: String = ""
     
-    private var statusColor: Color {
-        if statusSumCalc() <= 30 {
-            return Color.ShishiColorRed_
-        } else if statusSumCalc() > 30 && statusSumCalc() <= 70 {
-            return Color.orange
-        } else if statusSumCalc() > 70 {
-            return Color.ShishiColorGreen
-        }
-        return Color.gray
-    }
+    
     private var sliderColor: Color {
         if length < 6 {
             return Color.ShishiColorRed_
@@ -38,41 +29,6 @@ struct PWGeneratorView: View {
             return Color.ShishiColorGreen
         }
         return Color.ShishiColorRed_
-    }
-    private var statusWidthFromToggle: CGFloat {
-        var value: CGFloat = 0
-        if lowerCase {
-            value += 5
-        }
-        if upperCase {
-            value += 5
-        }
-        if numbers {
-            value += 5
-        }
-        if symbols {
-            value += 5
-        }
-        return value
-    }
-    private var statusWidthFromLength: CGFloat {
-        var value: CGFloat = 0
-        if length < 4 {
-            value = 10
-        } else if length >= 4 && length <= 6 {
-            value =  55
-        } else if length > 6 && length <= 10 {
-            value =  85
-        } else if length > 10 && length <= 16 {
-            value =  100
-        } else if length > 16 {
-            value =  130
-        }
-        return value
-    }
-    private func statusSumCalc() -> CGFloat {
-        let value = statusWidthFromLength + statusWidthFromToggle
-        return value
     }
     
     var body: some View {
@@ -85,7 +41,7 @@ struct PWGeneratorView: View {
         VStack {
             Text("PASSWORT GENERATOR")
                 .font(.system(size: 25)).bold()
-                .padding(.vertical, 10)
+                .padding(.vertical, 1)
             
             HStack {
                 TextField("Passwort", text: $generatedPassword)
@@ -107,15 +63,19 @@ struct PWGeneratorView: View {
                 }
                 .frame(width: 25)
                 .padding(.horizontal, 10)
-                .padding(.vertical, 20)
+                .padding(.vertical, 15)
             }
+            
+            PWLevelColorView(password: $generatedPassword)
+                .padding(.vertical, 10)
             
             Divider()
             
             HStack {
                 Text("Länge (\(length.formatted(.number))) ")
+                    .frame(width: 90)
                 Slider(value: $length, in: 1...32, step: 1.0) {
-                    Text("Länge: \(length)")
+                    Text("Länge: \(length.formatted(.number))")
                 }.tint(sliderColor)
             }
             
@@ -130,24 +90,14 @@ struct PWGeneratorView: View {
             Toggle("Symbole (!@#$%^&*)", isOn: $symbols)
                 .padding(.vertical, 5)
             
-            Divider()
-            
-            HStack {
-                Text("Security-Level")
-                    .padding(.vertical, 5)
-                Spacer()
-                
-                VStack {
-                    ZStack(alignment: .leading) {
-                        Capsule().frame(width: 150, height: 10).foregroundStyle(Color.gray.opacity(0.3))
-                        Capsule().frame(width: statusSumCalc(), height: 10).foregroundStyle(statusColor)
-                    }
-                }
-            }
-            
             Button {
                 Task {
                     do {
+                        if !upperCase && !lowerCase && !numbers && !symbols {
+                            upperCase.toggle()
+                            lowerCase.toggle()
+                            numbers.toggle()
+                        }
                         let data = try await apiRepository.getPassword(
                             length: Int(length), lowerCase: lowerCase,
                             upperCase: upperCase, numbers: numbers, symbols: symbols
@@ -181,7 +131,7 @@ struct PWGeneratorView: View {
                     .customTextFieldTextLow()
             }.padding(5)
             
-        }.padding(.horizontal, 30)
+        }.padding(.horizontal, 20)
         
         .presentationDetents([.fraction(0.8)])
     }

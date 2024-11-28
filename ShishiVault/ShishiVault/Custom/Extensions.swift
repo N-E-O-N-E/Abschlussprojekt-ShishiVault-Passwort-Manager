@@ -176,7 +176,6 @@ extension TextField {
             .padding(.vertical, 10)
             .background(RoundedRectangle(cornerRadius: 8)
                 .stroke(Color.ShishiColorGray, lineWidth: 1 ))
-            .padding(1)
             .disableAutocorrection(true)
             .textInputAutocapitalization(.never)
     }
@@ -192,9 +191,9 @@ extension TextField {
             .padding(.vertical, 10)
             .background(RoundedRectangle(cornerRadius: 8)
                 .stroke(Color.ShishiColorGray, lineWidth: 1 ))
-            .padding(1)
             .disableAutocorrection(true)
             .textInputAutocapitalization(.never)
+            
     }
 }
 
@@ -230,7 +229,6 @@ extension TextField {
             .padding(.vertical, 10)
             .background(RoundedRectangle(cornerRadius: 8)
                 .stroke(Color.ShishiColorGray, lineWidth: 1))
-            .padding(1)
             .disableAutocorrection(true)
             .textInputAutocapitalization(.never)
     }
@@ -247,7 +245,6 @@ extension SecureField {
             .padding(.vertical, 10)
             .background(RoundedRectangle(cornerRadius: 8)
                 .stroke(Color.ShishiColorGray, lineWidth: 1))
-            .padding(1)
             .disableAutocorrection(true)
             .textInputAutocapitalization(.never)
     }
