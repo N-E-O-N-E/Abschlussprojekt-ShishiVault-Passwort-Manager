@@ -11,6 +11,7 @@ struct PWGeneratorView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @Binding var customFieldSheet: Bool
     private let apiRepository = APIRepository()
+    private let apiHavebeenPwnedRepository = APIhaveibeenpwned()
     
     @State private var length = 10.0
     @State private var lowerCase: Bool = true
@@ -18,6 +19,7 @@ struct PWGeneratorView: View {
     @State private var numbers: Bool = true
     @State private var symbols: Bool = true
     @State private var generatedPassword: String = ""
+    @State private var passwordPwnedState: Int = 0
     
     
     private var sliderColor: Color {
@@ -46,6 +48,25 @@ struct PWGeneratorView: View {
             HStack {
                 TextField("Passwort", text: $generatedPassword)
                     .customTextField()
+                    .padding(.vertical, 15)
+                
+                switch passwordPwnedState {
+                    case 1:
+                        Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                            .foregroundColor(Color.ShishiColorRed_)
+                            .scaleEffect(1.4)
+                            .padding(.horizontal, 10)
+                    case 2:
+                        Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                            .foregroundColor(Color.ShishiColorGreen)
+                            .scaleEffect(1.4)
+                            .padding(.horizontal, 10)
+                    default:
+                        Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                            .foregroundColor(Color.ShishiColorGray)
+                            .scaleEffect(1.4)
+                            .padding(.horizontal, 10)
+                }
                 
                 Button(action: {
                     if !generatedPassword.isEmpty {
@@ -91,6 +112,9 @@ struct PWGeneratorView: View {
                 .padding(.vertical, 5)
             
             Button {
+                
+                
+                
                 Task {
                     do {
                         if !upperCase && !lowerCase && !numbers && !symbols {
@@ -104,6 +128,7 @@ struct PWGeneratorView: View {
                         )
                         let password = data
                         generatedPassword = password.password
+                        passwordPwnedState = try await apiHavebeenPwnedRepository.checkPasswordPwned(password: generatedPassword)
                         
                     } catch {
                         print("Fehler: \(error)")
