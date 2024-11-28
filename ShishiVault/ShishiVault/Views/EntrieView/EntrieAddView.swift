@@ -10,10 +10,12 @@ import SwiftUI
 struct EntrieAddView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @EnvironmentObject var shishiViewModel: ShishiViewModel
+    private let apiHavebeenPwnedRepository = APIhaveibeenpwned()
     @Environment(\.dismiss) private var dismiss
     
-    @State private var isPasswordVisible: Bool = false
+//    @State private var isPasswordVisible: Bool = false
     @State private var isSavedAlert: Bool = false
+    @State private var pwnedAlert: Bool = false
     @State private var isEmptyFieldsAlert: Bool = false
     @State private var isEmptyOptFieldsAlert: Bool = false
     @State private var isDiffPassAlert: Bool = false
@@ -28,6 +30,7 @@ struct EntrieAddView: View {
     @State private var passwordConfirm: String = ""
     @State private var notes: String = ""
     @State private var website: String = ""
+    @State private var passwordPwnedState: Int = 0
     
     var body: some View {
         ScrollView {
@@ -83,41 +86,47 @@ struct EntrieAddView: View {
                     .padding(.vertical, 15)
                 
                 
-                
-                
-                
                 HStack {
+                    TextField("Passwort", text: $password)
+                        .customPasswordField()
                     
-                    if isPasswordVisible {
-                        TextField("Passwort", text: $password)
-                            .customPasswordField()
-                    } else {
-                        SecureField("Passwort", text: $password)
-                            .customSecureField()
+                    switch passwordPwnedState {
+                        case 1:
+                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                .foregroundColor(Color.ShishiColorRed_)
+                                .scaleEffect(1.4)
+                                .padding(.horizontal, 10)
+                        case 2:
+                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                .foregroundColor(Color.ShishiColorGreen)
+                                .scaleEffect(1.4)
+                                .padding(.horizontal, 10)
+                        default:
+                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                .foregroundColor(Color.ShishiColorGray)
+                                .scaleEffect(1.4)
+                                .padding(.horizontal, 10)
                     }
-                    
-                    Button(action: {
-                        isPasswordVisible.toggle()
-                    }) {
-                        Image(systemName: isPasswordVisible ? "eye" : "eye.slash")
-                            .foregroundColor(isPasswordVisible ? Color.ShishiColorBlue : Color.ShishiColorDarkGray)
-                            .scaleEffect(1.2)
-                    }
-                    .frame(width: 20)
-                    .padding(.horizontal, 15)
-                    
                     
                     Button(action: {
                         password = CryptHelper.shared.randomPasswordMaker()
                         passwordConfirm = password
+                        passwordPwnedState = 0
+                        
+                        Task {
+                            passwordPwnedState = try await apiHavebeenPwnedRepository.checkPasswordPwned(password: password)
+                            if passwordPwnedState == 1 {
+                                pwnedAlert = true
+                            }
+                        }
                         
                     }) {
                         Image(systemName: "lock.rotation")
                             .foregroundColor(Color.ShishiColorBlue)
                             .scaleEffect(1.4)
                     }
-                    .frame(width: 20)
                     .padding(5)
+                    .padding(.horizontal, 10)
                     
                 }
                 HStack {
@@ -126,13 +135,8 @@ struct EntrieAddView: View {
                     Spacer()
                 }
                 HStack {
-                    if isPasswordVisible {
-                        TextField("PasswortConfirm", text: $passwordConfirm)
-                            .customTextField()
-                    } else {
-                        SecureField("PasswortConfirm", text: $passwordConfirm)
-                            .customSecureField()
-                    }
+                    TextField("PasswortConfirm", text: $passwordConfirm)
+                        .customTextField()
                 }
                 HStack {
                     Text("Passwort bestätigen")
@@ -187,28 +191,37 @@ struct EntrieAddView: View {
                             isDiffPassAlert.toggle()
                             
                         case "ok":
-                            entrieViewModel.createEntry(
-                                title: title,
-                                username: username,
-                                email: email,
-                                password: password,
-                                passwordConfirm: passwordConfirm,
-                                notes: notes,
-                                website: website,
-                                customFields: entrieViewModel.customFieldsForEntrie)
                             
-                            if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
-                                Task {
-                                    JSONHelper.shared.saveEntriesToJSON(
-                                        key: key,
-                                        entries: entrieViewModel.entries)
-                                }
-                            } else {
-                                print("JSON save failed")
+                            Task {
+                                passwordPwnedState = try await apiHavebeenPwnedRepository.checkPasswordPwned(password: password)
                             }
-                            
-                            entrieViewModel.deleteCustomField()
-                            isSavedAlert.toggle()
+                            if passwordPwnedState == 2 {
+                                entrieViewModel.createEntry(
+                                    title: title,
+                                    username: username,
+                                    email: email,
+                                    password: password,
+                                    passwordConfirm: passwordConfirm,
+                                    notes: notes,
+                                    website: website,
+                                    customFields: entrieViewModel.customFieldsForEntrie)
+                                
+                                if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
+                                    Task {
+                                        JSONHelper.shared.saveEntriesToJSON(
+                                            key: key,
+                                            entries: entrieViewModel.entries)
+                                    }
+                                } else {
+                                    print("JSON save failed")
+                                }
+                                
+                                entrieViewModel.deleteCustomField()
+                                isSavedAlert.toggle()
+                                
+                            } else if passwordPwnedState == 1 {
+                                pwnedAlert = true
+                            }
                             
                         default:
                             break
@@ -306,6 +319,11 @@ struct EntrieAddView: View {
             Text("Die Passwörter stimmen nicht überein")
         })
         
+        .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
+            Button("OK", role: .cancel) {}
+        }, message: {
+            Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.")
+        })
         
         
         

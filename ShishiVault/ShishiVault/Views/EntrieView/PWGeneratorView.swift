@@ -18,8 +18,10 @@ struct PWGeneratorView: View {
     @State private var upperCase: Bool = true
     @State private var numbers: Bool = true
     @State private var symbols: Bool = true
+    @State private var pwnedAlert: Bool = false
     @State private var generatedPassword: String = ""
     @State private var passwordPwnedState: Int = 0
+    
     
     
     private var sliderColor: Color {
@@ -130,6 +132,13 @@ struct PWGeneratorView: View {
                         generatedPassword = password.password
                         passwordPwnedState = try await apiHavebeenPwnedRepository.checkPasswordPwned(password: generatedPassword)
                         
+                        passwordPwnedState = 0
+                        
+                        passwordPwnedState = try await apiHavebeenPwnedRepository.checkPasswordPwned(password: generatedPassword)
+                        if passwordPwnedState == 1 {
+                            pwnedAlert = true
+                        }
+                        
                     } catch {
                         print("Fehler: \(error)")
                     }
@@ -158,7 +167,13 @@ struct PWGeneratorView: View {
             
         }.padding(.horizontal, 20)
         
-        .presentationDetents([.fraction(0.8)])
+            .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
+                Button("OK", role: .cancel) {}
+            }, message: {
+                Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.")
+            })
+        
+            .presentationDetents([.fraction(0.8)])
     }
 }
 
