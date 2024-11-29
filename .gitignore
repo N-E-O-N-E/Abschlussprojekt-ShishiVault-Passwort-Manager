@@ -3,6 +3,7 @@
 xcuserdata/
 APIKeys.swift
 SaltedKeys.swift
+KeyChainKeys.swift
 
 ## Obj-C/Swift specific
 *.hmap
