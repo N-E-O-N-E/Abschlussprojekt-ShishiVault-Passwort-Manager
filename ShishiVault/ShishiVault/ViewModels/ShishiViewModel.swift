@@ -15,8 +15,8 @@ import CryptoKit
 @MainActor
 class ShishiViewModel: ObservableObject {
     @Published var appState: AppState = .login
-    @Published var symmetricKeychainString: String = KeyChainKey.shared.symmetricKeychainString
-    @Published var userSaltString: String = KeyChainKey.shared.userSaltString
+    @Published var symmetricKeychainString: String = KeyChainKeys().symmetricKeychainString
+    @Published var userSaltString: String = KeyChainKeys().userSaltString
     
     private var keychainUserIDHash: Data?
     private var keychainUserSaltHash: Data?
