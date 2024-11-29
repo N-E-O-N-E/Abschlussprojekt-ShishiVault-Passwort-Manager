@@ -10,6 +10,7 @@ import CryptoKit
 
 class JSONHelper {
     static let shared = JSONHelper()
+    
     private init() {}
     
     // Liefert den GerätePfad zur JSON datei
@@ -22,20 +23,20 @@ class JSONHelper {
         } catch {
             print("Error creating directory: \(error.localizedDescription)")
         }
-        return documentDirectory.appendingPathComponent("shishiVaultData/shishiVaultEntriesDataAES.json")
+        return documentDirectory.appendingPathComponent("shishiVaultData/shishiDataAES_.json")
     }
     
     // Liefert den Geräte DokumentPfad zur (un)verschlüsselten JSON datei
     private func getJSONFilePathForDecrypted() -> URL {
         let documentDirectory = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
-        let passwordFolder = documentDirectory.appendingPathComponent("export_shishiVault_Passwortliste_Klartext")
+        let passwordFolder = documentDirectory.appendingPathComponent("export_shishiVaultData")
         
         do {
             try FileManager.default.createDirectory(at: passwordFolder, withIntermediateDirectories: true, attributes: nil)
         } catch {
             print("Error creating directory: \(error.localizedDescription)")
         }
-        return documentDirectory.appendingPathComponent("export_shishiVault_Passwortliste_Klartext/shishiVaultALL_decrypted.json")
+        return documentDirectory.appendingPathComponent("export_shishiVault_Passwortliste_Klartext/shishiData_klartext_.json")
     }
     
     // Lädt verschlüsseltes JSON und entschlüsselt es
