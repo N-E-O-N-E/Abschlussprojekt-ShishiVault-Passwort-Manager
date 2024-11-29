@@ -23,7 +23,8 @@ class JSONHelper {
         } catch {
             print("Error creating directory: \(error.localizedDescription)")
         }
-        return documentDirectory.appendingPathComponent("shishiVaultData/shishiDataAES_.json")
+        let userSaltPrefix = KeyChainKey.shared.userSaltString.prefix(5)
+        return documentDirectory.appendingPathComponent("shishiVaultData/shishiDataAES_\(userSaltPrefix).json")
     }
     
     // Liefert den Geräte DokumentPfad zur (un)verschlüsselten JSON datei
@@ -36,7 +37,8 @@ class JSONHelper {
         } catch {
             print("Error creating directory: \(error.localizedDescription)")
         }
-        return documentDirectory.appendingPathComponent("export_shishiVault_Passwortliste_Klartext/shishiData_klartext_.json")
+        let userSaltPrefix = KeyChainKey.shared.userSaltString.prefix(5)
+        return documentDirectory.appendingPathComponent("export_shishiVault_Klartext/shishiData_klartext_\(userSaltPrefix).json")
     }
     
     // Lädt verschlüsseltes JSON und entschlüsselt es
