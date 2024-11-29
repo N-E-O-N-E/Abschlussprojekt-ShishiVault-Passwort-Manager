@@ -80,27 +80,45 @@ struct EntrieEditView: View {
                 HStack {
                     TextField(password, text: $password)
                         .customPasswordField()
+                        .onTapGesture {
+                            passwordPwnedState = 0
+                        }
                     
-                    
-                    
-                    
-                    switch passwordPwnedState {
-                        case 1:
-                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                .foregroundColor(Color.ShishiColorRed_)
-                                .scaleEffect(1.4)
-                                .padding(.horizontal, 15)
-                        case 2:
-                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                .foregroundColor(Color.ShishiColorGreen)
-                                .scaleEffect(1.4)
-                                .padding(.horizontal, 15)
-                        default:
-                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                .foregroundColor(Color.ShishiColorGray)
-                                .scaleEffect(1.4)
-                                .padding(.horizontal, 15)
+                    Button(action: {
+                        Task {
+                            passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
+                            if passwordPwnedState == 1 {
+                                pwnedAlert = true
+                            }
+                        }
+                        
+                    }) {
+                        switch passwordPwnedState {
+                            case 1:
+                                Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                    .foregroundColor(Color.ShishiColorRed_)
+                                    .scaleEffect(1.4)
+                                    .padding(.horizontal, 15)
+                            case 2:
+                                Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                    .foregroundColor(Color.ShishiColorGreen)
+                                    .scaleEffect(1.4)
+                                    .padding(.horizontal, 15)
+                            case 0:
+                                Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                    .foregroundColor(Color.ShishiColorGray)
+                                    .scaleEffect(1.4)
+                                    .padding(.horizontal, 15)
+                            default:
+                                Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                    .foregroundColor(Color.ShishiColorGray)
+                                    .scaleEffect(1.4)
+                                    .padding(.horizontal, 15)
+                        }
                     }
+                    .frame(width: 20)
+                    .padding(.horizontal, 10)
+                    
                     
                     Button(action: {
                         Task {
