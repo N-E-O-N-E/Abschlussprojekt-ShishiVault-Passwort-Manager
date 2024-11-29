@@ -12,7 +12,7 @@ struct EntrieAddView: View {
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     @Environment(\.dismiss) private var dismiss
     
-//    @State private var isPasswordVisible: Bool = false
+    //    @State private var isPasswordVisible: Bool = false
     @State private var isSavedAlert: Bool = false
     @State private var pwnedAlert: Bool = false
     @State private var isEmptyFieldsAlert: Bool = false
@@ -88,24 +88,50 @@ struct EntrieAddView: View {
                 HStack {
                     TextField("Passwort", text: $password)
                         .customPasswordField()
+                        .onTapGesture {
+                            passwordPwnedState = 0
+                        }
                     
-                    switch passwordPwnedState {
-                        case 1:
-                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                .foregroundColor(Color.ShishiColorRed_)
-                                .scaleEffect(1.4)
-                                .padding(.horizontal, 10)
-                        case 2:
-                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                .foregroundColor(Color.ShishiColorGreen)
-                                .scaleEffect(1.4)
-                                .padding(.horizontal, 10)
-                        default:
-                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                .foregroundColor(Color.ShishiColorGray)
-                                .scaleEffect(1.4)
-                                .padding(.horizontal, 10)
+                    Button(action: {
+                        password = CryptHelper.shared.randomPasswordMaker()
+                        passwordConfirm = password
+                        passwordPwnedState = 0
+                        
+                        Task {
+                            passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
+                            if passwordPwnedState == 1 {
+                                pwnedAlert = true
+                            }
+                        }
+                    }) {
+                        switch passwordPwnedState {
+                            case 1:
+                                Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                    .foregroundColor(Color.ShishiColorRed_)
+                                    .scaleEffect(1.4)
+                                    .padding(.horizontal, 10)
+                            case 2:
+                                Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                    .foregroundColor(Color.ShishiColorGreen)
+                                    .scaleEffect(1.4)
+                                    .padding(.horizontal, 10)
+                            case 0:
+                                Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                    .foregroundColor(Color.ShishiColorGray)
+                                    .scaleEffect(1.4)
+                                    .padding(.horizontal, 10)
+                            default:
+                                Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                    .foregroundColor(Color.ShishiColorGray)
+                                    .scaleEffect(1.4)
+                                    .padding(.horizontal, 10)
+                        }
                     }
+                    .padding(5)
+                    .padding(.horizontal, 10)
+                    
+                    
+                    
                     
                     Button(action: {
                         password = CryptHelper.shared.randomPasswordMaker()
@@ -297,7 +323,7 @@ struct EntrieAddView: View {
                 showAddEntrieView.toggle()
             }
         }, message: {
-                Text("Die Daten wurden erfolgreich gespeichert.")
+            Text("Die Daten wurden erfolgreich gespeichert.")
         })
         
         .alert("Fehler", isPresented: $isEmptyFieldsAlert, actions: {
