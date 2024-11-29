@@ -13,34 +13,67 @@ class JSONHelper {
     private init() {}
     
     // Liefert den GerätePfad zur JSON datei
-    private func getJSONFilePath() -> URL {
-        let documentDirectory = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first!
-        let passwordFolder = documentDirectory.appendingPathComponent("shishiVaultData")
-       
-        do {
-            try FileManager.default.createDirectory(at: passwordFolder, withIntermediateDirectories: true, attributes: nil)
-        } catch {
-            print("Error creating directory: \(error.localizedDescription)")
+    private func getJSONFilePath() -> URL? {
+        guard let documentDirectory = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first else {
+            print("Error: Could not find Library directory.")
+            return nil
         }
-        return documentDirectory.appendingPathComponent("shishiVaultData/shishiVaultEntriesDataAES.json")
-    }
-    
-    // Liefert den Geräte DokumentPfad zur (un)verschlüsselten JSON datei
-    private func getJSONFilePathForDecrypted() -> URL {
-        let documentDirectory = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
-        let passwordFolder = documentDirectory.appendingPathComponent("export_shishiVault_Passwortliste_Klartext")
+        
+        let passwordFolder = documentDirectory.appendingPathComponent("shishiVaultData")
         
         do {
             try FileManager.default.createDirectory(at: passwordFolder, withIntermediateDirectories: true, attributes: nil)
         } catch {
             print("Error creating directory: \(error.localizedDescription)")
         }
-        return documentDirectory.appendingPathComponent("export_shishiVault_Passwortliste_Klartext/shishiVaultALL_decrypted.json")
+        
+        guard let userSalt = KeychainHelper.shared.read(for: KeyChainKeys().userSaltString) else {
+            print("Error: No userSalt found")
+            return nil
+        }
+        
+        // Wandelt die Daten wieder in SHA256 lesbaren String
+        let stringPrefix = userSalt.map { String(format: "%02x", $0) }.joined().prefix(10)
+        
+        let filePath = passwordFolder.appendingPathComponent("shishiDataAES_\(stringPrefix).json")
+        return filePath
+    }
+    
+    // Liefert den Geräte DokumentPfad zur (un)verschlüsselten JSON datei
+    private func getJSONFilePathForDecrypted() -> URL? {
+        guard let documentDirectory = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first else {
+                print("Error: Could not find Library directory.")
+                return nil
+            }
+        
+        let passwordFolder = documentDirectory.appendingPathComponent("export_shishiVault_Klartext")
+        
+        do {
+            try FileManager.default.createDirectory(at: passwordFolder, withIntermediateDirectories: true, attributes: nil)
+        } catch {
+            print("Error creating directory: \(error.localizedDescription)")
+        }
+        
+        guard let userSalt = KeychainHelper.shared.read(for: KeyChainKeys().userSaltString) else {
+            print("Error: No userSalt found")
+            return nil
+        }
+        
+        // Wandelt die Daten wieder in SHA256 lesbaren String
+        let stringPrefix = userSalt.map { String(format: "%02x", $0) }.joined().prefix(10)
+        
+        let filePath = passwordFolder.appendingPathComponent("/shishiData_klartext_\(stringPrefix).json")
+        return filePath
+        
     }
     
     // Lädt verschlüsseltes JSON und entschlüsselt es
     func loadEntriesFromJSON(key: SymmetricKey) async -> [EntryData] {
-        let path = getJSONFilePath()
+        guard let path = getJSONFilePath() else {
+            print("Path not found for loading entries from JSON")
+            return []
+        }
+        
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
         
@@ -62,7 +95,11 @@ class JSONHelper {
     
     // Speichert die Daten verschlüsselt in JSON
     func saveEntriesToJSON(key: SymmetricKey, entries: [EntryData]) {
-        let path = getJSONFilePath()
+        guard let path = getJSONFilePath() else {
+            print("Path not found for saving entries to JSON")
+            return
+        }
+        
         do {
             if let jsonData = setDateToJSON(entries: entries) {
                 let encryptData = try CryptHelper.shared.encrypt(data: jsonData, key: key)
@@ -76,7 +113,10 @@ class JSONHelper {
     
     // Speichert die Daten (un)verschlüsselt in JSON !!!!!!!!!
     func saveEntriesToJSONDecrypted(key: SymmetricKey, entries: [EntryData]) {
-        let path = getJSONFilePathForDecrypted()
+        guard let path = getJSONFilePathForDecrypted() else {
+            print("Path not found for saving entries to JSON")
+            return
+        }
         do {
             if let jsonData = setDateToJSON(entries: entries) {
                 try jsonData.write(to: path)
@@ -88,7 +128,11 @@ class JSONHelper {
     }
     
     func deleteEntiresFromJSON(key: SymmetricKey, entrie: EntryData) {
-        let path = getJSONFilePath()
+        guard let path = getJSONFilePath() else {
+            print("Path not found for deleting entries from JSON")
+            return
+        }
+        
         do {
             let encryptData = try Data(contentsOf: path)
             let decryptData = try CryptHelper.shared.decrypt(cipherText: encryptData, key: key)
@@ -106,7 +150,11 @@ class JSONHelper {
     }
     
     func eraseJSONFile() {
-        let path = getJSONFilePath()
+        guard let path = getJSONFilePath() else {
+            print("Path not found for erasing JSON File")
+            return
+        }
+        
         do {
             try FileManager.default.removeItem(at: path)
         } catch {
