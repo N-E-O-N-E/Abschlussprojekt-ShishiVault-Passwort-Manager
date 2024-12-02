@@ -65,6 +65,5 @@ Shishi Vault schützt Ihre Daten so zuverlässig wie die Shishi-Löwen und biete
 <p>
   <img src="./images/Slide 16_9 - 2.png" width="333">
    <img src="./images/Slide 16_9 - 3.png" width="333">
-   <img src="./images/Slide 16_9 - 4.png" width="333">
 </p>
 
