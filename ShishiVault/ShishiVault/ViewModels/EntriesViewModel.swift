@@ -26,9 +26,8 @@ class EntriesViewModel: ObservableObject {
             print("Failed to reload entries. Symmetric key not found")
             return
         }
-//        let key = SymmetricKey(data: symmetricKey)
-        let loadedEntries = await jsonHelper.loadEntriesFromJSON(key: symmetricKey)
-        self.entries = loadedEntries.sorted(by: { $0.title.lowercased() < $1.title.lowercased() })
+        self.entries = await jsonHelper.loadEntriesFromJSON(key: symmetricKey)
+        
         print("\(entries.count) Entries from JSON reloaded")
         
     }

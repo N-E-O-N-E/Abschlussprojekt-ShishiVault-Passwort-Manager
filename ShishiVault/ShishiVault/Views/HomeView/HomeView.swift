@@ -14,6 +14,7 @@ struct HomeView: View {
     @State private var showAddEntrieView: Bool = false
     @State private var entrieShowView: Bool = false
     @State private var showSettingsView: Bool = false
+    @State var sortByDate: Bool = false
     
     @State private var searchText: String = ""
     let zufall = Range(0...100)
@@ -32,8 +33,20 @@ struct HomeView: View {
                 .padding(0)
             
             VStack {
-                TextField("\(Image(systemName: "magnifyingglass")) Suche (z.B. \"Apple\")", text: $searchText)
-                    .customSearchField()
+                HStack {
+                    TextField("\(Image(systemName: "magnifyingglass")) Suche (z.B. \"Apple\")", text: $searchText)
+                        .customSearchField()
+                    
+                    Button {
+                        sortByDate.toggle()
+                    } label: {
+                        Text(sortByDate ? "DATUM" : "TITEL")
+                            .panelText().opacity(0.5)
+                        Image(systemName: sortByDate ? "arrow.up.arrow.down.square.fill" : "arrow.up.arrow.down.square")
+                            .padding(1)
+                    }
+
+                }
             }.padding(.horizontal).padding(.vertical, 5)
             
             
@@ -45,20 +58,39 @@ struct HomeView: View {
                         Text("\n\n\nNoch keine Daten gespeichert.")
                             .warningTextLarge()
                     } else {
-                        
-                        ForEach(entrieViewModel.entries.filter { entry in
-                            searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
-                        }) { entry in
-                            NavigationLink {
-                                EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
-                                    .environmentObject(entrieViewModel)
-                                    .environmentObject(shishiViewModel)
+                        if sortByDate {
+                            ForEach(entrieViewModel.entries.filter { entry in
+                                searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
                                 
-                            } label: {
-                                EntrieListItem(title: entry.title, email: entry.email,
-                                               created: entry.created, website: entry.website ?? "")
+                            }.sorted(by: { $0.created > $1.created }) ) { entry in
+                                
+                                NavigationLink {
+                                    EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
+                                        .environmentObject(entrieViewModel)
+                                        .environmentObject(shishiViewModel)
+                                    
+                                } label: {
+                                    EntrieListItem(title: entry.title, email: entry.email,
+                                                   created: entry.created, website: entry.website ?? "")
+                                }
                             }
+                        } else {
                             
+                            ForEach(entrieViewModel.entries.filter { entry in
+                                searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
+                                
+                            }.sorted(by: { $0.title < $1.title }) ) { entry in
+                                
+                                NavigationLink {
+                                    EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
+                                        .environmentObject(entrieViewModel)
+                                        .environmentObject(shishiViewModel)
+                                    
+                                } label: {
+                                    EntrieListItem(title: entry.title, email: entry.email,
+                                                   created: entry.created, website: entry.website ?? "")
+                                }
+                            }
                         }
                     }
                 } // End VStack
