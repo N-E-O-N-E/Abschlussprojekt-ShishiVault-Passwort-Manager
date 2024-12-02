@@ -20,8 +20,6 @@ struct PWGeneratorView: View {
     @State private var generatedPassword: String = ""
     @State private var passwordPwnedState: Int = 0
     
-    
-    
     private var sliderColor: Color {
         if length < 6 {
             return Color.ShishiColorRed_
@@ -109,10 +107,16 @@ struct PWGeneratorView: View {
                 .padding(.vertical, 15)
             }
             
+            
+            
+            
             PWLevelColorView(password: $generatedPassword)
                 .padding(.vertical, 10)
             
             Divider()
+            
+            
+            
             
             HStack {
                 Text("Länge (\(length.formatted(.number))) ")
@@ -124,6 +128,9 @@ struct PWGeneratorView: View {
             
             Divider()
             
+            
+            
+            
             Toggle("Großbuchstaben (A-Z)", isOn: $upperCase)
                 .padding(.vertical, 5)
             Toggle("Kleinbuchstaben (a-z)", isOn: $lowerCase)
@@ -133,10 +140,9 @@ struct PWGeneratorView: View {
             Toggle("Symbole (!@#$%^&*)", isOn: $symbols)
                 .padding(.vertical, 5)
             
+            
+            
             Button {
-                
-                
-                
                 Task {
                     do {
                         if !upperCase && !lowerCase && !numbers && !symbols {
@@ -177,6 +183,10 @@ struct PWGeneratorView: View {
             }.padding(.horizontal, 10)
             
             
+            
+            
+            
+            
             HStack {
                 Image(systemName: "info.circle")
                     .foregroundColor(Color.ShishiColorRed_)
@@ -187,11 +197,18 @@ struct PWGeneratorView: View {
             
         }.padding(.horizontal, 20)
         
+        
+        
+        
+        
             .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
                 Button("OK", role: .cancel) {}
             }, message: {
                 Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.")
             })
+        
+        
+        
         
             .presentationDetents([.fraction(0.8)])
     }
