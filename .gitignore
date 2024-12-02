@@ -1,9 +1,9 @@
 # Xcode
 ## User settings
 xcuserdata/
-APIKeys.swift
-SaltedKeys.swift
-KeyChainKeys.swift
+
+## APIKeys.swift
+## KeyChainKeys.swift
 
 ## Obj-C/Swift specific
 *.hmap
