@@ -71,10 +71,16 @@ struct EntrieEditView: View {
                         .customTextFieldTextLow()
                     Spacer()
                 }
-                Divider()
                 
+                
+                
+                
+                
+                Divider()
                 PWLevelColorView(password: $password)
                     .padding(.vertical, 20)
+                
+                
                 
                 
                 HStack {
@@ -120,6 +126,9 @@ struct EntrieEditView: View {
                     .padding(.horizontal, 10)
                     
                     
+                    
+                    
+                    
                     Button(action: {
                         Task {
                             password = CryptHelper.shared.randomPasswordMaker()
@@ -142,6 +151,10 @@ struct EntrieEditView: View {
                         .customTextFieldTextLow()
                     Spacer()
                 }
+                
+                
+                
+                
                 
                 Divider().padding(.vertical, 10)
                 
@@ -167,6 +180,10 @@ struct EntrieEditView: View {
                 }
                 
                 Spacer()
+                
+                
+                
+                
                 
                 Button {
                     switch entrieViewModel.entrieUpdateButtomnCheck(
@@ -208,6 +225,11 @@ struct EntrieEditView: View {
         }
         .padding(.horizontal).padding(.vertical, 5)
         
+        
+        
+        
+        
+        
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -242,6 +264,10 @@ struct EntrieEditView: View {
             }
         }
         
+        
+        
+        
+        
         .sheet(isPresented: $customFieldSheet) {
             CustomFieldAddView(customFieldSheet: $customFieldSheet)
                 .environmentObject(entrieViewModel)
@@ -250,6 +276,10 @@ struct EntrieEditView: View {
             PWGeneratorView(customFieldSheet: $customFieldSheet)
                 .environmentObject(entrieViewModel)
         }
+        
+        
+        
+        
         
         
         .alert("Hinweis", isPresented: $savedAlert, actions: {

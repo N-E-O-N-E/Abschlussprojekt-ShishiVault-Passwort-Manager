@@ -27,7 +27,8 @@ class EntriesViewModel: ObservableObject {
             return
         }
 //        let key = SymmetricKey(data: symmetricKey)
-        self.entries = await jsonHelper.loadEntriesFromJSON(key: symmetricKey)
+        let loadedEntries = await jsonHelper.loadEntriesFromJSON(key: symmetricKey)
+        self.entries = loadedEntries.sorted(by: { $0.title.lowercased() < $1.title.lowercased() })
         print("\(entries.count) Entries from JSON reloaded")
         
     }

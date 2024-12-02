@@ -76,6 +76,7 @@ class JSONHelper {
         
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
+
         
         guard FileManager.default.fileExists(atPath: path.path) else {
             print("No JSON file found at \(path.path)")

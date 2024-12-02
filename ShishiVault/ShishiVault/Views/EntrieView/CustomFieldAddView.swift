@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CustomFieldAddView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
-    
     @Binding var customFieldSheet: Bool
     
     @State private var name: String = ""
@@ -69,8 +68,6 @@ struct CustomFieldAddView: View {
             }
         
             .presentationDetents([.fraction(0.3)])
-    
-        
     }
 }
 

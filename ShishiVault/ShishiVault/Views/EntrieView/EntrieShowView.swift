@@ -12,14 +12,13 @@ struct EntrieShowView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     @EnvironmentObject var entrieViewModel: EntriesViewModel
-    
     @Binding var entrieShowView: Bool
+    
     @State var entrieEditView: Bool = false
     var entry: EntryData
     
     @State private var isDeleteAlert: Bool = false
     @State private var isPasswordVisible: Bool = false
-    
     @State private var title: String = ""
     @State private var username: String = ""
     @State private var email: String = ""
@@ -27,7 +26,6 @@ struct EntrieShowView: View {
     @State private var passwordConfirm: String = ""
     @State private var notes: String = ""
     @State private var website: String = ""
-    
     
     var body: some View {
         ScrollView {
@@ -70,6 +68,7 @@ struct EntrieShowView: View {
                         .customTextFieldTextLow()
                     Spacer()
                 }
+                
                 
                 
                 
@@ -131,6 +130,10 @@ struct EntrieShowView: View {
                     }
                     .frame(width: 25)
                     .padding(.horizontal, 10)
+                    
+                    
+                    
+                    
                     
                     Button(action: {
                         if !entry.password.isEmpty {

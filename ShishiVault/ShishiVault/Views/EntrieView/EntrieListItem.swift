@@ -33,17 +33,18 @@ struct EntrieListItem: View {
                     HStack {
                         Text("Mail:")
                             .panelText()
-                        Text(email.count > 28 ? String(email.prefix(28)) + " ..." : email)
+                        Text(email.count > 24 ? String(email.prefix(24)) + " ..." : email)
                             .panelText()
                         Spacer()
                     }
                     HStack {
                         Text("Link:")
                             .panelText()
-                        Text(website.count > 29 ? String(website.prefix(29)) + " ..." : website)
+                        Text(website.count > 24 ? String(website.prefix(24)) + " ..." : website)
                             .panelText()
                         
                         Spacer()
+                        
                     }
                     
                     Divider()
@@ -55,6 +56,11 @@ struct EntrieListItem: View {
                 }
                 Spacer()
                 
+                Text(title.prefix(1))
+                    .font(.largeTitle).bold()
+                    .foregroundStyle(Color.ShishiColorBlue.opacity(0.2))
+                    
+                    .padding(10)
 //                Image(systemName: "info.circle")
 //                    .scaleEffect(1.2)
 //                    .foregroundColor(Color.ShishiColorDarkGray)

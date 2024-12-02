@@ -23,6 +23,8 @@ struct SetSaltKeyView: View {
             
             Spacer()
             
+            
+            
             VStack(alignment: .leading) {
                 Text("Ihr persönlicher Master-Key")
                     .ueberschriftenTextBold()
@@ -41,6 +43,10 @@ struct SetSaltKeyView: View {
                     .normalerText()
                 
                 Spacer()
+                
+                
+                
+                
                 
                 Button {
                     if !userSaltInput.isEmpty {
@@ -71,13 +77,23 @@ struct SetSaltKeyView: View {
                 }
             }.padding(.horizontal).padding(.vertical, 5)
         }
+        
+        
+        
+        
+        
         .navigationBarBackButtonHidden()
+        
+        
         
         .alert("Master-Key\n", isPresented: $keyAlert, actions: {
             Button("OK", role: .cancel) {}
         }, message: {
                 Text("Der MasterKey darf nicht leer sein!")
         })
+        
+        
+        
     }
 }
 

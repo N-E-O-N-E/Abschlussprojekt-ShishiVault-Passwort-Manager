@@ -78,11 +78,15 @@ struct EntrieAddView: View {
                 
                 
                 
+                
                 Divider()
                     .padding(.vertical, 1)
                 
                 PWLevelColorView(password: $password)
                     .padding(.vertical, 15)
+                
+                
+                
                 
                 
                 HStack {
@@ -133,6 +137,8 @@ struct EntrieAddView: View {
                     
                     
                     
+                    
+                    
                     Button(action: {
                         password = CryptHelper.shared.randomPasswordMaker()
                         passwordConfirm = password
@@ -153,6 +159,10 @@ struct EntrieAddView: View {
                     .padding(5)
                     .padding(.horizontal, 10)
                     
+                    
+                    
+                    
+                    
                 }
                 HStack {
                     Text("Passworteinagabe")
@@ -168,6 +178,10 @@ struct EntrieAddView: View {
                         .customTextFieldTextLow()
                     Spacer()
                 }
+                
+                
+                
+                
                 
                 Divider()
                     .padding(.vertical, 5)
@@ -269,6 +283,9 @@ struct EntrieAddView: View {
         
         
         
+        
+        
+        
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -306,6 +323,8 @@ struct EntrieAddView: View {
         
         
         
+        
+        
         .sheet(isPresented: $customFieldSheet) {
             CustomFieldAddView(customFieldSheet: $customFieldSheet)
                 .environmentObject(entrieViewModel)
@@ -314,6 +333,8 @@ struct EntrieAddView: View {
             PWGeneratorView(customFieldSheet: $customFieldSheet)
                 .environmentObject(entrieViewModel)
         }
+        
+        
         
         
         
@@ -349,6 +370,8 @@ struct EntrieAddView: View {
         }, message: {
             Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.")
         })
+        
+        
         
         
         
