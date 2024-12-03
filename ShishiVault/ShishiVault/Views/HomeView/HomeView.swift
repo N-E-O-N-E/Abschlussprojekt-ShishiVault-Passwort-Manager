@@ -147,6 +147,9 @@ struct HomeView: View {
                 .environmentObject(shishiViewModel)
                 .environmentObject(entrieViewModel)
         })
+        .navigationDestination(isPresented: $showHelpView, destination: {
+            HelpView()
+        })
         
         .onAppear {
             Task {
