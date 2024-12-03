@@ -25,6 +25,20 @@ extension Color {
                       Color(red: 245/255, green: 250/255, blue: 255/255)])
 }
 
+// Formatierung Bilder im Hilfebereich
+extension Image {
+    func helpPictures() -> some View {
+        self
+            .resizable()
+            .scaledToFill()
+            .frame(width: 220)
+            .clipShape(.rect(cornerRadius: 15))
+            .shadow(radius: 2, x: 1, y: 2)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 10)
+    }
+}
+
 // Formatierung Text für Warnhinweise in Rot
 extension Text {
     func warningTextLarge() -> some View {

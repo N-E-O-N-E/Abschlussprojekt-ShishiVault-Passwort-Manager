@@ -27,11 +27,13 @@ struct HelpView: View {
             ScrollView {
                 HStack {
                     VStack(alignment: .leading) {
-                        Divider()
                         
-                        Text("\nÜber Shishi Vault")
+                        
+                        Text("Über Shishi Vault")
                             .ueberschriftenTextBold()
-                        Text("Beschreibungstextdsadhjksdhjsakhdsjadhsajdhsakjdhsakjdhsajkdhasjkdhk")
+                        Image("pic1")
+                            .helpPictures()
+                        Text("Mit dem Shishi Vault Passwortmanager speichern die ihre Daten sicher und schnell. Shishi Vault gewährleistet die Sicherheit und Vertraulichkeit der schützeswerten Daten, indem er sensible Daten verschlüsselt speichert und so vor Datenmissbrauch durch dritte schüzt.")
                             .normalerText()
                         Divider()
                         
