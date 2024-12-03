@@ -19,8 +19,8 @@ extension Color {
     static let ShishiColorDarkGray = Color(red: 0.3, green: 0.3, blue: 0.3)
     static let ShishiColorGray = Color(red: 0.5, green: 0.5, blue: 0.5)
     static let ShishiColorBlack = Color(red: 0.0, green: 0.0, blue: 0.0)
-    static let ShishiColorPanelBackground_ = Color(red: 240/255, green: 245/255, blue: 255/255)
-    static let ShishiColorPanelBackground =
+    static let ShishiColorPanelBackground = Color(.white)// Color(red: 240/255, green: 245/255, blue: 255/255)
+    static let ShishiColorPanelBackground_ =
     Gradient(colors: [Color(red: 235/255, green: 245/255, blue: 255/255),
                       Color(red: 245/255, green: 250/255, blue: 255/255)])
 }
@@ -178,6 +178,7 @@ extension TextField {
                 .stroke(Color.ShishiColorGray, lineWidth: 1 ))
             .disableAutocorrection(true)
             .textInputAutocapitalization(.never)
+            .padding(0.5)
     }
 }
 
@@ -231,6 +232,7 @@ extension TextField {
                 .stroke(Color.ShishiColorGray, lineWidth: 1))
             .disableAutocorrection(true)
             .textInputAutocapitalization(.never)
+            .padding(0.5)
     }
 }
 
@@ -247,6 +249,7 @@ extension SecureField {
                 .stroke(Color.ShishiColorGray, lineWidth: 1))
             .disableAutocorrection(true)
             .textInputAutocapitalization(.never)
+            .padding(0.5)
     }
 }
 
