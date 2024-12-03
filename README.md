@@ -1,5 +1,5 @@
 <p>
-  <img src="./images/Slide 16_9 - 1.png" width="1000">
+  <img src="./images/Slide 16_9 - 2.png" width="1000">
 </p>
 
 # Shishi Vault - iOS Passwort-Manager "Modul Abschlussarbeit"
@@ -83,7 +83,7 @@ App-Download und fehlende Daten:
 ---
 
 <p>
-  <img src="./images/Slide 16_9 - 2.png" width="333">
+  <img src="./images/Slide 16_9 - 1.png" width="333">
    <img src="./images/Slide 16_9 - 3.png" width="333">
 </p>
 
