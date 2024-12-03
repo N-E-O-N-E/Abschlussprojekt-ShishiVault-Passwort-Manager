@@ -14,10 +14,9 @@ struct HomeView: View {
     @State private var showAddEntrieView: Bool = false
     @State private var entrieShowView: Bool = false
     @State private var showSettingsView: Bool = false
+    @State private var showHelpView: Bool = false
     @State var sortByDate: Bool = false
-    
     @State private var searchText: String = ""
-    let zufall = Range(0...100)
     
     init() {
         let key = ShishiViewModel().symmetricKeychainString
@@ -97,29 +96,15 @@ struct HomeView: View {
                 
                 
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button("_") {
-                            entrieViewModel.createEntry(
-                                title: "0_Testeintrag \(zufall.randomElement() ?? 0)",
-                                username: "Max Mustermann", email: "text@meineDomain.com",
-                                password: "1234", passwordConfirm: "1234", notes: "TestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotesTestnotes",
-                                website: "http://testserver.com/",
-                                customFields: [
-                                    CustomField(name: "C1", value: "Test1"),
-                                    CustomField(name: "C2", value: "Test2"),
-                                    CustomField(name: "C3", value: "Test3")
-                                ])
-                            
-                            if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
-                                Task {
-                                    JSONHelper.shared.saveEntriesToJSON(
-                                        key: key,
-                                        entries: entrieViewModel.entries)
-                                    await entrieViewModel.reloadEntries()
-                                }
-                            }
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            showHelpView.toggle()
+                        } label: {
+                            Image(systemName: "info.bubble.rtl")
                         }
                     }
+                    
+                    
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
                             showSettingsView.toggle()
@@ -139,12 +124,12 @@ struct HomeView: View {
                 Image(systemName: "plus")
                     .foregroundColor(.white)
                     .padding()
-                    .background(Color.ShishiColorRed)
+                    .background(Color.ShishiColorGreen).opacity(0.75)
                     .clipShape(Circle())
                     .scaleEffect(1.3)
-                    .shadow(radius: 5)
+                    .shadow(radius: 1)
             }
-                .padding(.bottom, 40)
+                .padding(.bottom, 20)
                 .padding(.trailing, 50),
             alignment: .bottomTrailing
         )

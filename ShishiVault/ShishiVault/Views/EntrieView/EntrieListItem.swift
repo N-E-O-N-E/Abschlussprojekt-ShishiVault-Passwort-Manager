@@ -19,48 +19,47 @@ struct EntrieListItem: View {
             Rectangle()
                 .foregroundStyle(Color.ShishiColorPanelBackground)
                 .clipShape(.rect(cornerRadius: 10))
-                .shadow(radius: 1, x: 0, y: 1)
+                .shadow(color: .ShishiColorBlue, radius: 3, x: 0, y: 4).opacity(0.2)
             
             HStack {
-                Image(systemName: "lock.document.fill")
-                    .foregroundStyle(Color.ShishiColorBlue)
-                    .scaleEffect(2.4)
-                    .padding(.horizontal, 20)
+                Text(title.prefix(1))
+                    .frame(width: 30, alignment: .center)
+                    .font(.largeTitle).bold()
+                    .foregroundStyle(Color.ShishiColorBlue.opacity(0.2))
+                    .scaleEffect(1.9)
+                    .padding(.horizontal, 15)
+//                Image(systemName: "key.2.on.ring.fill")
+//                    .foregroundStyle(Color.ShishiColorBlue).opacity(0.75)
+//                    .scaleEffect(2.0)
+//                    .padding(.horizontal, 20)
                 
                 VStack(alignment: .leading) {
-                    Text(title)
+                    Text(title.count > 30 ? String(title.prefix(30)) + " ..." : title)
                         .panelTextBold()
                     HStack {
                         Text("Mail:")
                             .panelText()
-                        Text(email.count > 24 ? String(email.prefix(24)) + " ..." : email)
+                        Text(email.count > 30 ? String(email.prefix(30)) + " ..." : email)
                             .panelText()
                         Spacer()
                     }
                     HStack {
                         Text("Link:")
                             .panelText()
-                        Text(website.count > 24 ? String(website.prefix(24)) + " ..." : website)
+                        Text(website.count > 30 ? String(website.prefix(30)) + " ..." : website)
                             .panelText()
                         
                         Spacer()
-                        
                     }
-                    
                     Divider()
-                    
                     Text("Aktualisiert am: \(created.formatted())")
                         .font(.caption2)
                         .foregroundStyle(Color.ShishiColorDarkGray)
                         .padding(0)
                 }
+               
                 Spacer()
                 
-                Text(title.prefix(1))
-                    .font(.largeTitle).bold()
-                    .foregroundStyle(Color.ShishiColorBlue.opacity(0.2))
-                    
-                    .padding(10)
 //                Image(systemName: "info.circle")
 //                    .scaleEffect(1.2)
 //                    .foregroundColor(Color.ShishiColorDarkGray)
