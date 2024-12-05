@@ -41,8 +41,8 @@ class JSONHelper {
     
     // Liefert den Geräte DokumentPfad zur (un)verschlüsselten JSON datei
     private func getJSONFilePathForDecrypted() -> URL? {
-        guard let documentDirectory = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first else {
-                print("Error: Could not find Library directory.")
+        guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+                print("Error: Could not find Document directory.")
                 return nil
             }
         

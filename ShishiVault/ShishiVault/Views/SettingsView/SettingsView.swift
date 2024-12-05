@@ -34,7 +34,7 @@ struct SettingsView: View {
             
             VStack(alignment: .leading) {
                 
-                Text("Unverschlüsselte Sicherung")
+                Text("\nUnverschlüsselte Sicherung")
                     .ueberschriftenText()
                 
                 Button {
@@ -51,51 +51,51 @@ struct SettingsView: View {
                 }.padding(.horizontal, 20)
                     .padding(.vertical, 10)
                 
-                Text("Alle Daten werden in Klartext als JSON-Datei im Downloadverzeichnis gespeichert.")
+                Text("Alle Daten werden in Klartext als JSON-Datei im Dokumenteverzeichnis gespeichert.")
                     .customTextFieldTextMid()
                 
                 
                 Divider()
                 
                 
-                Text("Speichern in der iCloud")
-                    .ueberschriftenText()
-                
-                HStack {
-                    Button {
-                        //
-                    } label: {
-                        RoundedRectangle(cornerRadius: 25)
-                            .fill(Color.ShishiColorGray)
-                            .frame(width: 170, height: 35)
-                            .foregroundColor(.white)
-                            .overlay(
-                                Text("Upload  \(Image(systemName: "square.and.arrow.up.fill"))")
-                                    .font(.subheadline).bold()
-                                    .foregroundColor(.white))
-                    }.padding(.vertical, 10)
-                        .disabled(true)
-                    
-                    Button {
-                        //
-                    } label: {
-                        RoundedRectangle(cornerRadius: 25)
-                            .fill(Color.ShishiColorGray)
-                            .frame(width: 170, height: 35)
-                            .foregroundColor(.white)
-                            .overlay(
-                                Text("Download   \(Image(systemName: "square.and.arrow.down.fill"))")
-                                    .font(.subheadline).bold()
-                                    .foregroundColor(.white))
-                    }.padding(.vertical, 10)
-                        .disabled(true)
-                    
-                }.padding(.horizontal, 20)
-                
-                Text("Verschlüsselte JSON-Daten aus der iCloud laden oder speichern. iCloud Datenspeicherung auf ihrem Gerät muss aktiviert sein.")
-                    .customTextFieldTextMid()
-                
-                Divider()
+//                Text("Speichern in der iCloud")
+//                    .ueberschriftenText()
+//                
+//                HStack {
+//                    Button {
+//                        //
+//                    } label: {
+//                        RoundedRectangle(cornerRadius: 25)
+//                            .fill(Color.ShishiColorGray)
+//                            .frame(width: 170, height: 35)
+//                            .foregroundColor(.white)
+//                            .overlay(
+//                                Text("Upload  \(Image(systemName: "square.and.arrow.up.fill"))")
+//                                    .font(.subheadline).bold()
+//                                    .foregroundColor(.white))
+//                    }.padding(.vertical, 10)
+//                        .disabled(true)
+//                    
+//                    Button {
+//                        //
+//                    } label: {
+//                        RoundedRectangle(cornerRadius: 25)
+//                            .fill(Color.ShishiColorGray)
+//                            .frame(width: 170, height: 35)
+//                            .foregroundColor(.white)
+//                            .overlay(
+//                                Text("Download   \(Image(systemName: "square.and.arrow.down.fill"))")
+//                                    .font(.subheadline).bold()
+//                                    .foregroundColor(.white))
+//                    }.padding(.vertical, 10)
+//                        .disabled(true)
+//                    
+//                }.padding(.horizontal, 20)
+//                
+//                Text("Verschlüsselte JSON-Daten aus der iCloud laden oder speichern. iCloud Datenspeicherung auf ihrem Gerät muss aktiviert sein.")
+//                    .customTextFieldTextMid()
+//                
+//                Divider()
                 
                 
                 Text("Alle Daten löschen")
@@ -110,13 +110,13 @@ struct SettingsView: View {
                         .frame(width: 350, height: 35)
                         .foregroundColor(.white)
                         .overlay(
-                            Text("Alles löschen   \(Image(systemName: "exclamationmark.triangle"))")
+                            Text("Unwiederruflich löschen   \(Image(systemName: "exclamationmark.triangle"))")
                                 .font(.subheadline).bold()
                                 .foregroundColor(.white))
                 }.padding(.horizontal, 20)
                     .padding(.vertical, 10)
                 
-                Text("Alle Daten werden auf diesem Gerät unwiederruflich gelöscht - Daten in der iCloud bleiben bestehen!")
+                Text("Löscht die JSON Daten auf diesem Gerät unwiederruflich.")
                     .customTextFieldTextMid()
                 
                 
