@@ -4,10 +4,11 @@
 
 # Shishi Vault - iOS Passwort-Manager "Modul Abschlussarbeit"
 
-Shishi Vault ist ein Passwort-Manager für iOS, entwickelt mit SwiftUI iOS 18 unter XCode 16. Der Name "Shishi" bedeutet Wächterlöwe und ist inspiriert von den chinesischen Shishi-Löwen, die symbolisch als Schutzwächter vor vielen Hauseingängen, speziell vor den Eingängen traditioneller Gebäude und Tempeln wachen. Diese App soll die Sicherheit und Vertraulichkeit Ihrer Passwörter und persönlichen Daten gewährleisten indem sie sensible Daten sicher speichert und so vor Datenmissbrauch schüzt. 
+Shishi Vault ist ein Passwort-Manager für iOS, entwickelt mit SwiftUI für iOS 18 und Xcode 16. Der Name “Shishi” bedeutet sinngemäß “Wächterlöwe” und ist inspiriert von den chinesischen Shishi-Löwen, die traditionell als Schutzwächter vor Hauseingängen, insbesondere vor den Eingängen traditioneller Gebäude und Tempel, stehen. Shishi Vault ist eine App, die Sicherheit und Vertraulichkeit Ihrer Passwörter und persönlichen Daten gewährleistet, indem sie sensible Informationen sicher speichert und so vor Datenmissbrauch durch Dritte schützt.
 
-Die APP wird aktuell zunächst im Rahmen einer Prüfungsarbeit geschrieben und erfüllt die Mindestanforderungen als Basis für die spätere Weiterentwicklung. Über die Mindestanforderungen hinaus wird die App auch alle Grundfunktionen bieten um Zugangsdaten sicher zu verwalten.
-Nach der Prüfungphase ist das Ziel, die App weiter zu entwickeln und zum einen die Usability aber auch den Funktionsumfang zu steigern und sie im AppStore final zu veröffentlichen.
+Die App wird aktuell im Rahmen einer Prüfungsarbeit entwickelt und erfüllt neben den prüfungsrelevanten Mindestanforderungen alle wesentlichen Funktionen, um sensible Daten sicher und effizient zu verwalten. Nach der Prüfungsphase im Dezember 2024 ist es das erklärte Ziel, die App kontinuierlich weiterzuentwickeln, sowohl die Usability als auch den Funktionsumfang dauerhaft zu verbessern.
+
+Eine veröffentlichung der APP ist 2025 geplant.
 
 Formale Prüfungskriterien sind: 
   -  Ausarbeiten einer Readme Datei
@@ -26,50 +27,80 @@ Formale Prüfungskriterien sind:
 
 ### Über das Projekt:
 
-Shishi Vault ist eine iOS-App zur Verwaltung und sicheren Speicherung von Passwörtern, Bankdaten und anderen sensiblen Informationen. Shishi Vault nutzt ausschließlich native Apple-Technologien für die Benutzeranmeldung, Datenspeicherung und -synchronisation, um maximale Sicherheit und Datenschutz ohne Drittanbieter-Dienste zu gewährleisten. Die App verwendet Keychain und das CryptKit für die sichere Anmeldung und Speicherung der Daten auf dem Gerät des Benutzers. Für die Anmeldung kommt der AppleSignInButton zum Einsatz, wodurch die App nahtlos in das Apple-Ökosystem integriert ist. Über ein zusätzliches Master-Passwort "salt" wird die Verschlüsselung der Daten zusätzlich verschleiert.
+Verwalten Sie Ihre Passwörter, Bankdaten und anderen sensiblen Informationen sicher und zuverlässig mit Shishi Vault. Die App nutzt ausschließlich native Apple-Technologien, wie die Keychain und das CryptKit, um maximale Sicherheit ohne den Einsatz von Drittanbieter-Diensten zu gewährleisten. Ihre Daten werden direkt auf dem Gerät sicher verschlüsselt gespeichert. Für die Benutzeranmeldung wird der “Sign in with Apple”-Button verwendet, wodurch die Anmeldung nahtlos in das Apple-Ökosystem integriert ist. Zusätzlich sorgt ein Master-Passwort (“Salt”) für eine erweiterte Verschleierung und erhöht damit den Schutz Ihrer sensiblen Daten.
 
 ### Features:
 
-  - Erstellen, Speichern und Verwalten von Zugangsdaten, Bankverbindungen sowie Kredit- und Girokarten. Dynamisch erweiterbar mittels weiterer Custom-Fields pro Eintrag
-  - Apple ID-Anmeldung: Sichere und bequeme Authentifizierung über die Apple ID des Benutzers, ohne zusätzliche Konten erstellen zu müssen
-  - Vergabe eines Master-Passwortes für die maximale Sicherheit bei der Datenverschlüsselung
-  - Passwort-Generator: Ein flexibler Passwortgenerator, der Passwörter mit benutzerdefinierter Länge, Groß- und Kleinschreibung sowie Sonderzeichen generieren kann. Dies wird über eine implementierte API abgewickelt
-  - Passwort-Prüfung: Jedes Passwort wird über die API von https://haveibeenpwned.com/ auf seine Sicherheit verifiziert
-  
-  - Lokale Speicherung: Daten werden lokal als JSON-Datei via AES verschlüsselt gespeichert, um maximale Sicherheit zu gewährleisten
-  - Der AES Schlüssel bildet sich aus einem HASH der Apple-ID in Kombination mit dem Hash des Master-Passwortes
-  - Der User hat die Möglichkeit diese Daten auch als Klartext in eine unverschlüsselte JSON zu exportieren.
-  - Der User ist selbst für die Verwaltung seines Master-Passwortes verantwortlich um jederzeit an seine Daten zu gelangen.
+- Erstellen, Speichern und Verwalten:
+Zugangsdaten, Bankverbindungen sowie Kredit- und Girokarten können sicher verwaltet und bei Bedarf durch benutzerdefinierte Custom-Fields dynamisch erweitert werden.
+
+- Apple ID-Anmeldung:
+Eine sichere und bequeme Authentifizierung erfolgt über die Apple ID des Benutzers, ohne dass zusätzliche Konten erstellt werden müssen.
+
+- Master-Passwort für maximale Sicherheit:
+Durch die Vergabe eines Master-Passworts wird die Datenverschlüsselung mittels eines zusätzlichen “Salt”-Mechanismus verstärkt.
+
+- Passwort-Generator:
+Ein flexibler Passwortgenerator erstellt sichere Passwörter mit benutzerdefinierter Länge, Groß- und Kleinschreibung sowie Sonderzeichen. Diese Funktion wird über eine implementierte externe API bereitgestellt.
+
+- Passwort-Prüfung:
+Passwörter werden über eine externe API auf Sicherheit geprüft. Dabei werden nur die ersten fünf Ziffern des zuvor in der App generierten Hashwerts übertragen, um mögliche Kompromittierungen zu identifizieren.
+
+- Lokale Speicherung:
+Alle Daten werden lokal als verschlüsselte JSON-Datei gespeichert. Die Verschlüsselung erfolgt mittels AES-GCM, um maximale Datensicherheit zu gewährleisten.
+
+- Schlüsselableitung:
+Der AES-Schlüssel wird aus einem intern generierten Hashwert abgeleitet, der sich aus der Apple-ID und dem Hashwert des Master-Passworts zusammensetzt.
+
+- Datenexport:
+Benutzer haben die Möglichkeit, ihre Daten als Klartext in eine unverschlüsselte JSON-Datei zu exportieren.
+
+- Verantwortung des Benutzers:
+Der Benutzer ist selbst für die Verwaltung seines Master-Passworts verantwortlich, um jederzeit Zugang zu seinen Daten sicherzustellen.
     
 ### Technologien:
 
-  - SwiftUI, Keychain, CryptKit (SHA256, AES-GCM), (CloudKit)
-  - AppleSignInButton – AuthenticationServices von Apple
-  - JSON-Datenformat
-  - Passwort-Generator API
-  - Passwort verifikation API
+- SwiftUI für die Benutzeroberfläche, entwickelt mit modernsten Frameworks von Apple.
+- Keychain und CryptKit (SHA-256, AES-GCM) für sichere Datenspeicherung und Verschlüsselung.
+- AppleSignInButton – Nahtlose Integration der Authentifizierungsdienste von Apple.
+- Verwendung des JSON-Datenformats für die persistente und strukturierte Datenspeicherung.
+- Passwort-Generator über eine externe API zur Erstellung sicherer Passwörter.
+- Passwort-Verifikation mithilfe einer API, die Hashwerte überträgt und sicher verifiziert.
 
 ## Anwendung
 
 Benutzerführung:
 
   1.	Anmeldung:
-      - Der Benutzer meldet sich sicher mit seiner Apple ID an
-    	- Der Benutzer vergibt ein Master-Passwort welches die Verschlüsselung um einem sog. "salt" ergänzt
-  3.	Passwort-Manager:
-      - Zugangsdaten, Bankverbindungen sowie Kreditkarteninformationen können über die Benutzeroberfläche sicher gespeichert und verwaltet werden.
-    	Die Daten werden dabei lokal verschlüsselt als JSON im Libary-Verzeichniss gesichert. Unverschlüsselte Exports der Daten sind im Download-Ordner zu finden.
-  5.	Passwort-Generator:
+      - Anmeldung mittels der Apple ID über den SignInButton
+    	- Vergabe eines Master-Passworts "salt"
+
+  2.  Einträge verwalten:
+      - Über den FAB-Button auf dem Homescreen lassen sich neue Einträge hinzufügen
+      - Durch Klick auf einen Eintrag gelangt man in die Eintragsvorschau
+      --  Dort kann der User Werte direkt in die Zwischenablage kopieren
+      --  Der User kann von hier aus Einträge löschen oder bearbeiten
+
+  3.	Datenspeicherung lokal:
+      - Alle Einträge werden nach dem Speichern lokal verschlüsselt als JSON im Libary-Verzeichniss gesichert. Unverschlüsselte Exports der Daten sind im Download-Ordner zu finden. Die Dateien enthalten die ersten Stellen des UserID-Hashwertes um welcher in der Keychain gesoeichert wurde um so auf Basis der eingegebenen Anmeldetdaten (Hashwert der AppleID und des Master-Passwortes) die Daten für jeden User zu laden.
+
+### !!! ACHTUNG !!! Lokale Daten sind nur zugänglich solange sich die UserID nicht ändert und das Master-Passwort vorliegt.
+
+  4.	Passwort-Generator:
       - Der Benutzer kann im Passwortgenerator ein Passwort nach gewünschten Einstellungen (Länge, Groß- und Kleinschreibung, Sonderzeichen) generieren.
     	Dies geschieht über eine eingebundene API, die sicherstellt, dass die erzeugten Passwörter den Anforderungen entsprechen.
     	- Jedes Passwort wird über eine API auf seinen Kompromitierungsstatus geprüft.
+
+  5.	Abmeldung:
+      - Wenn sie sich von der App abmelden werden nur die Anmeldedaten gelöscht. Die verschlüsselten JSON dateien werden nur gelöscht wenn sie die APP deinstallieren oder in den Einstellungen der APP bei aktiver Anmeldung die Daten über den "Löschen" Button direkt löschen!
      
 --- 
 
-Aussicht für die Zukunft:
+### Aussicht für die Zukunft:
 
-  -  iCloud-Backup: Die JSON verschlüsselten Daten können zukünftig automatisch in der iCloud gesichert und so auf allen Geräte des Benutzers synchronisiert werden die mit derselben Apple ID angemeldet sind.
+- Der Fokus der aktuellen Weiterentwicklung liegt auf der Integration eines iCloud-Backups. Die verschlüsselten JSON-Daten werden künftig automatisch in der iCloud gesichert. Dadurch können die Daten nahtlos auf alle Geräte des Benutzers synchronisiert werden, die mit derselben Apple ID verbunden sind.
 
+---
 
 App-Download und fehlende Daten:
 
