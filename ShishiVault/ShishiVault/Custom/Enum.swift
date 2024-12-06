@@ -17,6 +17,7 @@ enum AppState {
     case login
     case saltKey
     case home
+    case pin
 }
 
 enum NetworkState {

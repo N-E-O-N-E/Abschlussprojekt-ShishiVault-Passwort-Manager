@@ -88,4 +88,33 @@ class KeychainHelper {
             print("Data successfully deleted from Keychain.")
         }
     }
+    
+    func savePin(pin: String) {
+        guard let pinData = pin.data(using: .utf8) else { return }
+        
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "LockPIN",
+            kSecValueData as String: pinData
+        ]
+        
+        SecItemDelete(query as CFDictionary)
+        SecItemAdd(query as CFDictionary, nil)
+    }
+    
+    func readPin() -> String? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "LockPIN",
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne
+        ]
+        
+        var data: AnyObject?
+        let status = SecItemCopyMatching(query as CFDictionary, &data)
+        if status == errSecSuccess, let data = data as? Data {
+            return String(data: data, encoding: .utf8)
+        }
+        return nil
+    }
 }

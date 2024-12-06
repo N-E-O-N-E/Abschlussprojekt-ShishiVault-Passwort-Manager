@@ -16,7 +16,9 @@ struct SettingsView: View {
     
     @State private var isLogoutAlert: Bool = false
     @State private var isExportAlert: Bool = false
+    @State private var pinAlert: Bool = false
     @State private var isEraseAll: Bool = false
+    @State private var pin: String = ""
     
     var body: some View {
         ScrollView {
@@ -34,7 +36,62 @@ struct SettingsView: View {
             
             VStack(alignment: .leading) {
                 
-                Text("\nDatensicherung unverschlüsselt")
+                Text("App sperren")
+                    .ueberschriftenText()
+                
+                HStack {
+                    TextField("\(pin)", text: $pin)
+                        .customTextField()
+                        .frame(width: 220)
+                    
+                    Button {
+                        pinAlert.toggle()
+                    } label: {
+                        RoundedRectangle(cornerRadius: 25)
+                            .fill(Color.ShishiColorRed)
+                            .frame(width: 120, height: 35)
+                            .foregroundColor(.white)
+                            .overlay(
+                                Text("Speichern")
+                                    .font(.subheadline).bold()
+                                    .foregroundColor(.white))
+                    }
+                }.padding(.horizontal, 20)
+                
+                HStack {
+                    Text("PIN für App-Sperre")
+                        .customTextFieldTextLow()
+                    Spacer()
+                }
+                
+                
+                Button {
+                    shishiViewModel.lockApp()
+                    dismiss()
+                    
+                } label: {
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(Color.ShishiColorBlue)
+                        .frame(width: 350, height: 35)
+                        .foregroundColor(.white)
+                        .overlay(
+                            Text("Sperren  \(Image(systemName: "exclamationmark.lock"))")
+                                .font(.subheadline).bold()
+                                .foregroundColor(.white))
+                }.padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+                
+                
+                
+                Text("Sperrt die APP mit ihrer vergebenen PIN.")
+                    .customTextFieldTextMid()
+                
+                
+                Divider()
+                
+                
+                
+                Text("Datensicherung unverschlüsselt")
                     .ueberschriftenText()
                 
                 Button {
@@ -58,44 +115,44 @@ struct SettingsView: View {
                 Divider()
                 
                 
-//                Text("Speichern in der iCloud")
-//                    .ueberschriftenText()
-//                
-//                HStack {
-//                    Button {
-//                        //
-//                    } label: {
-//                        RoundedRectangle(cornerRadius: 25)
-//                            .fill(Color.ShishiColorGray)
-//                            .frame(width: 170, height: 35)
-//                            .foregroundColor(.white)
-//                            .overlay(
-//                                Text("Upload  \(Image(systemName: "square.and.arrow.up.fill"))")
-//                                    .font(.subheadline).bold()
-//                                    .foregroundColor(.white))
-//                    }.padding(.vertical, 10)
-//                        .disabled(true)
-//                    
-//                    Button {
-//                        //
-//                    } label: {
-//                        RoundedRectangle(cornerRadius: 25)
-//                            .fill(Color.ShishiColorGray)
-//                            .frame(width: 170, height: 35)
-//                            .foregroundColor(.white)
-//                            .overlay(
-//                                Text("Download   \(Image(systemName: "square.and.arrow.down.fill"))")
-//                                    .font(.subheadline).bold()
-//                                    .foregroundColor(.white))
-//                    }.padding(.vertical, 10)
-//                        .disabled(true)
-//                    
-//                }.padding(.horizontal, 20)
-//                
-//                Text("Verschlüsselte JSON-Daten aus der iCloud laden oder speichern. iCloud Datenspeicherung auf ihrem Gerät muss aktiviert sein.")
-//                    .customTextFieldTextMid()
-//                
-//                Divider()
+                //                Text("Speichern in der iCloud")
+                //                    .ueberschriftenText()
+                //
+                //                HStack {
+                //                    Button {
+                //                        //
+                //                    } label: {
+                //                        RoundedRectangle(cornerRadius: 25)
+                //                            .fill(Color.ShishiColorGray)
+                //                            .frame(width: 170, height: 35)
+                //                            .foregroundColor(.white)
+                //                            .overlay(
+                //                                Text("Upload  \(Image(systemName: "square.and.arrow.up.fill"))")
+                //                                    .font(.subheadline).bold()
+                //                                    .foregroundColor(.white))
+                //                    }.padding(.vertical, 10)
+                //                        .disabled(true)
+                //
+                //                    Button {
+                //                        //
+                //                    } label: {
+                //                        RoundedRectangle(cornerRadius: 25)
+                //                            .fill(Color.ShishiColorGray)
+                //                            .frame(width: 170, height: 35)
+                //                            .foregroundColor(.white)
+                //                            .overlay(
+                //                                Text("Download   \(Image(systemName: "square.and.arrow.down.fill"))")
+                //                                    .font(.subheadline).bold()
+                //                                    .foregroundColor(.white))
+                //                    }.padding(.vertical, 10)
+                //                        .disabled(true)
+                //
+                //                }.padding(.horizontal, 20)
+                //
+                //                Text("Verschlüsselte JSON-Daten aus der iCloud laden oder speichern. iCloud Datenspeicherung auf ihrem Gerät muss aktiviert sein.")
+                //                    .customTextFieldTextMid()
+                //
+                //                Divider()
                 
                 
                 Text("Datenbereinigung")
@@ -110,7 +167,7 @@ struct SettingsView: View {
                         .frame(width: 350, height: 35)
                         .foregroundColor(.white)
                         .overlay(
-                            Text("Unwiederruflich alles löschen   \(Image(systemName: "exclamationmark.triangle"))")
+                            Text("Unwiederruflich löschen   \(Image(systemName: "exclamationmark.triangle"))")
                                 .font(.subheadline).bold()
                                 .foregroundColor(.white))
                 }.padding(.horizontal, 20)
@@ -123,7 +180,7 @@ struct SettingsView: View {
                 Divider()
                 
                 
-                Text("Benutzer zurücksetzen")
+                Text("Benutzer abmelden")
                     .ueberschriftenText()
                 
                 Button {
@@ -135,7 +192,7 @@ struct SettingsView: View {
                         .frame(width: 350, height: 35)
                         .foregroundColor(.white)
                         .overlay(
-                            Text("Jetzt Abmelden   \(Image(systemName: "door.left.hand.open"))")
+                            Text("Abmelden   \(Image(systemName: "door.left.hand.open"))")
                                 .font(.subheadline).bold()
                                 .foregroundColor(.white))
                 }.padding(.horizontal, 20)
@@ -156,61 +213,75 @@ struct SettingsView: View {
         }
         
         
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.backward")
-                            .foregroundColor(Color.ShishiColorBlue)
-                        Text("Zurück")
-                            .foregroundColor(Color.ShishiColorBlue)
-                    }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.backward")
+                        .foregroundColor(Color.ShishiColorBlue)
+                    Text("Zurück")
+                        .foregroundColor(Color.ShishiColorBlue)
                 }
             }
+        }
         
         
         
-            .alert("Abmelden\n", isPresented: $isLogoutAlert, actions: {
-                Button("Abmelden", role: .destructive) {
-                    shishiViewModel.logout()
-                    dismiss()
-                }
-                Button("Abbrechen", role: .cancel) {
-                    isLogoutAlert = false
-                }
-            }, message: {
-                Text("Sind sie sicher, dass sie sich abmelden möchten?\n")
-                
-            })
+        .alert("Abmelden\n", isPresented: $isLogoutAlert, actions: {
+            Button("Abmelden", role: .destructive) {
+                shishiViewModel.logout()
+                dismiss()
+            }
+            Button("Abbrechen", role: .cancel) {
+                isLogoutAlert = false
+            }
+        }, message: {
+            Text("Sind sie sicher, dass sie sich abmelden möchten?\n")
+            
+        })
         
-            .alert("Alle Daten Löschen\n", isPresented: $isEraseAll, actions: {
-                Button("Alles Löschen", role: .destructive) {
-                     JSONHelper.shared.eraseJSONFile()
-                }
-                Button("Abbrechen", role: .cancel) {
-                    isLogoutAlert = false
-                }
-            }, message: {
-                Text("Alle Daten werden auf dem Gerät unwiederruflich gelöscht - jedoch nicht in der Cloud!\nSind sie sicher, dass sie alle Daten löschen möchten?\n")
-                
-            })
+        .alert("Alle Daten Löschen\n", isPresented: $isEraseAll, actions: {
+            Button("Alles Löschen", role: .destructive) {
+                JSONHelper.shared.eraseJSONFile()
+            }
+            Button("Abbrechen", role: .cancel) {
+                isLogoutAlert = false
+            }
+        }, message: {
+            Text("Alle Daten werden auf dem Gerät unwiederruflich gelöscht - jedoch nicht in der Cloud!\nSind sie sicher, dass sie alle Daten löschen möchten?\n")
+            
+        })
         
-            .alert("! Unverschlüsselter Export !\n", isPresented: $isExportAlert, actions: {
-                Button("Exportieren", role: .destructive) {
-                    if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
-                        Task {
-                            JSONHelper.shared.saveEntriesToJSONDecrypted(key: key, entries: entrieViewModel.entries)
-                        }
-                    } else {
-                        print("JSON save failed")
+        .alert("! Unverschlüsselter Export !\n", isPresented: $isExportAlert, actions: {
+            Button("Exportieren", role: .destructive) {
+                if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
+                    Task {
+                        JSONHelper.shared.saveEntriesToJSONDecrypted(key: key, entries: entrieViewModel.entries)
                     }
+                } else {
+                    print("JSON save failed")
                 }
-                Button("Abbrechen", role: .cancel) {}
-            }, message: {
-                Text("Möchten Sie alle Einträge unverschlüsselt exportieren?\n")
-            })
+            }
+            Button("Abbrechen", role: .cancel) {}
+        }, message: {
+            Text("Möchten Sie alle Einträge unverschlüsselt exportieren?\n")
+        })
         
+        .alert("PIN", isPresented: $pinAlert, actions: {
+            Button("Speichern", role: .destructive) {
+                KeychainHelper.shared.savePin(pin: pin)
+            }
+            Button("Abbrechen", role: .cancel) {}
+        }, message: {
+            Text("\nMöchten Sie den PIN jetzt speichern?\n")
+        })
+        
+        .onAppear {
+                if let readedPin = KeychainHelper.shared.readPin() {
+                    self.pin = readedPin
+            }
+        }
     }
 }
 

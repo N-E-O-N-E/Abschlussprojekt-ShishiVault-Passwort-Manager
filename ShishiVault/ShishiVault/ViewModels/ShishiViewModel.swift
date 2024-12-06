@@ -20,11 +20,13 @@ class ShishiViewModel: ObservableObject {
     @Published var symmetricKeychainString: String = KeyChainKeys().symmetricKeychainString
     @Published var userSaltString: String = KeyChainKeys().userSaltString
     @Published var handleLoginFailure: Bool = false
+    @Published var isLocked: Bool = false
     
     private var keychainUserIDHash: Data?
     private var keychainUserSaltHash: Data?
     
     init() {
+        self.isLocked = KeychainHelper.shared.readPin() != nil
         checkLoginStatus()
     }
     
@@ -101,12 +103,16 @@ class ShishiViewModel: ObservableObject {
     // Prüft ob Daten in der Keychain vorhanden ist und nicht nil um den
     // LoginStatus beim start der App über den init() gleich auf true zu setzen
     func checkLoginStatus() {
-        if KeychainHelper.shared.read(for: symmetricKeychainString) != nil &&
-            KeychainHelper.shared.read(for: userSaltString) != nil {
-            appState = .home
+        if !isLocked {
+            if KeychainHelper.shared.read(for: symmetricKeychainString) != nil &&
+                KeychainHelper.shared.read(for: userSaltString) != nil {
+                appState = .home
+            } else {
+                print("No Symmetric Key and SaltData found in Keychain")
+                appState = .login
+            }
         } else {
-            print("No Symmetric Key and SaltData found in Keychain")
-            appState = .login
+            appState = .pin
         }
     }
     
@@ -121,4 +127,23 @@ class ShishiViewModel: ObservableObject {
         print("Logout successful - KeyData deleted from Keychain!")
         appState = .login
     }
+    
+    func lockApp() {
+        isLocked = true
+        appState = .pin
+    }
+    
+    func unlockApp(with pin: String) -> Bool {
+        if let savedPIN = KeychainHelper.shared.readPin(), savedPIN == pin {
+            isLocked = false
+            appState = .home
+            checkLoginStatus()
+            
+            return true
+        } else {
+            print("Falscher PIN!")
+            return false
+        }
+    }
+    
 }
