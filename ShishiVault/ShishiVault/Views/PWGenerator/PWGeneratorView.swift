@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PWGeneratorView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
+    
     @Binding var customFieldSheet: Bool
     
     @State private var length = 10.0
@@ -17,6 +18,7 @@ struct PWGeneratorView: View {
     @State private var numbers: Bool = true
     @State private var symbols: Bool = true
     @State private var pwnedAlert: Bool = false
+    @State private var connectionAlert: Bool = false
     @State private var generatedPassword: String = ""
     @State private var passwordPwnedState: Int = 0
     
@@ -50,9 +52,13 @@ struct PWGeneratorView: View {
                 
                 Button(action: {
                     Task {
-                        passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: generatedPassword)
-                        if passwordPwnedState == 1 {
-                            pwnedAlert = true
+                        do {
+                            passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: generatedPassword)
+                            if passwordPwnedState == 1 {
+                                pwnedAlert = true
+                            }
+                        } catch {
+                            connectionAlert.toggle()
                         }
                     }
                 }) {
@@ -156,6 +162,7 @@ struct PWGeneratorView: View {
                         )
                         let password = data
                         generatedPassword = password.password
+                        
                         passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: generatedPassword)
                         
                         passwordPwnedState = 0
@@ -167,6 +174,7 @@ struct PWGeneratorView: View {
                         
                     } catch {
                         print("Fehler: \(error)")
+                        connectionAlert.toggle()
                     }
                 }
                 
@@ -205,6 +213,11 @@ struct PWGeneratorView: View {
                 Button("OK", role: .cancel) {}
             }, message: {
                 Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.")
+            })
+            .alert("Kein Internet!\n", isPresented: $connectionAlert, actions: {
+                Button("OK", role: .cancel) {}
+            }, message: {
+                Text("Kein Internet zur Prüfung des Passwortes vorhanden! Eintrag wird ggf. mit unsicherem Passwort aktualisiert!")
             })
         
         

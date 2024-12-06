@@ -13,6 +13,7 @@ struct EntrieEditView: View {
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     
     @State private var savedAlert: Bool = false
+    @State private var connectionAlert: Bool = false
     @State private var isEmptyFieldsAlert: Bool = false
     @State private var isEmptyOptFieldsAlert: Bool = false
     @State private var isDeleteAlert: Bool = false
@@ -92,9 +93,13 @@ struct EntrieEditView: View {
                     
                     Button(action: {
                         Task {
-                            passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
-                            if passwordPwnedState == 1 {
-                                pwnedAlert = true
+                            do {
+                                passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
+                                if passwordPwnedState == 1 {
+                                    pwnedAlert = true
+                                }
+                            } catch {
+                                connectionAlert.toggle()
                             }
                         }
                         
@@ -132,9 +137,13 @@ struct EntrieEditView: View {
                     Button(action: {
                         Task {
                             password = CryptHelper.shared.randomPasswordMaker()
-                            passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
-                            if passwordPwnedState == 1 {
-                                pwnedAlert = true
+                            do {
+                                passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
+                                if passwordPwnedState == 1 {
+                                    pwnedAlert = true
+                                }
+                            } catch {
+                                connectionAlert.toggle()
                             }
                         }
                         
@@ -197,12 +206,15 @@ struct EntrieEditView: View {
                             
                         case "ok":
                             Task {
-                                passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
-                                
-                                if passwordPwnedState == 2 {
-                                    savedAlert.toggle()
-                                } else if passwordPwnedState == 1 {
-                                    pwnedAlert = true
+                                do {
+                                    passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
+                                    if passwordPwnedState == 2 {
+                                        savedAlert.toggle()
+                                    } else if passwordPwnedState == 1 {
+                                        pwnedAlert = true
+                                    }
+                                } catch {
+                                    connectionAlert.toggle()
                                 }
                             }
                             
@@ -331,6 +343,12 @@ struct EntrieEditView: View {
             Button("OK", role: .cancel) {}
         }, message: {
             Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.")
+        })
+        
+        .alert("Kein Internet!\n", isPresented: $connectionAlert, actions: {
+            Button("OK", role: .cancel) {}
+        }, message: {
+            Text("Kein Internet zur Prüfung des Passwortes vorhanden! Eintrag wird ggf. mit unsicherem Passwort aktualisiert!")
         })
         
         .onAppear {

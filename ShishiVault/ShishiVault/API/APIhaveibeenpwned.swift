@@ -22,8 +22,8 @@ final class APIhaveibeenpwned {
         let sha1PasswortPrefix = sha1Password.prefix(5).uppercased()
         let sha1PasswortSuffix = sha1Password.suffix(sha1Password.count - 5)
         
-        print(sha1PasswortPrefix)
-        print(sha1PasswortSuffix)
+//        print(sha1PasswortPrefix)
+//        print(sha1PasswortSuffix)
         
         // Url zusammenstellung
         let urlString = "https://api.pwnedpasswords.com/range/\(sha1PasswortPrefix)"

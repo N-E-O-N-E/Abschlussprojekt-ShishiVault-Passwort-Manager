@@ -53,6 +53,7 @@ class KeychainHelper {
             print("Data successfully saved in Keychain for the first time.")
         }
     }
+    
     // Diese Funktion liest die Daten für einen bestimmten Key
     func read(for key: String) -> Data? {
         let query: [String: Any] = [

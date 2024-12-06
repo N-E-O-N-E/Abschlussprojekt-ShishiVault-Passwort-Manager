@@ -19,6 +19,11 @@ enum AppState {
     case home
 }
 
+enum NetworkState {
+    case connected
+    case disconnected
+}
+
 enum EncryptionError: Error {
     case emptyClipboard, emptyUserID,
          encryptionFailed(reason: String),

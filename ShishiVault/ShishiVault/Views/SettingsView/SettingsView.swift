@@ -34,7 +34,7 @@ struct SettingsView: View {
             
             VStack(alignment: .leading) {
                 
-                Text("\nUnverschlüsselte Sicherung")
+                Text("\nDatensicherung unverschlüsselt")
                     .ueberschriftenText()
                 
                 Button {
@@ -51,7 +51,7 @@ struct SettingsView: View {
                 }.padding(.horizontal, 20)
                     .padding(.vertical, 10)
                 
-                Text("Alle Daten werden in Klartext als JSON-Datei im Dokumenteverzeichnis gespeichert.")
+                Text("Alle Daten werden in Klartext als JSON-Datei im Dokumenteverzeichnis des Gerätes gespeichert.")
                     .customTextFieldTextMid()
                 
                 
@@ -98,7 +98,7 @@ struct SettingsView: View {
 //                Divider()
                 
                 
-                Text("Alle Daten löschen")
+                Text("Datenbereinigung")
                     .ueberschriftenText()
                 
                 Button {
@@ -110,20 +110,20 @@ struct SettingsView: View {
                         .frame(width: 350, height: 35)
                         .foregroundColor(.white)
                         .overlay(
-                            Text("Unwiederruflich löschen   \(Image(systemName: "exclamationmark.triangle"))")
+                            Text("Unwiederruflich alles löschen   \(Image(systemName: "exclamationmark.triangle"))")
                                 .font(.subheadline).bold()
                                 .foregroundColor(.white))
                 }.padding(.horizontal, 20)
                     .padding(.vertical, 10)
                 
-                Text("Löscht die JSON Daten auf diesem Gerät unwiederruflich.")
+                Text("Löscht die JSON-Datendatei auf diesem Gerät unwiederruflich. Sie bleiben weiter angemeldet und können neue Daten speichern.")
                     .customTextFieldTextMid()
                 
                 
                 Divider()
                 
                 
-                Text("Abmelden")
+                Text("Benutzer zurücksetzen")
                     .ueberschriftenText()
                 
                 Button {
@@ -135,13 +135,13 @@ struct SettingsView: View {
                         .frame(width: 350, height: 35)
                         .foregroundColor(.white)
                         .overlay(
-                            Text("Abmelden   \(Image(systemName: "door.left.hand.open"))")
+                            Text("Jetzt Abmelden   \(Image(systemName: "door.left.hand.open"))")
                                 .font(.subheadline).bold()
                                 .foregroundColor(.white))
                 }.padding(.horizontal, 20)
                     .padding(.vertical, 10)
                 
-                Text("Wenn sie sich Abmelden, werden keine Daten gelöscht. Sie können Ihre Daten durch eine erneute Anmeldung wieder einsehen.")
+                Text("Wenn sie sich Abmelden, werden keine Daten gelöscht! Es werden ihre gespeicherten Benutzerdaten, sowie das hinterlegte Master-Passwort gelöscht. Sie können Ihre Daten durch eine erneute Anmeldung mit der AppleID und dem gültigen Master-Passwort wiederherstellen!")
                     .customTextFieldTextMid()
                 
                 Divider()
