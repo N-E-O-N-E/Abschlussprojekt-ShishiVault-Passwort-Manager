@@ -117,4 +117,15 @@ class KeychainHelper {
         }
         return nil
     }
+    
+    func delPin() {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "LockPIN"
+        ]
+        let status = SecItemDelete(query as CFDictionary)
+        if status != errSecSuccess {
+            print("Fehler beim Löschen des PINs: \(status)")
+        }
+    }
 }

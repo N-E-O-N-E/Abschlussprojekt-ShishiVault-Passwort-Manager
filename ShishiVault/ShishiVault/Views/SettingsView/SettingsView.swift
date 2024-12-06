@@ -16,8 +16,11 @@ struct SettingsView: View {
     
     @State private var isLogoutAlert: Bool = false
     @State private var isExportAlert: Bool = false
-    @State private var pinAlert: Bool = false
+    @State private var pinAlertPWEmpty: Bool = false
+    @State private var pinAlertDelete: Bool = false
     @State private var isEraseAll: Bool = false
+    @State private var pinLockDisable: Bool = true
+    @State private var pinLock: Bool = false
     @State private var pin: String = ""
     
     var body: some View {
@@ -42,33 +45,51 @@ struct SettingsView: View {
                 HStack {
                     TextField("\(pin)", text: $pin)
                         .customTextField()
-                        .frame(width: 220)
+                        .frame(width: 230)
+                        .onChange(of: pin) { _, newValue in
+                            if !newValue.isEmpty {
+                                pinLockDisable = false
+                            }
+                        }
                     
-                    Button {
-                        pinAlert.toggle()
-                    } label: {
-                        RoundedRectangle(cornerRadius: 25)
-                            .fill(Color.ShishiColorRed)
-                            .frame(width: 120, height: 35)
-                            .foregroundColor(.white)
-                            .overlay(
-                                Text("Speichern")
-                                    .font(.subheadline).bold()
-                                    .foregroundColor(.white))
-                    }
+                    Toggle("", isOn: $pinLock)
+                        .disabled(pinLockDisable)
+                        .onChange(of: pinLock) { oldValue, newValue in
+                            if !pin.isEmpty {
+                                if oldValue != newValue {
+                                    if !newValue {
+                                        KeychainHelper.shared.delPin()
+                                        pinAlertDelete.toggle()
+                                        
+                                    } else if newValue {
+                                        KeychainHelper.shared.savePin(pin: pin)
+                                    }
+                                }
+                            } else {
+                                pinAlertPWEmpty = true
+                                pinLock = false
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                    
                 }.padding(.horizontal, 20)
                 
                 HStack {
-                    Text("PIN für App-Sperre")
+                    Text("App-Sperre für hinterlegten PIN aktivieren!")
                         .customTextFieldTextLow()
                     Spacer()
                 }
                 
                 
                 Button {
-                    shishiViewModel.lockApp()
-                    dismiss()
-                    
+                    if !pin.isEmpty {
+                        KeychainHelper.shared.savePin(pin: self.pin)
+                        shishiViewModel.lockApp()
+                        dismiss()
+                        
+                    } else {
+                        pinAlertPWEmpty = true
+                    }
                 } label: {
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color.ShishiColorBlue)
@@ -268,18 +289,27 @@ struct SettingsView: View {
             Text("Möchten Sie alle Einträge unverschlüsselt exportieren?\n")
         })
         
-        .alert("PIN", isPresented: $pinAlert, actions: {
-            Button("Speichern", role: .destructive) {
-                KeychainHelper.shared.savePin(pin: pin)
-            }
-            Button("Abbrechen", role: .cancel) {}
+        .alert("Lock nicht möglich\n", isPresented: $pinAlertPWEmpty, actions: {
+            Button("OK") {}
         }, message: {
-            Text("\nMöchten Sie den PIN jetzt speichern?\n")
+            Text("Sie haben keinen PIN vergeben!\n")
         })
         
+        .alert("PIN-Lock\n", isPresented: $pinAlertDelete, actions: {
+            Button("OK") {
+                dismiss()
+            }
+        }, message: {
+            Text("Sie haben den PIN-Lock deaktiviert!\n")
+        })
+        
+        
+        
+        
         .onAppear {
-                if let readedPin = KeychainHelper.shared.readPin() {
-                    self.pin = readedPin
+            if let readedPin = KeychainHelper.shared.readPin() {
+                self.pin = readedPin
+                self.pinLock = true
             }
         }
     }

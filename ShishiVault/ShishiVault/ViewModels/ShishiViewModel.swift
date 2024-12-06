@@ -26,7 +26,12 @@ class ShishiViewModel: ObservableObject {
     private var keychainUserSaltHash: Data?
     
     init() {
-        self.isLocked = KeychainHelper.shared.readPin() != nil
+        if KeychainHelper.shared.readPin() != nil {
+            isLocked = true
+        } else {
+            isLocked = false
+        }
+        
         checkLoginStatus()
     }
     
@@ -103,6 +108,7 @@ class ShishiViewModel: ObservableObject {
     // Prüft ob Daten in der Keychain vorhanden ist und nicht nil um den
     // LoginStatus beim start der App über den init() gleich auf true zu setzen
     func checkLoginStatus() {
+
         if !isLocked {
             if KeychainHelper.shared.read(for: symmetricKeychainString) != nil &&
                 KeychainHelper.shared.read(for: userSaltString) != nil {
