@@ -18,6 +18,9 @@ struct ShishiVaultApp: App {
                     case .login:
                         SignInView()
                             .environmentObject(shishiViewModel)
+                    case .pin:
+                        PinView()
+                            .environmentObject(shishiViewModel)
                     case .saltKey:
                         SetSaltKeyView(shishiViewModel: shishiViewModel)
                             .environmentObject(shishiViewModel)

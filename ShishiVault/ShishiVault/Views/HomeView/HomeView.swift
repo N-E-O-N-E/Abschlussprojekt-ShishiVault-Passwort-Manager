@@ -48,9 +48,6 @@ struct HomeView: View {
                 }
             }.padding(.horizontal).padding(.vertical, 5)
             
-            
-            
-            
             ScrollView {
                 VStack {
                     if entrieViewModel.entries.isEmpty {
@@ -103,7 +100,6 @@ struct HomeView: View {
                             Image(systemName: "info.bubble.rtl")
                         }
                     }
-                    
                     
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
@@ -166,4 +162,5 @@ struct HomeView: View {
 #Preview {
     HomeView()
         .environmentObject(ShishiViewModel())
+    
 }

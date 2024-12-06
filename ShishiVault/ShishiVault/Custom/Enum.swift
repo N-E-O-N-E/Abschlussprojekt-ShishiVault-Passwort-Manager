@@ -17,6 +17,12 @@ enum AppState {
     case login
     case saltKey
     case home
+    case pin
+}
+
+enum NetworkState {
+    case connected
+    case disconnected
 }
 
 enum EncryptionError: Error {

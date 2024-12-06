@@ -53,6 +53,7 @@ class KeychainHelper {
             print("Data successfully saved in Keychain for the first time.")
         }
     }
+    
     // Diese Funktion liest die Daten für einen bestimmten Key
     func read(for key: String) -> Data? {
         let query: [String: Any] = [
@@ -85,6 +86,46 @@ class KeychainHelper {
             print("The Keychain could not be deleted")
         } else {
             print("Data successfully deleted from Keychain.")
+        }
+    }
+    
+    func savePin(pin: String) {
+        guard let pinData = pin.data(using: .utf8) else { return }
+        
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "LockPIN",
+            kSecValueData as String: pinData
+        ]
+        
+        SecItemDelete(query as CFDictionary)
+        SecItemAdd(query as CFDictionary, nil)
+    }
+    
+    func readPin() -> String? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "LockPIN",
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne
+        ]
+        
+        var data: AnyObject?
+        let status = SecItemCopyMatching(query as CFDictionary, &data)
+        if status == errSecSuccess, let data = data as? Data {
+            return String(data: data, encoding: .utf8)
+        }
+        return nil
+    }
+    
+    func delPin() {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "LockPIN"
+        ]
+        let status = SecItemDelete(query as CFDictionary)
+        if status != errSecSuccess {
+            print("Fehler beim Löschen des PINs: \(status)")
         }
     }
 }

@@ -24,8 +24,7 @@ struct SignInView: View {
                     .frame(width: 300)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                 
-                
-                    // SignIn Button (SignUp) > je nach LoginStatus wird dieser angezeigt
+                // SignIn Button (SignUp) > je nach LoginStatus wird dieser angezeigt
                     SignInWithAppleButton(
                         .signIn,
                         onRequest: { request in
@@ -39,5 +38,11 @@ struct SignInView: View {
                     .padding()
             }
         }
+        
+        .alert("Probleme mit der Anmeldung\n", isPresented: $shishiViewModel.handleLoginFailure, actions: {
+            Button("OK", role: .cancel) {}
+        }, message: {
+            Text("Die Anmeldung konnte nicht durchgeführt werden.\nBitte prüfen Sie die Anmeldedaten und die Verbindung zu dem Internet!")
+        })
     }
 }

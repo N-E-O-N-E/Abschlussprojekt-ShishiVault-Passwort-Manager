@@ -10,11 +10,13 @@ import SwiftUI
 struct EntrieAddView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @EnvironmentObject var shishiViewModel: ShishiViewModel
+    
     @Environment(\.dismiss) private var dismiss
     
     //    @State private var isPasswordVisible: Bool = false
     @State private var isSavedAlert: Bool = false
     @State private var pwnedAlert: Bool = false
+    @State private var connectionAlert: Bool = false
     @State private var isEmptyFieldsAlert: Bool = false
     @State private var isEmptyOptFieldsAlert: Bool = false
     @State private var isDiffPassAlert: Bool = false
@@ -102,9 +104,13 @@ struct EntrieAddView: View {
                         passwordPwnedState = 0
                         
                         Task {
-                            passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
-                            if passwordPwnedState == 1 {
-                                pwnedAlert = true
+                            do {
+                                passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
+                                if passwordPwnedState == 1 {
+                                    pwnedAlert = true
+                                }
+                            } catch {
+                                connectionAlert.toggle()
                             }
                         }
                     }) {
@@ -145,9 +151,13 @@ struct EntrieAddView: View {
                         passwordPwnedState = 0
                         
                         Task {
-                            passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
-                            if passwordPwnedState == 1 {
-                                pwnedAlert = true
+                            do {
+                                passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
+                                if passwordPwnedState == 1 {
+                                    pwnedAlert = true
+                                }
+                            } catch {
+                                connectionAlert.toggle()
                             }
                         }
                         
@@ -232,7 +242,11 @@ struct EntrieAddView: View {
                         case "ok":
                             
                             Task {
-                                passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
+                                do {
+                                    passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
+                                } catch {
+                                    connectionAlert.toggle()
+                                }
                             }
                             if passwordPwnedState == 2 {
                                 entrieViewModel.createEntry(
@@ -369,6 +383,12 @@ struct EntrieAddView: View {
             Button("OK", role: .cancel) {}
         }, message: {
             Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.")
+        })
+        
+        .alert("Kein Internet!\n", isPresented: $connectionAlert, actions: {
+            Button("OK", role: .cancel) {}
+        }, message: {
+            Text("Kein Internet zur Prüfung des Passwortes vorhanden! Eintrag wird ggf. mit unsicherem Passwort aktualisiert!")
         })
         
         
