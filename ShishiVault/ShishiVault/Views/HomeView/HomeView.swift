@@ -49,7 +49,7 @@ struct HomeView: View {
                         VStack(alignment: .center) {
                             Text("\n\nKeine Daten zum Laden vorhanden!\n\n")
                                 .bold()
-                            Text("Warnung: Wenn Sie die App zuvor installiert hatten, sollten sie sich über die Einstellungen 'Abmelden' um einen neuen Masterkey vergeben zu können. Aktuell werden alle Daten mit dem zuletzt vergebenen Master-Passwort verschlüsselt welches in ihrer Keychain gespeichert wurde!\n\n")
+                            Text("Warnung: Wenn Sie die App zuvor installiert hatten, sollten sie sich über die Einstellungen 'Abmelden' um einen neuen Masterkey vergeben zu können. Standardmäßig werden die Anmeldedaten in ihrer Keychain mit dem zuletzt vergebenen Master-Passwort nicht gelöscht auch wenn sie die APP deinstallieren!\n\n")
                                 .warningTextLarge().multilineTextAlignment(.center)
                         }.padding()
                         
