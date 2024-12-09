@@ -4,6 +4,8 @@
 
 # Shishi Vault - iOS Passwort-Manager "Modul Abschlussarbeit"
 
+[Besuche Shishi Vault im Web](https://shishivault.de)
+
 Shishi Vault ist ein Passwort-Manager für iOS, entwickelt mit SwiftUI für iOS 18 und Xcode 16. Der Name “Shishi” bedeutet sinngemäß “Wächterlöwe” und ist inspiriert von den chinesischen Shishi-Löwen, die traditionell als Schutzwächter vor Hauseingängen, insbesondere vor den Eingängen traditioneller Gebäude und Tempel, stehen. Shishi Vault ist eine App, die Sicherheit und Vertraulichkeit Ihrer Passwörter und persönlichen Daten gewährleistet, indem sie sensible Informationen sicher speichert und so vor Datenmissbrauch durch Dritte schützt.
 
 Die App wird aktuell im Rahmen einer Prüfungsarbeit entwickelt und erfüllt neben den prüfungsrelevanten Mindestanforderungen alle wesentlichen Funktionen, um sensible Daten sicher und effizient zu verwalten. Nach der Prüfungsphase im Dezember 2024 ist es das erklärte Ziel, die App kontinuierlich weiterzuentwickeln, sowohl die Usability als auch den Funktionsumfang dauerhaft zu verbessern.
