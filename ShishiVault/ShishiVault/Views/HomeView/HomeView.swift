@@ -47,10 +47,7 @@ struct HomeView: View {
                 VStack {
                     if entrieViewModel.entries.isEmpty {
                         VStack(alignment: .center) {
-                            Text("\n\nKeine Daten zum Laden vorhanden!\n\n")
-                                .bold()
-                            Text("Warnung: Wenn Sie die App zuvor installiert hatten, sollten sie sich über die Einstellungen 'Abmelden' um einen neuen Masterkey vergeben zu können. Standardmäßig werden die Anmeldedaten in ihrer Keychain mit dem zuletzt vergebenen Master-Passwort nicht gelöscht auch wenn sie die APP deinstallieren!\n\n")
-                                .warningTextLarge().multilineTextAlignment(.center)
+                            Text("\n\n\nKeine Daten zum Laden vorhanden!\n\n")
                         }.padding()
                         
                     } else {

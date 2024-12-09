@@ -178,4 +178,57 @@ class JSONHelper {
         }
     }
     
+    func backupToiCloud() {
+        let fileManager = FileManager.default
+        guard let cloudDirectory = fileManager.url(forUbiquityContainerIdentifier: nil)?
+                .appendingPathComponent("Documents") else {
+            print("iCloud nicht verfügbar")
+            return
+        }
+        
+        let localFilePath = fileManager.urls(for: .libraryDirectory, in: .userDomainMask).first!.appendingPathComponent("shishiVaultData/shishiDataAES_.json")
+        let cloudFilePath = cloudDirectory.appendingPathComponent("shishiVaultData/shishiDataAES_.json")
+
+        do {
+            if fileManager.fileExists(atPath: cloudFilePath.path) {
+                try fileManager.removeItem(at: cloudFilePath)
+            }
+            try fileManager.copyItem(at: localFilePath, to: cloudFilePath)
+            print("Backup in iCloud erfolgreich.")
+        } catch {
+            print("Fehler beim Backup: \(error)")
+        }
+    }
+    
+    func restoreFromiCloud() {
+        let fileManager = FileManager.default
+        guard let cloudDirectory = fileManager.url(forUbiquityContainerIdentifier: nil)?
+                .appendingPathComponent("Documents") else {
+            print("iCloud nicht verfügbar")
+            return
+        }
+        
+        guard let userSalt = keychainHelper.read(for: KeyChainKeys().userSaltString) else {
+            print("Error: No userSalt found")
+            return
+        }
+        
+        // Wandelt die Daten wieder in SHA256 lesbaren String
+        let stringPrefix = userSalt.map { String(format: "%02x", $0) }.joined().prefix(10)
+
+        let cloudFilePath = cloudDirectory.appendingPathComponent("shishiVaultData/shishiDataAES_.json")
+        let localFilePath = fileManager.urls(for: .libraryDirectory, in: .userDomainMask).first!.appendingPathComponent("shishiVaultData/shishiDataAES_\(stringPrefix).json")
+
+        do {
+            if fileManager.fileExists(atPath: cloudFilePath.path) {
+                try fileManager.copyItem(at: cloudFilePath, to: localFilePath)
+                print("Daten erfolgreich wiederhergestellt.")
+            } else {
+                print("Keine Backup-Datei gefunden.")
+            }
+        } catch {
+            print("Fehler beim Wiederherstellen: \(error)")
+        }
+    }
+
 }

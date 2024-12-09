@@ -22,10 +22,17 @@ class ShishiViewModel: ObservableObject {
     
     private let keychainHelper = KeychainHelper.shared
     private let cryptHelper = CryptHelper.shared
+    private let installHelper = InstallationHelper.isFirstLaunch
     private var keychainUserIDHash: Data?
     private var keychainUserSaltHash: Data?
     
     init() {
+        if installHelper {
+            keychainHelper.delete(for: symmetricKeychainString)
+            keychainHelper.delete(for: userSaltString)
+            keychainHelper.delete(for: symmetricKeychainString)
+        }
+        
         if keychainHelper.readPin() != nil {
             isLocked = true
         } else {
