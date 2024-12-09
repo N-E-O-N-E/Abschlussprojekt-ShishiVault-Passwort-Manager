@@ -10,29 +10,25 @@ import SwiftUI
 struct CustomFieldAddView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @Binding var customFieldSheet: Bool
-    
     @State private var name: String = ""
     @State private var textIsEmptyAlert: Bool = false
     
     var body: some View {
         VStack(alignment: .center) {
             RoundedRectangle(cornerRadius: 20)
-                .frame(width: 150, height: 4)
-                .foregroundStyle(Color.ShishiColorGray)
-                .padding(10)
+                .frame(width: 150, height: 4).foregroundStyle(Color.ShishiColorGray).padding(10)
         }
+        
         Spacer()
         
         VStack(alignment: .leading) {
             Text("Neues Eingabefeld")
                 .ueberschriftenTextBold()
-            
             TextField("Feldname", text: $name )
                 .customTextField()
             HStack {
                 Text(name)
                     .customTextFieldTextLow()
-                
                 Spacer()
             }
             
@@ -43,19 +39,13 @@ struct CustomFieldAddView: View {
                 } else {
                     textIsEmptyAlert.toggle()
                 }
-                
-                
             } label: {
                 RoundedRectangle(cornerRadius: 25)
-                    .fill(Color.ShishiColorRed)
-                    .frame(height: 50)
-                    .padding()
-                    .foregroundColor(.white)
+                    .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
                     .overlay(
                         Text("Speichern")
                             .font(.title3).bold()
-                            .foregroundColor(.white)
-                    )
+                            .foregroundColor(.white))
             }
             
         }.padding(.horizontal).padding(.vertical, 5)

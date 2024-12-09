@@ -12,15 +12,9 @@ struct PinView: View {
     @State private var enteredPIN: String = ""
     
     var body: some View {
-        
         VStack {
-            
             Image("ShishiLogo_600")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 250)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-            
+                .resizable().scaledToFit().frame(width: 250).clipShape(RoundedRectangle(cornerRadius: 20))
             
             Text("\n\nBitte PIN eingeben")
                 .ueberschriftenTextBold()
@@ -38,17 +32,13 @@ struct PinView: View {
                 }
             }) {
                 RoundedRectangle(cornerRadius: 25)
-                    .fill(Color.ShishiColorRed)
-                    .frame(height: 50)
-                    .padding()
-                    .foregroundColor(.white)
+                    .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
                     .overlay(
                         Text("Entsperren")
                             .font(.title3).bold()
                             .foregroundColor(.white))
                 
-            }.padding(.horizontal, 20)
-                .padding(.vertical, 10)
+            }.padding(.horizontal, 20).padding(.vertical, 10)
         }
     }
 }

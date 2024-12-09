@@ -10,10 +10,8 @@ import SwiftUI
 struct EntrieAddView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @EnvironmentObject var shishiViewModel: ShishiViewModel
-    
     @Environment(\.dismiss) private var dismiss
     
-    //    @State private var isPasswordVisible: Bool = false
     @State private var isSavedAlert: Bool = false
     @State private var pwnedAlert: Bool = false
     @State private var connectionAlert: Bool = false
@@ -36,7 +34,6 @@ struct EntrieAddView: View {
     var body: some View {
         ScrollView {
             VStack {
-                
                 TextField("Titel", text: $title)
                     .customTextField()
                 HStack {
@@ -44,7 +41,6 @@ struct EntrieAddView: View {
                         .customTextFieldTextLow()
                     Spacer()
                 }
-                
                 TextField("Benutzername", text: $username)
                     .customTextField()
                 HStack {
@@ -52,7 +48,6 @@ struct EntrieAddView: View {
                         .customTextFieldTextLow()
                     Spacer()
                 }
-                
                 TextField("E-Mail", text: $email)
                     .customTextField()
                 HStack {
@@ -60,7 +55,6 @@ struct EntrieAddView: View {
                         .customTextFieldTextLow()
                     Spacer()
                 }
-                
                 TextField("Website", text: $website)
                     .customTextField()
                 HStack {
@@ -68,7 +62,6 @@ struct EntrieAddView: View {
                         .customTextFieldTextLow()
                     Spacer()
                 }
-                
                 TextEditor(text: $notes)
                     .customTextFieldNotes()
                 HStack {
@@ -77,19 +70,11 @@ struct EntrieAddView: View {
                     Spacer()
                 }
                 
-                
-                
-                
-                
                 Divider()
                     .padding(.vertical, 1)
                 
                 PWLevelColorView(password: $password)
                     .padding(.vertical, 15)
-                
-                
-                
-                
                 
                 HStack {
                     TextField("Passwort", text: $password)
@@ -117,33 +102,19 @@ struct EntrieAddView: View {
                         switch passwordPwnedState {
                             case 1:
                                 Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                    .foregroundColor(Color.ShishiColorRed_)
-                                    .scaleEffect(1.4)
-                                    .padding(.horizontal, 10)
+                                    .foregroundColor(Color.ShishiColorRed_).scaleEffect(1.4).padding(.horizontal, 10)
                             case 2:
                                 Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                    .foregroundColor(Color.ShishiColorGreen)
-                                    .scaleEffect(1.4)
-                                    .padding(.horizontal, 10)
+                                    .foregroundColor(Color.ShishiColorGreen).scaleEffect(1.4).padding(.horizontal, 10)
                             case 0:
                                 Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                    .foregroundColor(Color.ShishiColorGray)
-                                    .scaleEffect(1.4)
-                                    .padding(.horizontal, 10)
+                                    .foregroundColor(Color.ShishiColorGray).scaleEffect(1.4).padding(.horizontal, 10)
                             default:
                                 Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                    .foregroundColor(Color.ShishiColorGray)
-                                    .scaleEffect(1.4)
-                                    .padding(.horizontal, 10)
+                                    .foregroundColor(Color.ShishiColorGray).scaleEffect(1.4).padding(.horizontal, 10)
                         }
                     }
-                    .padding(5)
-                    .padding(.horizontal, 10)
-                    
-                    
-                    
-                    
-                    
+                    .padding(5).padding(.horizontal, 10)
                     
                     Button(action: {
                         password = CryptHelper.shared.randomPasswordMaker()
@@ -160,19 +131,12 @@ struct EntrieAddView: View {
                                 connectionAlert.toggle()
                             }
                         }
-                        
                     }) {
                         Image(systemName: "lock.rotation")
-                            .foregroundColor(Color.ShishiColorBlue)
-                            .scaleEffect(1.4)
+                            .foregroundColor(Color.ShishiColorBlue).scaleEffect(1.4)
                     }
-                    .padding(5)
-                    .padding(.horizontal, 10)
-                    
-                    
-                    
-                    
-                    
+                    .padding(5).padding(.horizontal, 10)
+
                 }
                 HStack {
                     Text("Passworteinagabe")
@@ -189,15 +153,8 @@ struct EntrieAddView: View {
                     Spacer()
                 }
                 
-                
-                
-                
-                
                 Divider()
                     .padding(.vertical, 5)
-                
-                
-                
                 
                 // CustomFields ----------------------------
                 ForEach($entrieViewModel.customFieldsForEntrie) { $customField in
@@ -208,8 +165,7 @@ struct EntrieAddView: View {
                             entrieViewModel.deleteCustomFieldForID(forID: $customField.id)
                         } label: {
                             Image(systemName: "x.circle")
-                                .foregroundStyle(Color.ShishiColorRed)
-                                .scaleEffect(1.2)
+                                .foregroundStyle(Color.ShishiColorRed).scaleEffect(1.2)
                         }
                     }
                     HStack {
@@ -219,11 +175,7 @@ struct EntrieAddView: View {
                     }
                 }
                 
-                
-                
                 Spacer()
-                
-                
                 
                 Button {
                     switch entrieViewModel.entrieSaveButtomnCheck(
@@ -232,15 +184,11 @@ struct EntrieAddView: View {
                             
                         case "mindestLeer":
                             isEmptyFieldsAlert.toggle()
-                            
                         case "wahlLeer":
                             isEmptyOptFieldsAlert.toggle()
-                            
                         case "passConfirm":
                             isDiffPassAlert.toggle()
-                            
                         case "ok":
-                            
                             Task {
                                 do {
                                     passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
@@ -250,14 +198,8 @@ struct EntrieAddView: View {
                             }
                             if passwordPwnedState == 2 {
                                 entrieViewModel.createEntry(
-                                    title: title,
-                                    username: username,
-                                    email: email,
-                                    password: password,
-                                    passwordConfirm: passwordConfirm,
-                                    notes: notes,
-                                    website: website,
-                                    customFields: entrieViewModel.customFieldsForEntrie)
+                                    title: title, username: username, email: email, password: password, passwordConfirm: passwordConfirm,
+                                    notes: notes, website: website, customFields: entrieViewModel.customFieldsForEntrie)
                                 
                                 if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
                                     Task {
@@ -268,23 +210,18 @@ struct EntrieAddView: View {
                                 } else {
                                     print("JSON save failed")
                                 }
-                                
                                 entrieViewModel.deleteCustomField()
                                 isSavedAlert.toggle()
                                 
                             } else if passwordPwnedState == 1 {
                                 pwnedAlert = true
                             }
-                            
                         default:
                             break
                     }
                 } label: {
                     RoundedRectangle(cornerRadius: 25)
-                        .fill(Color.ShishiColorRed)
-                        .frame(height: 50)
-                        .padding()
-                        .foregroundColor(.white)
+                        .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
                         .overlay(
                             Text("Eintrag speichern")
                                 .font(.title3).bold()
@@ -293,12 +230,6 @@ struct EntrieAddView: View {
             }
         }
         .padding(.horizontal).padding(.vertical, 15)
-        
-        
-        
-        
-        
-        
         
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -323,7 +254,6 @@ struct EntrieAddView: View {
                     }
                     Button(action: {
                         pwGeneratorSheet.toggle()
-                        
                     }) {
                         Image(systemName: "lock.square")
                             .foregroundColor(Color.ShishiColorBlue)
@@ -332,12 +262,6 @@ struct EntrieAddView: View {
                 }
             }
         }
-        
-        
-        
-        
-        
-        
         
         .sheet(isPresented: $customFieldSheet) {
             CustomFieldAddView(customFieldSheet: $customFieldSheet)
@@ -348,66 +272,40 @@ struct EntrieAddView: View {
                 .environmentObject(entrieViewModel)
         }
         
-        
-        
-        
-        
-        
         .alert("Gespeichert", isPresented: $isSavedAlert, actions: {
             Button("OK", role: .cancel) {
                 showAddEntrieView.toggle()
             }
-        }, message: {
-            Text("Die Daten wurden erfolgreich gespeichert.")
-        })
+        }, message: { Text("Die Daten wurden erfolgreich gespeichert.") })
         
         .alert("Fehler", isPresented: $isEmptyFieldsAlert, actions: {
             Button("OK", role: .cancel) {}
-        }, message: {
-            Text("Bitte füllen Sie die Pflichtfelder Titel und Passwort aus.")
-        })
+        }, message: { Text("Bitte füllen Sie die Pflichtfelder Titel und Passwort aus.") })
         
         .alert("Fehler", isPresented: $isEmptyOptFieldsAlert, actions: {
             Button("OK", role: .cancel) {}
-        }, message: {
-            Text("Bitte füllen Sie die Felder Username oder E-Mail aus.")
-        })
+        }, message: { Text("Bitte füllen Sie die Felder Username oder E-Mail aus.") })
         
         .alert("Fehler", isPresented: $isDiffPassAlert, actions: {
             Button("OK", role: .cancel) {}
-        }, message: {
-            Text("Die Passwörter stimmen nicht überein")
-        })
+        }, message: { Text("Die Passwörter stimmen nicht überein") })
         
         .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
             Button("OK", role: .cancel) {}
-        }, message: {
-            Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.")
-        })
+        }, message: { Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.") })
         
         .alert("Kein Internet!\n", isPresented: $connectionAlert, actions: {
             Button("OK", role: .cancel) {}
-        }, message: {
-            Text("Kein Internet zur Prüfung des Passwortes vorhanden! Eintrag wird ggf. mit unsicherem Passwort aktualisiert!")
-        })
-        
-        
-        
-        
+        }, message: { Text("Kein Internet zur Prüfung des Passwortes vorhanden! Eintrag wird ggf. mit unsicherem Passwort aktualisiert!") })
         
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Eintrag hinzufügen")
         .foregroundStyle(Color.ShishiColorBlue)
         
-        
-        
         .onAppear {
             entrieViewModel.deleteCustomField()
             print("CustomField data array cleared")
         }
-        
-        
-        
     }
 }
 

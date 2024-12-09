@@ -10,6 +10,8 @@ import CryptoKit
 
 class JSONHelper {
     static let shared = JSONHelper()
+    private let keychainHelper = KeychainHelper.shared
+    private let cryptHelper = CryptHelper.shared
     private init() {}
     
     // Liefert den GerätePfad zur JSON datei
@@ -27,7 +29,7 @@ class JSONHelper {
             print("Error creating directory: \(error.localizedDescription)")
         }
         
-        guard let userSalt = KeychainHelper.shared.read(for: KeyChainKeys().userSaltString) else {
+        guard let userSalt = keychainHelper.read(for: KeyChainKeys().userSaltString) else {
             print("Error: No userSalt found")
             return nil
         }
@@ -54,7 +56,7 @@ class JSONHelper {
             print("Error creating directory: \(error.localizedDescription)")
         }
         
-        guard let userSalt = KeychainHelper.shared.read(for: KeyChainKeys().userSaltString) else {
+        guard let userSalt = keychainHelper.read(for: KeyChainKeys().userSaltString) else {
             print("Error: No userSalt found")
             return nil
         }
@@ -84,7 +86,7 @@ class JSONHelper {
         }
         do {
             let encryptData = try Data(contentsOf: path)
-            let decryptData = try CryptHelper.shared.decrypt(cipherText: encryptData, key: key)
+            let decryptData = try cryptHelper.decrypt(cipherText: encryptData, key: key)
             let entries = try decoder.decode([EntryData].self, from: decryptData)
             return entries
             
@@ -103,7 +105,7 @@ class JSONHelper {
         
         do {
             if let jsonData = setDateToJSON(entries: entries) {
-                let encryptData = try CryptHelper.shared.encrypt(data: jsonData, key: key)
+                let encryptData = try cryptHelper.encrypt(data: jsonData, key: key)
                 try encryptData.write(to: path)
                 print("Entries saved to JSON")
             }
@@ -136,13 +138,13 @@ class JSONHelper {
         
         do {
             let encryptData = try Data(contentsOf: path)
-            let decryptData = try CryptHelper.shared.decrypt(cipherText: encryptData, key: key)
+            let decryptData = try cryptHelper.decrypt(cipherText: encryptData, key: key)
             var decryptedEntries = try JSONDecoder().decode([EntryData].self, from: decryptData)
             
             decryptedEntries.removeAll { $0.id == entrie.id }
             
             if let jsonData = setDateToJSON(entries: decryptedEntries) {
-                let encryptedData = try CryptHelper.shared.encrypt(data: jsonData, key: key)
+                let encryptedData = try cryptHelper.encrypt(data: jsonData, key: key)
                 try encryptedData.write(to: path)
             }
         } catch {

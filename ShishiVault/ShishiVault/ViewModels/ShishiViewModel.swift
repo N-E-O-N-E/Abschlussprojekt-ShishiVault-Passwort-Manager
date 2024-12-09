@@ -8,9 +8,7 @@
 import SwiftUI
 import AuthenticationServices
 import CryptoKit
-import Network
 
-// Quelle zur Umsetzung des SignInWithApple Buttons:
 // Quelle: https://www.youtube.com/watch?v=O2FVDzoAB34 - https://developer.apple.com/documentation/swift/result
 // Quelle für NetzwerkMonitor: https://www.danijelavrzan.com/posts/2022/11/network-connection-alert-swiftui/
 
@@ -22,16 +20,17 @@ class ShishiViewModel: ObservableObject {
     @Published var handleLoginFailure: Bool = false
     @Published var isLocked: Bool = false
     
+    private let keychainHelper = KeychainHelper.shared
+    private let cryptHelper = CryptHelper.shared
     private var keychainUserIDHash: Data?
     private var keychainUserSaltHash: Data?
     
     init() {
-        if KeychainHelper.shared.readPin() != nil {
+        if keychainHelper.readPin() != nil {
             isLocked = true
         } else {
             isLocked = false
         }
-        
         checkLoginStatus()
     }
     
@@ -51,25 +50,23 @@ class ShishiViewModel: ObservableObject {
             case .failure(let error):
                 handleLoginFailure.toggle()
                 handleLoginError(with: error)
-                
         }
     }
     
     private func handleSuccessfulLogin(with credentials: ASAuthorizationAppleIDCredential) {
         do {
             let userID = credentials.user.replacingOccurrences(of: ".", with: "")
-            let userIDHashed = try CryptHelper.shared.generateUserIDHash(from: userID)
+            let userIDHashed = try cryptHelper.generateUserIDHash(from: userID)
             self.keychainUserIDHash = userIDHashed
             
             if keychainUserSaltHash != nil {
                 print("SaltKey found, symmetric key will be generated.")
                 
-                KeychainHelper.shared.saveCombinedSymmetricKeyInKeychain(
+                keychainHelper.saveCombinedSymmetricKeyInKeychain(
                     symmetricKey: keychainUserIDHash!,
                     userSaltKey: keychainUserSaltHash!,
                     keychainKey: symmetricKeychainString)
                 appState = .home
-                
             } else {
                 print("SaltKey not found, no symmetric key will be generated.")
                 appState = .saltKey
@@ -87,12 +84,12 @@ class ShishiViewModel: ObservableObject {
     }
     
     func saveTempUserSalt(data: Data) {
-        KeychainHelper.shared.save(data: data, for: userSaltString)
+        keychainHelper.save(data: data, for: userSaltString)
         self.keychainUserSaltHash = data
         print("SaltData successful saved")
         
         if keychainUserIDHash != nil {
-            KeychainHelper.shared.saveCombinedSymmetricKeyInKeychain(
+            keychainHelper.saveCombinedSymmetricKeyInKeychain(
                 symmetricKey: keychainUserIDHash!,
                 userSaltKey: keychainUserSaltHash!,
                 keychainKey: symmetricKeychainString)
@@ -106,12 +103,11 @@ class ShishiViewModel: ObservableObject {
     }
     
     // Prüft ob Daten in der Keychain vorhanden ist und nicht nil um den
-    // LoginStatus beim start der App über den init() gleich auf true zu setzen
+    // LoginStatus beim start der App über den init() zu setzen
     func checkLoginStatus() {
-
         if !isLocked {
-            if KeychainHelper.shared.read(for: symmetricKeychainString) != nil &&
-                KeychainHelper.shared.read(for: userSaltString) != nil {
+            if keychainHelper.read(for: symmetricKeychainString) != nil &&
+                keychainHelper.read(for: userSaltString) != nil {
                 appState = .home
             } else {
                 print("No Symmetric Key and SaltData found in Keychain")
@@ -125,8 +121,8 @@ class ShishiViewModel: ObservableObject {
     // Logout durch setzten des LoginStatus und löschen der Dateb aus der Keychain für den aktuelle UserKey
     func logout() {
         // KeychainHelper.shared.delete(for: symmetricKeyString)
-        KeychainHelper.shared.delete(for: symmetricKeychainString)
-        KeychainHelper.shared.delete(for: userSaltString)
+        keychainHelper.delete(for: symmetricKeychainString)
+        keychainHelper.delete(for: userSaltString)
         keychainUserIDHash = nil
         keychainUserSaltHash = nil
         
@@ -140,16 +136,15 @@ class ShishiViewModel: ObservableObject {
     }
     
     func unlockApp(with pin: String) -> Bool {
-        if let savedPIN = KeychainHelper.shared.readPin(), savedPIN == pin {
+        if let savedPIN = keychainHelper.readPin(), savedPIN == pin {
             isLocked = false
             appState = .home
             checkLoginStatus()
-            
             return true
+            
         } else {
             print("Falscher PIN!")
             return false
         }
     }
-    
 }

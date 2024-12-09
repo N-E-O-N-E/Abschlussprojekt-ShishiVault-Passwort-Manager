@@ -33,7 +33,6 @@ struct EntrieEditView: View {
     @State private var website: String = ""
     @State private var customFields: [CustomField] = []
     
-    
     var body: some View {
         ScrollView {
             VStack {
@@ -72,17 +71,11 @@ struct EntrieEditView: View {
                         .customTextFieldTextLow()
                     Spacer()
                 }
-                
-                
-                
-                
-                
+
                 Divider()
+                
                 PWLevelColorView(password: $password)
                     .padding(.vertical, 20)
-                
-                
-                
                 
                 HStack {
                     TextField(password, text: $password)
@@ -107,32 +100,19 @@ struct EntrieEditView: View {
                         switch passwordPwnedState {
                             case 1:
                                 Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                    .foregroundColor(Color.ShishiColorRed_)
-                                    .scaleEffect(1.4)
-                                    .padding(.horizontal, 15)
+                                    .foregroundColor(Color.ShishiColorRed_).scaleEffect(1.4).padding(.horizontal, 15)
                             case 2:
                                 Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                    .foregroundColor(Color.ShishiColorGreen)
-                                    .scaleEffect(1.4)
-                                    .padding(.horizontal, 15)
+                                    .foregroundColor(Color.ShishiColorGreen).scaleEffect(1.4).padding(.horizontal, 15)
                             case 0:
                                 Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                    .foregroundColor(Color.ShishiColorGray)
-                                    .scaleEffect(1.4)
-                                    .padding(.horizontal, 15)
+                                    .foregroundColor(Color.ShishiColorGray).scaleEffect(1.4).padding(.horizontal, 15)
                             default:
                                 Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                    .foregroundColor(Color.ShishiColorGray)
-                                    .scaleEffect(1.4)
-                                    .padding(.horizontal, 15)
+                                    .foregroundColor(Color.ShishiColorGray).scaleEffect(1.4).padding(.horizontal, 15)
                         }
                     }
-                    .frame(width: 20)
-                    .padding(.horizontal, 10)
-                    
-                    
-                    
-                    
+                    .frame(width: 20).padding(.horizontal, 10)
                     
                     Button(action: {
                         Task {
@@ -149,21 +129,15 @@ struct EntrieEditView: View {
                         
                     }) {
                         Image(systemName: "lock.rotation")
-                            .foregroundColor(Color.ShishiColorBlue)
-                            .scaleEffect(1.4)
+                            .foregroundColor(Color.ShishiColorBlue).scaleEffect(1.4)
                     }
-                    .frame(width: 20)
-                    .padding(.horizontal, 10)
+                    .frame(width: 20).padding(.horizontal, 10)
                 }
                 HStack {
                     Text("Passworteinagabe")
                         .customTextFieldTextLow()
                     Spacer()
                 }
-                
-                
-                
-                
                 
                 Divider().padding(.vertical, 10)
                 
@@ -177,8 +151,7 @@ struct EntrieEditView: View {
                             customFields.removeAll(where: { $0.id == customField.id })
                         } label: {
                             Image(systemName: "x.circle")
-                                .foregroundStyle(Color.ShishiColorRed)
-                                .scaleEffect(1.2)
+                                .foregroundStyle(Color.ShishiColorRed).scaleEffect(1.2)
                         }
                     }
                     HStack {
@@ -189,10 +162,6 @@ struct EntrieEditView: View {
                 }
                 
                 Spacer()
-                
-                
-                
-                
                 
                 Button {
                     switch entrieViewModel.entrieUpdateButtomnCheck(
@@ -217,30 +186,20 @@ struct EntrieEditView: View {
                                     connectionAlert.toggle()
                                 }
                             }
-                            
                         default:
                             break
                     }
                     
                 } label: {
                     RoundedRectangle(cornerRadius: 25)
-                        .fill(Color.ShishiColorRed)
-                        .frame(height: 50)
-                        .padding()
-                        .foregroundColor(.white)
+                        .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
                         .overlay(
                             Text("Eintrag aktualisieren")
-                                .font(.title3).bold()
-                                .foregroundColor(.white))
+                                .font(.title3).bold().foregroundColor(.white))
                 }
             }
         }
         .padding(.horizontal).padding(.vertical, 5)
-        
-        
-        
-        
-        
         
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -276,10 +235,6 @@ struct EntrieEditView: View {
             }
         }
         
-        
-        
-        
-        
         .sheet(isPresented: $customFieldSheet) {
             CustomFieldAddView(customFieldSheet: $customFieldSheet)
                 .environmentObject(entrieViewModel)
@@ -288,25 +243,13 @@ struct EntrieEditView: View {
             PWGeneratorView(customFieldSheet: $customFieldSheet)
                 .environmentObject(entrieViewModel)
         }
-        
-        
-        
-        
-        
-        
+         
         .alert("Hinweis", isPresented: $savedAlert, actions: {
             Button("Aktualisieren", role: .destructive) {
-                
                 if let oldEntry = entry {
                     let newEntrie = EntryData(
-                        id: oldEntry.id,
-                        title: title,
-                        username: username,
-                        email: email,
-                        password: password,
-                        notes: notes,
-                        website: website,
-                        customFields: customFields)
+                        id: oldEntry.id, title: title, username: username, email: email, password: password,
+                        notes: notes, website: website, customFields: customFields)
                     entrieViewModel.updateEntry(newEntrie: newEntrie)
                 }
                 Task {
@@ -316,40 +259,29 @@ struct EntrieEditView: View {
                         print("JSON save failed")
                     }
                 }
-                
                 entrieViewModel.deleteCustomField()
                 dismiss()
             }
             
             Button("Abbrechen", role: .cancel) {}
-        }, message: {
-            Text("Die Aktualisierung der Daten kann nicht rückgängig gemacht werden!. Möchten Sie die Daten wirklich aktualisieren?")
-        })
+        }, message: { Text("Die Aktualisierung der Daten kann nicht rückgängig gemacht werden!. Möchten Sie die Daten wirklich aktualisieren?") })
         
         
         .alert("Fehler", isPresented: $isEmptyFieldsAlert, actions: {
             Button("OK", role: .cancel) {}
-        }, message: {
-            Text("Bitte füllen Sie die Pflichtfelder Titel und Passwort aus.")
-        })
+        }, message: { Text("Bitte füllen Sie die Pflichtfelder Titel und Passwort aus.") })
         
         .alert("Fehler", isPresented: $isEmptyOptFieldsAlert, actions: {
             Button("OK", role: .cancel) {}
-        }, message: {
-            Text("Bitte füllen Sie die Felder Username oder E-Mail aus.")
-        })
+        }, message: { Text("Bitte füllen Sie die Felder Username oder E-Mail aus.") })
         
         .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
             Button("OK", role: .cancel) {}
-        }, message: {
-            Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.")
-        })
+        }, message: { Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.") })
         
         .alert("Kein Internet!\n", isPresented: $connectionAlert, actions: {
             Button("OK", role: .cancel) {}
-        }, message: {
-            Text("Kein Internet zur Prüfung des Passwortes vorhanden! Eintrag wird ggf. mit unsicherem Passwort aktualisiert!")
-        })
+        }, message: { Text("Kein Internet zur Prüfung des Passwortes vorhanden! Eintrag wird ggf. mit unsicherem Passwort aktualisiert!") })
         
         .onAppear {
             print("CustomField Daten wurden zurückgesetzt")
@@ -376,7 +308,6 @@ struct EntrieEditView: View {
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Eintrag bearbeiten")
         .foregroundStyle(Color.ShishiColorBlue)
-        
     }
 }
 

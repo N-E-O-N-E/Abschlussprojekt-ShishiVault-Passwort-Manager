@@ -68,11 +68,4 @@ class CryptHelper {
             throw EncryptionError.decryptionFailed(reason: error.localizedDescription)
         }
     }
-    
-    //    let inputData = "Sensitive data".data(using: .utf8)!
-    //    let key = SymmetricKey(size: .bits256)
-    //    let encryptedData = try encryptData(data: inputData, key: key)
-    //    let decryptedData = try decryptData(ciphertext: encryptedData, key: key)
-    //    let decryptedString = String(data: decryptedData, encoding: .utf8)
-    
 }

@@ -31,8 +31,6 @@ struct EntryData: Identifiable, Codable {
         self.website = website
         self.customFields = customFields
     }
-    
-    
 }
 
 struct CustomField: Identifiable, Codable, Equatable {

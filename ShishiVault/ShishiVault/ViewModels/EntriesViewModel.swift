@@ -14,6 +14,7 @@ class EntriesViewModel: ObservableObject {
     @Published var customFieldsForEntrie: [CustomField] = []
     
     private let jsonHelper = JSONHelper.shared
+    private let keychainHelper = KeychainHelper.shared
     private let keychainString: String?
     
     init(symmetricKeyString: String?) {
@@ -22,14 +23,12 @@ class EntriesViewModel: ObservableObject {
     
     func reloadEntries() async {
         guard let symmetricKeyString = keychainString,
-              let symmetricKey = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: symmetricKeyString) else {
+              let symmetricKey = keychainHelper.loadCombinedSymmetricKeyFromKeychain(keychainKey: symmetricKeyString) else {
             print("Failed to reload entries. Symmetric key not found")
             return
         }
         self.entries = await jsonHelper.loadEntriesFromJSON(key: symmetricKey)
-        
         print("\(entries.count) Entries from JSON reloaded")
-        
     }
     
     // Prüft ob die mindestFelder und eins der optionalen Felder ausgefüllt sind und den PasswortConfirm
