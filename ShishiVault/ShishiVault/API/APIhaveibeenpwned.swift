@@ -11,19 +11,13 @@ import CryptoKit
 final class APIhaveibeenpwned {
     
     func checkPasswordPwned(password: String) async throws -> Int {
-        
         // Password wird ind SHA1 gehasht und über das .map wird jedes Element
         // iteriert und in eine Hex Zeichenkette umgewandelt
         let sha1Password = Insecure.SHA1.hash(data: password.data(using: .utf8)!)
-            .map {
-                String(format: "%02x", $0)
-            }.joined().uppercased()
+            .map { String(format: "%02x", $0) }.joined().uppercased()
         // Prefix für den API Aufruf
         let sha1PasswortPrefix = sha1Password.prefix(5).uppercased()
         let sha1PasswortSuffix = sha1Password.suffix(sha1Password.count - 5)
-        
-//        print(sha1PasswortPrefix)
-//        print(sha1PasswortSuffix)
         
         // Url zusammenstellung
         let urlString = "https://api.pwnedpasswords.com/range/\(sha1PasswortPrefix)"
@@ -50,7 +44,6 @@ final class APIhaveibeenpwned {
                 return 1
             }
         }
-        
         print("Great - Password is not pwned")
         return 2
     }

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct PWGeneratorView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
-    
     @Binding var customFieldSheet: Bool
     
     @State private var length = 10.0
@@ -35,20 +34,17 @@ struct PWGeneratorView: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
-            .frame(width: 150, height: 4)
-            .foregroundStyle(Color.ShishiColorGray)
-            .padding(10)
+            .frame(width: 150, height: 4).foregroundStyle(Color.ShishiColorGray).padding(10)
+        
         Spacer()
         
         VStack {
             Text("PASSWORT GENERATOR")
-                .font(.system(size: 25)).bold()
-                .padding(.vertical, 1)
+                .font(.system(size: 25)).bold().padding(.vertical, 1)
             
             HStack {
                 TextField("Passwort", text: $generatedPassword)
-                    .customTextField()
-                    .padding(.vertical, 15)
+                    .customTextField().padding(.vertical, 15)
                 
                 Button(action: {
                     Task {
@@ -65,34 +61,20 @@ struct PWGeneratorView: View {
                     switch passwordPwnedState {
                         case 1:
                             Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                .foregroundColor(Color.ShishiColorRed_)
-                                .scaleEffect(1.4)
-                                .padding(.horizontal, 10)
+                                .foregroundColor(Color.ShishiColorRed_).scaleEffect(1.4).padding(.horizontal, 10)
                         case 2:
                             Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                .foregroundColor(Color.ShishiColorGreen)
-                                .scaleEffect(1.4)
-                                .padding(.horizontal, 10)
+                                .foregroundColor(Color.ShishiColorGreen).scaleEffect(1.4).padding(.horizontal, 10)
                         case 0:
                             Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                .foregroundColor(Color.ShishiColorGray)
-                                .scaleEffect(1.4)
-                                .padding(.horizontal, 10)
+                                .foregroundColor(Color.ShishiColorGray).scaleEffect(1.4).padding(.horizontal, 10)
                         default:
                             Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                .foregroundColor(Color.ShishiColorGray)
-                                .scaleEffect(1.4)
-                                .padding(.horizontal, 10)
+                                .foregroundColor(Color.ShishiColorGray).scaleEffect(1.4).padding(.horizontal, 10)
                     }
                     
                 }
-                .frame(width: 25)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 15)
-                
-                
-                
-                
+                .frame(width: 25).padding(.horizontal, 10).padding(.vertical, 15)
                 
                 Button(action: {
                     if !generatedPassword.isEmpty {
@@ -105,24 +87,15 @@ struct PWGeneratorView: View {
                     }
                 }) {
                     Image(systemName: "document.on.document")
-                        .foregroundColor(Color.ShishiColorBlue)
-                        .scaleEffect(1.2)
+                        .foregroundColor(Color.ShishiColorBlue).scaleEffect(1.2)
                 }
-                .frame(width: 25)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 15)
+                .frame(width: 25).padding(.horizontal, 10).padding(.vertical, 15)
             }
-            
-            
-            
             
             PWLevelColorView(password: $generatedPassword)
                 .padding(.vertical, 10)
             
             Divider()
-            
-            
-            
             
             HStack {
                 Text("Länge (\(length.formatted(.number))) ")
@@ -134,9 +107,6 @@ struct PWGeneratorView: View {
             
             Divider()
             
-            
-            
-            
             Toggle("Großbuchstaben (A-Z)", isOn: $upperCase)
                 .padding(.vertical, 5)
             Toggle("Kleinbuchstaben (a-z)", isOn: $lowerCase)
@@ -145,8 +115,6 @@ struct PWGeneratorView: View {
                 .padding(.vertical, 5)
             Toggle("Symbole (!@#$%^&*)", isOn: $symbols)
                 .padding(.vertical, 5)
-            
-            
             
             Button {
                 Task {
@@ -160,14 +128,10 @@ struct PWGeneratorView: View {
                             length: Int(length), lowerCase: lowerCase,
                             upperCase: upperCase, numbers: numbers, symbols: symbols
                         )
-                        let password = data
-                        generatedPassword = password.password
                         
+                        generatedPassword = data.password
                         passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: generatedPassword)
                         
-                        passwordPwnedState = 0
-                        
-                        passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: generatedPassword)
                         if passwordPwnedState == 1 {
                             pwnedAlert = true
                         }
@@ -180,20 +144,12 @@ struct PWGeneratorView: View {
                 
             } label: {
                 RoundedRectangle(cornerRadius: 25)
-                    .fill(Color.ShishiColorRed)
-                    .frame(height: 50)
-                    .padding()
-                    .foregroundColor(.white)
+                    .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
                     .overlay(
                         Text("Passwort erstellen")
                             .font(.title3).bold()
                             .foregroundColor(.white))
             }.padding(.horizontal, 10)
-            
-            
-            
-            
-            
             
             HStack {
                 Image(systemName: "info.circle")
@@ -202,26 +158,14 @@ struct PWGeneratorView: View {
                 Text("Hinweis: Zur Erstellung dieses Passwortes wird eine externe API angesteuert.")
                     .customTextFieldTextLow()
             }.padding(5)
-            
         }.padding(.horizontal, 20)
-        
-        
-        
-        
         
             .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
                 Button("OK", role: .cancel) {}
-            }, message: {
-                Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.")
-            })
+            }, message: { Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.") })
             .alert("Kein Internet!\n", isPresented: $connectionAlert, actions: {
                 Button("OK", role: .cancel) {}
-            }, message: {
-                Text("Kein Internet zur Prüfung des Passwortes vorhanden! Eintrag wird ggf. mit unsicherem Passwort aktualisiert!")
-            })
-        
-        
-        
+            }, message: { Text("Kein Internet zur Prüfung des Passwortes vorhanden! Eintrag wird ggf. mit unsicherem Passwort aktualisiert!") })
         
             .presentationDetents([.fraction(0.8)])
     }

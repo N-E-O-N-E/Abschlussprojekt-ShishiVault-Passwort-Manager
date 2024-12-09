@@ -13,7 +13,6 @@ struct EntrieShowView: View {
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @Binding var entrieShowView: Bool
-    
     @State var entrieEditView: Bool = false
     var entry: EntryData
     
@@ -30,7 +29,6 @@ struct EntrieShowView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
-                
                 Text(entry.title)
                     .textFieldAlsText()
                 HStack {
@@ -38,9 +36,6 @@ struct EntrieShowView: View {
                         .customTextFieldTextLow()
                     Spacer()
                 }
-                
-                
-                
                 
                 HStack {
                     Text(entry.username ?? "")
@@ -57,21 +52,15 @@ struct EntrieShowView: View {
                         }
                     }) {
                         Image(systemName: "document.on.document")
-                            .foregroundColor(Color.ShishiColorBlue)
-                            .scaleEffect(1.2)
+                            .foregroundColor(Color.ShishiColorBlue).scaleEffect(1.2)
                     }
-                    .frame(width: 25)
-                    .padding(.horizontal, 10)
+                    .frame(width: 25).padding(.horizontal, 10)
                 }
                 HStack {
                     Text("Nutzername")
                         .customTextFieldTextLow()
                     Spacer()
                 }
-                
-                
-                
-                
                 
                 HStack {
                     Text(entry.email)
@@ -88,11 +77,9 @@ struct EntrieShowView: View {
                         }
                     }) {
                         Image(systemName: "document.on.document")
-                            .foregroundColor(Color.ShishiColorBlue)
-                            .scaleEffect(1.2)
+                            .foregroundColor(Color.ShishiColorBlue).scaleEffect(1.2)
                     }
-                    .frame(width: 25)
-                    .padding(.horizontal, 10)
+                    .frame(width: 25).padding(.horizontal, 10)
                 }
                 HStack {
                     Text("E-Mail")
@@ -100,10 +87,6 @@ struct EntrieShowView: View {
                     Spacer()
                     
                 }
-                
-                
-                
-                
                 
                 Text(entry.website ?? "")
                     .textFieldAlsText()
@@ -113,27 +96,16 @@ struct EntrieShowView: View {
                     Spacer()
                 }
                 
-                
-                
-                
-                
                 HStack {
                     Text(isPasswordVisible ? entry.password : "*********")
                         .textFieldAlsText()
-                    
                     Button(action: {
                         isPasswordVisible.toggle()
                     }) {
                         Image(systemName: isPasswordVisible ? "eye" : "eye.slash")
-                            .foregroundColor(isPasswordVisible ? Color.ShishiColorBlue : Color.ShishiColorGray)
-                            .scaleEffect(1.2)
+                            .foregroundColor(isPasswordVisible ? Color.ShishiColorBlue : Color.ShishiColorGray).scaleEffect(1.2)
                     }
-                    .frame(width: 25)
-                    .padding(.horizontal, 10)
-                    
-                    
-                    
-                    
+                    .frame(width: 25).padding(.horizontal, 10)
                     
                     Button(action: {
                         if !entry.password.isEmpty {
@@ -146,11 +118,9 @@ struct EntrieShowView: View {
                         }
                     }) {
                         Image(systemName: "document.on.document")
-                            .foregroundColor(Color.ShishiColorBlue)
-                            .scaleEffect(1.2)
+                            .foregroundColor(Color.ShishiColorBlue).scaleEffect(1.2)
                     }
-                    .frame(width: 25)
-                    .padding(.horizontal, 10)
+                    .frame(width: 25).padding(.horizontal, 10)
                     
                 }
                 HStack {
@@ -159,10 +129,6 @@ struct EntrieShowView: View {
                     Spacer()
                 }
                 
-                
-                
-                
-                
                 Text(entry.notes ?? "")
                     .notizenText()
                 HStack {
@@ -170,10 +136,6 @@ struct EntrieShowView: View {
                         .customTextFieldTextLow()
                     Spacer()
                 }
-                
-                
-                
-                
                 
                 ForEach(entry.customFields ) { fields in
                     Text(fields.value)
@@ -192,11 +154,6 @@ struct EntrieShowView: View {
                 
             }
         }.padding(.horizontal).padding(.vertical, 5)
-        
-        
-        
-        
-        
         
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -227,11 +184,6 @@ struct EntrieShowView: View {
                 }
             }
         
-        
-        
-        
-        
-        
             .alert("Hinweis\n", isPresented: $isDeleteAlert, actions: {
                 Button("Löschen", role: .destructive) {
                     entrieViewModel.deleteEntry(entrie: entry)
@@ -247,13 +199,7 @@ struct EntrieShowView: View {
                 Button("Abbrechen", role: .cancel) {
                     isDeleteAlert.toggle()
                 }
-            }, message: {
-                Text("Sind sie sich sicher, dass sie diesen Eintrag löschen möchten?\nDiese Aktion kann nicht rückgängig gemacht werden. Möchten Sie fortfahren?")
-                
-            })
-        
-        
-        
+            }, message: { Text("Sind sie sich sicher, dass sie diesen Eintrag löschen möchten?\nDiese Aktion kann nicht rückgängig gemacht werden. Möchten Sie fortfahren?") })
         
         
             .navigationDestination(isPresented: $entrieEditView, destination: {
@@ -265,6 +211,5 @@ struct EntrieShowView: View {
             .navigationBarBackButtonHidden(true)
             .navigationTitle(entry.title)
             .foregroundStyle(Color.ShishiColorBlue)
-        
     }
 }

@@ -19,10 +19,7 @@ struct SignInView: View {
             Color.ShishiColorRed_.ignoresSafeArea(.all)
             VStack {
                 Image("ShishiLogo_600")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 300)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .resizable().scaledToFit().frame(width: 300).clipShape(RoundedRectangle(cornerRadius: 20))
                 
                 // SignIn Button (SignUp) > je nach LoginStatus wird dieser angezeigt
                     SignInWithAppleButton(
@@ -34,15 +31,12 @@ struct SignInView: View {
                             shishiViewModel.handleLogin(result: completion)
                         }
                     )
-                    .frame(height: 50)
-                    .padding()
+                    .frame(height: 50).padding()
             }
         }
         
         .alert("Probleme mit der Anmeldung\n", isPresented: $shishiViewModel.handleLoginFailure, actions: {
             Button("OK", role: .cancel) {}
-        }, message: {
-            Text("Die Anmeldung konnte nicht durchgeführt werden.\nBitte prüfen Sie die Anmeldedaten und die Verbindung zu dem Internet!")
-        })
+        }, message: { Text("Die Anmeldung konnte nicht durchgeführt werden.\nBitte prüfen Sie die Anmeldedaten und die Verbindung zu dem Internet!") })
     }
 }

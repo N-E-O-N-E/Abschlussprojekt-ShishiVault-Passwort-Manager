@@ -22,7 +22,7 @@ struct ShishiVaultApp: App {
                         PinView()
                             .environmentObject(shishiViewModel)
                     case .saltKey:
-                        SetSaltKeyView(shishiViewModel: shishiViewModel)
+                        SetSaltKeyView()
                             .environmentObject(shishiViewModel)
                     case .home:
                         HomeView()

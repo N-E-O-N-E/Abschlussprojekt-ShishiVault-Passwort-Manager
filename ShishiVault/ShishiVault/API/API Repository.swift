@@ -32,9 +32,7 @@ final class APIRepository {
         ]
         
         let data = try await self.handleDataResponse(forRequest: urlRequest)
-
         let results = try JSONDecoder().decode(APIData.self, from: data)
-
         return results
     }
     
@@ -44,12 +42,9 @@ final class APIRepository {
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             throw APIError.invalidResponse
         }
-
         guard !data.isEmpty else {
             throw APIError.dataNotFound
         }
-
         return data
     }
-     
 }

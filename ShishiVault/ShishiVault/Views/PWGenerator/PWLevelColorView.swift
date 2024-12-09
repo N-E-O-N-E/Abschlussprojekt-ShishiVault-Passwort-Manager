@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct PWLevelColorView: View {
-    
     @Binding var password: String
     
     func levelValue(for password: String) -> CGFloat {
@@ -47,7 +46,6 @@ struct PWLevelColorView: View {
                 Capsule().frame(width: levelValue(for: password), height: 10).foregroundStyle(levelColor(for: password))
             }
         }.padding(.horizontal, 20)
-        
     }
 }
 
