@@ -31,7 +31,7 @@ struct HelpView: View {
                         
                         Text("Über Shishi Vault")
                             .ueberschriftenTextBold()
-                        Text("Mit der Shishi Vault App speichern sie ihre sensiblen Daten verschlüsselt und sicher auf dem Gerät. Shishi Vault gewährleistet die Sicherheit und Vertraulichkeit ihrer Daten und schützt vor Datenmissbrauch durch dritte.")
+                        Text("Mit der Shishi Vault App speichern sie ihre sensiblen Daten verschlüsselt und sicher auf dem Gerät und in der iCloud. Shishi Vault gewährleistet die Sicherheit und Vertraulichkeit ihrer Daten und schützt vor Datenmissbrauch durch dritte.")
                             .normalerText()
                         Image("pic3")
                             .helpPictures()
@@ -39,7 +39,7 @@ struct HelpView: View {
                         
                         Text("\nNach der Anmeldung")
                             .ueberschriftenTextBold()
-                        Text("Nach der Anmeldung haben Sie ein Master-Passwort vegeben. Hinterlegen sie dieses Passwort sicher und geschützt vor dritten an einem Ort außerhalb ihres Geräts. Dieses Passwort dient in Kombination mit Ihrer Apple-ID welches bei der Anmeldung ausgelesen wurde als KeyValue-Paar zur AES-Datenverschlüsselung der Daten.")
+                        Text("Nach der Anmeldung haben Sie ein Master-Passwort vegeben. Hinterlegen sie dieses Passwort sicher und geschützt vor dritten an einem Ort außerhalb ihres Geräts. Dieses Passwort dient in Kombination mit Ihrer Apple-ID welches bei der Anmeldung ausgelesen wurde als KeyValue-Paar zur AES-Datenverschlüsselung der gesamten Daten und ist zur Wiederherstellung notwendig.")
                             .normalerText()
                         Image("pic2")
                             .helpPictures()
@@ -47,11 +47,11 @@ struct HelpView: View {
                         
                         Text("\nDaten und Datenexport")
                             .ueberschriftenTextBold()
-                        Text("Alle Daten dieser App werden verschlüsselt in einer JSON Datei auf Ihrem Gerät gespeichert. In den Einstellungen haben sie jederzeit die Möglichkeit diese Daten auch als 'Klartext' zu exportieren. Nutzen Sie diese Möglichkeit um die Daten in regelmäßigen Abständen außerhalb des Gerätes zu sichern, z.B. in einem Datensafe oder auf einem gesicherten externen Speichermedium.")
+                        Text("Alle Daten dieser App werden verschlüsselt in einer JSON Datei auf Ihrem Gerät gespeichert. In den Einstellungen haben sie jederzeit die Möglichkeit diese Daten auch als 'Klartext' zu exportieren. Nutzen Sie diese Möglichkeit nur bedingt um die Daten bei Bedarf außerhalb des Gerätes unverschlüsselt auf eigenes Risiko zu verwenden.")
                             .normalerText()
                         Image("pic4")
                             .helpPictures()
-                        Text("In der aktuellen Version ist die Cloudspeicherung und synchronisation nicht aktiv. Dieses Feature wird ggf. in den weiteren Entwicklungen dieser App implementiert.")
+                        Text("Nutzen sie regelmäßig die Cloud-Synchronisation um die Daten auf einem anderen Gerät zu synchronisieren oder bei Bedarf wiederherzustellen. Der Upload sowie der Download erfolgt nicht automatisiert!")
                             .normalerText()
                         Divider()
                         
