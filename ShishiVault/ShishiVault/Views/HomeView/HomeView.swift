@@ -48,7 +48,8 @@ struct HomeView: View {
                     if entrieViewModel.entries.isEmpty {
                         VStack(alignment: .center) {
                             Text("\n\n\nKeine Daten zum Laden vorhanden!\n\n")
-                        }.padding()
+                            Text("\n\nVielleicht haben Sie Daten zur Wiederherstellung aus der iCloud?\n\n")
+                        }.padding().multilineTextAlignment(.center)
                         
                     } else {
                         if sortByDate {

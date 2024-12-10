@@ -12,6 +12,11 @@ struct SettingsView: View {
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @Environment(\.dismiss) private var dismiss
+    private let jsonHelper = JSONHelper.shared
+    private let kchainHelper = KeychainHelper.shared
+    
+    @State private var alertTitle: String = ""
+    @State private var alertMessage: String = ""
     
     @State private var isLogoutAlert: Bool = false
     @State private var isExportAlert: Bool = false
@@ -20,6 +25,7 @@ struct SettingsView: View {
     @State private var isEraseAll: Bool = false
     @State private var pinLockDisable: Bool = true
     @State private var pinLock: Bool = false
+    @State private var iCloudAlert: Bool = false
     @State private var pin: String = ""
     
     var body: some View {
@@ -52,11 +58,11 @@ struct SettingsView: View {
                             if !pin.isEmpty {
                                 if oldValue != newValue {
                                     if !newValue {
-                                        KeychainHelper.shared.delPin()
+                                        kchainHelper.delPin()
                                         pinAlertDelete.toggle()
                                         
                                     } else if newValue {
-                                        KeychainHelper.shared.savePin(pin: pin)
+                                        kchainHelper.savePin(pin: pin)
                                     }
                                 }
                             } else {
@@ -75,7 +81,7 @@ struct SettingsView: View {
                 
                 Button {
                     if !pin.isEmpty {
-                        KeychainHelper.shared.savePin(pin: self.pin)
+                        kchainHelper.savePin(pin: self.pin)
                         shishiViewModel.lockApp()
                         dismiss()
                         
@@ -92,6 +98,67 @@ struct SettingsView: View {
                 }.padding(.horizontal, 20).padding(.vertical, 10)
                 
                 Text("Sperrt die APP mit ihrer vergebenen PIN.")
+                    .customTextFieldTextMid()
+                
+                Divider()
+                
+                Text("iCloud synchronisation")
+                    .ueberschriftenText()
+                
+                HStack {
+                    Button {
+                        Task {
+                            jsonHelper.backupToiCloud { success in
+                                if success {
+                                    self.alertTitle = "Backup erfolgreich!"
+                                    alertMessage = "Das Backup wurde erfolgreich in der iCloud gespeichert."
+                                    iCloudAlert.toggle()
+                                    print("JSON file upload successfully.")
+                                    
+                                } else {
+                                    alertTitle = "Backup fehlgeschlagen!"
+                                    alertMessage = "Es konnten keine Daten in der iCloud gesichert werden. Bitte prüfen Sie die Internetverbindung oder die iCloud Einstellungen auf ihrem Gerät!"
+                                    iCloudAlert.toggle()
+                                    print("Failed to upload JSON file.")
+                                }
+                            }
+                        }
+                    } label: {
+                        RoundedRectangle(cornerRadius: 25)
+                            .fill(Color.ShishiColorRed).frame(width: 170, height: 35).foregroundColor(.white)
+                            .overlay(
+                                Text("iBackup  \(Image(systemName: "icloud.and.arrow.up.fill"))")
+                                    .font(.subheadline).bold()
+                                    .foregroundColor(.white))
+                    }
+                    
+                    Button {
+                        Task {
+                            jsonHelper.restoreFromiCloud { success in
+                                if success {
+                                    alertTitle = "Restore erfolgreich!"
+                                    alertMessage = "Die letzte Datensicherung wurde erfolgreich aus der iCloud geladen."
+                                    iCloudAlert.toggle()
+                                    print("JSON file downloaded successfully.")
+                                } else {
+                                    alertTitle = "Restore fehlgeschlagen!"
+                                    alertMessage = "Es konnte keine Datensicherung gefunden bzw. geladen werden. Bitte prüfen Sie die Internetverbindung oder die iCloud Einstellungen auf ihrem Gerät!"
+                                    iCloudAlert.toggle()
+                                    print("Failed to download JSON file.")
+                                }
+                            }
+                        }
+                    } label: {
+                        RoundedRectangle(cornerRadius: 25)
+                            .fill(Color.ShishiColorRed).frame(width: 170, height: 35).foregroundColor(.white)
+                            .overlay(
+                                Text("iRestore  \(Image(systemName: "icloud.and.arrow.down.fill"))")
+                                    .font(.subheadline).bold()
+                                    .foregroundColor(.white))
+                    }
+                }.padding(.horizontal, 22).padding(.vertical, 10)
+                
+                Text("Alle Daten werden in Klartext als JSON-Datei im Dokumenteverzeichnis des Gerätes gespeichert.")
                     .customTextFieldTextMid()
                 
                 Divider()
@@ -185,7 +252,7 @@ struct SettingsView: View {
         
         .alert("Alle Daten Löschen\n", isPresented: $isEraseAll, actions: {
             Button("Alles Löschen", role: .destructive) {
-                JSONHelper.shared.eraseJSONFile()
+                jsonHelper.eraseJSONFile()
             }
             Button("Abbrechen", role: .cancel) {
                 isLogoutAlert = false
@@ -194,9 +261,9 @@ struct SettingsView: View {
         
         .alert("! Unverschlüsselter Export !\n", isPresented: $isExportAlert, actions: {
             Button("Exportieren", role: .destructive) {
-                if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
+                if let key = kchainHelper.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
                     Task {
-                        JSONHelper.shared.saveEntriesToJSONDecrypted(key: key, entries: entrieViewModel.entries)
+                        jsonHelper.saveEntriesToJSONDecrypted(key: key, entries: entrieViewModel.entries)
                     }
                 } else {
                     print("JSON save failed")
@@ -215,8 +282,14 @@ struct SettingsView: View {
             }
         }, message: { Text("Sie haben den PIN-Lock deaktiviert!\n") })
         
+        .alert(alertTitle, isPresented: $iCloudAlert, actions: {
+            Button("Schließen") {
+                dismiss()
+            }
+        }, message: { Text("\(alertMessage)") })
+        
         .onAppear {
-            if let readedPin = KeychainHelper.shared.readPin() {
+            if let readedPin = kchainHelper.readPin() {
                 self.pin = readedPin
                 self.pinLock = true
             }
