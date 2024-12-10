@@ -29,7 +29,7 @@ Formale Prüfungskriterien sind:
 
 ### Über das Projekt:
 
-Verwalten Sie Ihre Passwörter, Bankdaten und anderen sensiblen Informationen sicher und zuverlässig mit Shishi Vault. Die App nutzt ausschließlich native Apple-Technologien, wie die Keychain und das CryptKit, um maximale Sicherheit ohne den Einsatz von Drittanbieter-Diensten zu gewährleisten. Ihre Daten werden direkt auf dem Gerät sicher verschlüsselt gespeichert. Für die Benutzeranmeldung wird der “Sign in with Apple”-Button verwendet, wodurch die Anmeldung nahtlos in das Apple-Ökosystem integriert ist. Zusätzlich sorgt ein Master-Passwort (“Salt”) für eine erweiterte Verschleierung und erhöht damit den Schutz Ihrer sensiblen Daten.
+Verwalten Sie Ihre Passwörter, Bankdaten und anderen sensiblen Informationen sicher und zuverlässig mit Shishi Vault. Die App nutzt ausschließlich native Apple-Technologien, wie die Keychain, CloudKit und das CryptKit, um maximale Sicherheit ohne den Einsatz von Drittanbieter-Diensten zu gewährleisten. Ihre Daten werden direkt auf dem Gerät sicher verschlüsselt gespeichert. Für die Benutzeranmeldung wird der “Sign in with Apple”-Button verwendet, wodurch die Anmeldung nahtlos in das Apple-Ökosystem integriert ist. Zusätzlich sorgt ein Master-Passwort (“Salt”) für eine erweiterte Verschleierung und erhöht damit den Schutz Ihrer sensiblen Daten.
 
 ### Features:
 
@@ -42,6 +42,9 @@ Eine sichere und bequeme Authentifizierung erfolgt über die Apple ID des Benutz
 - Master-Passwort für maximale Sicherheit:
 Durch die Vergabe eines Master-Passworts wird die Datenverschlüsselung mittels eines zusätzlichen “Salt”-Mechanismus verstärkt.
 
+- PIN Sperre der App für flexible Sicherheit:
+Durch das Vergeben eines PIN über die Einstellungen ist es möglich die APP zu sperren.
+
 - Passwort-Generator:
 Ein flexibler Passwortgenerator erstellt sichere Passwörter mit benutzerdefinierter Länge, Groß- und Kleinschreibung sowie Sonderzeichen. Diese Funktion wird über eine implementierte externe API bereitgestellt.
 
@@ -50,6 +53,9 @@ Passwörter werden über eine externe API auf Sicherheit geprüft. Dabei werden 
 
 - Lokale Speicherung:
 Alle Daten werden lokal als verschlüsselte JSON-Datei gespeichert. Die Verschlüsselung erfolgt mittels AES-GCM, um maximale Datensicherheit zu gewährleisten.
+
+- iCloud Sicherung:
+Alle Daten können über das CloudKit geräteübergreifend gesichert und wiederhergestellt werden.
 
 - Schlüsselableitung:
 Der AES-Schlüssel wird aus einem intern generierten Hashwert abgeleitet, der sich aus der Apple-ID und dem Hashwert des Master-Passworts zusammensetzt.
@@ -65,6 +71,7 @@ Der Benutzer ist selbst für die Verwaltung seines Master-Passworts verantwortli
 - SwiftUI für die Benutzeroberfläche, entwickelt mit modernsten Frameworks von Apple.
 - Keychain und CryptKit (SHA-256, AES-GCM) für sichere Datenspeicherung und Verschlüsselung.
 - AppleSignInButton – Nahtlose Integration der Authentifizierungsdienste von Apple.
+- CloudKit für die sichere Datenspeicherung als ASSET
 - Verwendung des JSON-Datenformats für die persistente und strukturierte Datenspeicherung.
 - Passwort-Generator über eine externe API zur Erstellung sicherer Passwörter.
 - Passwort-Verifikation mithilfe einer API, die Hashwerte überträgt und sicher verifiziert.
@@ -86,7 +93,7 @@ Benutzerführung:
   3.	Datenspeicherung lokal:
       - Alle Einträge werden nach dem Speichern lokal verschlüsselt als JSON im Libary-Verzeichniss gesichert. Unverschlüsselte Exports der Daten sind im Download-Ordner zu finden. Die Dateien enthalten die ersten Stellen des UserID-Hashwertes um welcher in der Keychain gesoeichert wurde um so auf Basis der eingegebenen Anmeldetdaten (Hashwert der AppleID und des Master-Passwortes) die Daten für jeden User zu laden.
 
-### !!! ACHTUNG !!! Lokale Daten sind nur zugänglich solange sich die UserID nicht ändert und das Master-Passwort vorliegt.
+### !!! ACHTUNG !!! Daten sind nur zugänglich solange sich die UserID nicht ändert und das gültige Master-Passwort vorliegt.
 
   4.	Passwort-Generator:
       - Der Benutzer kann im Passwortgenerator ein Passwort nach gewünschten Einstellungen (Länge, Groß- und Kleinschreibung, Sonderzeichen) generieren.
@@ -94,13 +101,13 @@ Benutzerführung:
     	- Jedes Passwort wird über eine API auf seinen Kompromitierungsstatus geprüft.
 
   5.	Abmeldung:
-      - Wenn sie sich von der App abmelden werden nur die Anmeldedaten gelöscht. Die verschlüsselten JSON dateien werden nur gelöscht wenn sie die APP deinstallieren oder in den Einstellungen der APP bei aktiver Anmeldung die Daten über den "Löschen" Button direkt löschen!
+      - Wenn sie sich von der App abmelden werden nur die Anmeldedaten gelöscht. Die verschlüsselten JSON Dateien werden nur gelöscht wenn sie die APP deinstallieren oder in den Einstellungen der APP bei aktiver Anmeldung die Daten über den "Löschen" Button direkt löschen! Bei der Neuanmeldung geben Sie einfach Ihr Master-Passwort an und schon können Ihre Daten (bei gleicher Apple ID) geladen werden.
      
 --- 
 
 ### Aussicht für die Zukunft:
 
-- Der Fokus der aktuellen Weiterentwicklung liegt auf der Integration eines iCloud-Backups. Die verschlüsselten JSON-Daten werden künftig automatisch in der iCloud gesichert. Dadurch können die Daten nahtlos auf alle Geräte des Benutzers synchronisiert werden, die mit derselben Apple ID verbunden sind.
+- Der Fokus der aktuellen Weiterentwicklung liegt auf der Verbesserung der Usabilty und dem Design. Stetiges Anpassen des Codes ist natürlich selbstverständilich.
 
 ---
 
