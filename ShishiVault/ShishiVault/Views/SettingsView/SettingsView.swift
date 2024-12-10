@@ -35,8 +35,8 @@ struct SettingsView: View {
                     .ueberschriftLargeBold()
                 Spacer()
                 Image("ShishiLogo_600")
-                    .resizable().scaledToFit().frame(maxWidth: 85).clipShape(.rect(cornerRadius: 15)).padding(.horizontal, 25)
-            }.padding(.vertical, 15)
+                    .resizable().scaledToFit().frame(maxWidth: 80).clipShape(.rect(cornerRadius: 15)).padding(.horizontal, 25)
+            }.padding(.vertical, 5)
             
             VStack(alignment: .leading) {
                 Text("App sperren")
@@ -110,13 +110,13 @@ struct SettingsView: View {
                         Task {
                             jsonHelper.backupToiCloud { success in
                                 if success {
-                                    self.alertTitle = "Backup erfolgreich!"
+                                    self.alertTitle = "Upload erfolgreich!"
                                     alertMessage = "Das Backup wurde erfolgreich in der iCloud gespeichert."
                                     iCloudAlert.toggle()
                                     print("JSON file upload successfully.")
                                     
                                 } else {
-                                    alertTitle = "Backup fehlgeschlagen!"
+                                    alertTitle = "Upload fehlgeschlagen!"
                                     alertMessage = "Es konnten keine Daten in der iCloud gesichert werden. Bitte prüfen Sie die Internetverbindung oder die iCloud Einstellungen auf ihrem Gerät!"
                                     iCloudAlert.toggle()
                                     print("Failed to upload JSON file.")
@@ -127,7 +127,7 @@ struct SettingsView: View {
                         RoundedRectangle(cornerRadius: 25)
                             .fill(Color.ShishiColorRed).frame(width: 170, height: 35).foregroundColor(.white)
                             .overlay(
-                                Text("iBackup  \(Image(systemName: "icloud.and.arrow.up.fill"))")
+                                Text("Upload  \(Image(systemName: "icloud.and.arrow.up.fill"))")
                                     .font(.subheadline).bold()
                                     .foregroundColor(.white))
                     }
@@ -136,12 +136,12 @@ struct SettingsView: View {
                         Task {
                             jsonHelper.restoreFromiCloud { success in
                                 if success {
-                                    alertTitle = "Restore erfolgreich!"
+                                    alertTitle = "Download erfolgreich!"
                                     alertMessage = "Die letzte Datensicherung wurde erfolgreich aus der iCloud geladen."
                                     iCloudAlert.toggle()
                                     print("JSON file downloaded successfully.")
                                 } else {
-                                    alertTitle = "Restore fehlgeschlagen!"
+                                    alertTitle = "Download fehlgeschlagen!"
                                     alertMessage = "Es konnte keine Datensicherung gefunden bzw. geladen werden. Bitte prüfen Sie die Internetverbindung oder die iCloud Einstellungen auf ihrem Gerät!"
                                     iCloudAlert.toggle()
                                     print("Failed to download JSON file.")
@@ -152,13 +152,13 @@ struct SettingsView: View {
                         RoundedRectangle(cornerRadius: 25)
                             .fill(Color.ShishiColorRed).frame(width: 170, height: 35).foregroundColor(.white)
                             .overlay(
-                                Text("iRestore  \(Image(systemName: "icloud.and.arrow.down.fill"))")
+                                Text("Download  \(Image(systemName: "icloud.and.arrow.down.fill"))")
                                     .font(.subheadline).bold()
                                     .foregroundColor(.white))
                     }
                 }.padding(.horizontal, 22).padding(.vertical, 10)
                 
-                Text("Alle Daten werden in Klartext als JSON-Datei im Dokumenteverzeichnis des Gerätes gespeichert.")
+                Text("Speichern sie ihre Daten regelmäßig sicher in der iCloud.")
                     .customTextFieldTextMid()
                 
                 Divider()
@@ -253,6 +253,7 @@ struct SettingsView: View {
         .alert("Alle Daten Löschen\n", isPresented: $isEraseAll, actions: {
             Button("Alles Löschen", role: .destructive) {
                 jsonHelper.eraseJSONFile()
+                dismiss()
             }
             Button("Abbrechen", role: .cancel) {
                 isLogoutAlert = false
