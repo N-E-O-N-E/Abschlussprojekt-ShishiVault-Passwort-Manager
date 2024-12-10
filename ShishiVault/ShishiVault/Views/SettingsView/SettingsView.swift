@@ -26,6 +26,8 @@ struct SettingsView: View {
     @State private var pinLockDisable: Bool = true
     @State private var pinLock: Bool = false
     @State private var iCloudAlert: Bool = false
+    @State private var uploadConfirm: Bool = false
+    @State private var downloadConfirm: Bool = false
     @State private var pin: String = ""
     
     var body: some View {
@@ -107,22 +109,7 @@ struct SettingsView: View {
                 
                 HStack {
                     Button {
-                        Task {
-                            jsonHelper.backupToiCloud { success in
-                                if success {
-                                    self.alertTitle = "Upload erfolgreich!"
-                                    alertMessage = "Das Backup wurde erfolgreich in der iCloud gespeichert."
-                                    iCloudAlert.toggle()
-                                    print("JSON file upload successfully.")
-                                    
-                                } else {
-                                    alertTitle = "Upload fehlgeschlagen!"
-                                    alertMessage = "Es konnten keine Daten in der iCloud gesichert werden. Bitte prüfen Sie die Internetverbindung oder die iCloud Einstellungen auf ihrem Gerät!"
-                                    iCloudAlert.toggle()
-                                    print("Failed to upload JSON file.")
-                                }
-                            }
-                        }
+                        uploadConfirm.toggle()
                     } label: {
                         RoundedRectangle(cornerRadius: 25)
                             .fill(Color.ShishiColorRed).frame(width: 170, height: 35).foregroundColor(.white)
@@ -133,21 +120,7 @@ struct SettingsView: View {
                     }
                     
                     Button {
-                        Task {
-                            jsonHelper.restoreFromiCloud { success in
-                                if success {
-                                    alertTitle = "Download erfolgreich!"
-                                    alertMessage = "Die letzte Datensicherung wurde erfolgreich aus der iCloud geladen."
-                                    iCloudAlert.toggle()
-                                    print("JSON file downloaded successfully.")
-                                } else {
-                                    alertTitle = "Download fehlgeschlagen!"
-                                    alertMessage = "Es konnte keine Datensicherung gefunden bzw. geladen werden. Bitte prüfen Sie die Internetverbindung oder die iCloud Einstellungen auf ihrem Gerät!"
-                                    iCloudAlert.toggle()
-                                    print("Failed to download JSON file.")
-                                }
-                            }
-                        }
+                        downloadConfirm.toggle()
                     } label: {
                         RoundedRectangle(cornerRadius: 25)
                             .fill(Color.ShishiColorRed).frame(width: 170, height: 35).foregroundColor(.white)
@@ -288,6 +261,49 @@ struct SettingsView: View {
                 dismiss()
             }
         }, message: { Text("\(alertMessage)") })
+        
+        .alert("Upload bestätigen", isPresented: $uploadConfirm, actions: {
+            Button("Einverstanden", role: .destructive) {
+                Task {
+                    jsonHelper.backupToiCloud { success in
+                        if success {
+                            self.alertTitle = "Upload erfolgreich!"
+                            alertMessage = "Das Backup wurde erfolgreich in der iCloud gespeichert."
+                            iCloudAlert.toggle()
+                            print("JSON file upload successfully.")
+                            
+                        } else {
+                            alertTitle = "Upload fehlgeschlagen!"
+                            alertMessage = "Es konnten keine Daten in der iCloud gesichert werden. Bitte prüfen Sie die Internetverbindung oder die iCloud Einstellungen auf ihrem Gerät!"
+                            iCloudAlert.toggle()
+                            print("Failed to upload JSON file.")
+                        }
+                    }
+                }
+            }
+            Button("Abbrechen", role: .cancel) {}
+        }, message: { Text("Möchten Sie die Daten ihres Gerätes nun in die iCloud sichern? Bereits existierende Sicherungen in der Cloud werden mit den Daten auf ihrem Gerät überschrieben!") })
+        
+        .alert("Download bestätigen", isPresented: $downloadConfirm, actions: {
+            Button("Einverstanden", role: .destructive) {
+                Task {
+                    jsonHelper.restoreFromiCloud { success in
+                        if success {
+                            alertTitle = "Download erfolgreich!"
+                            alertMessage = "Die letzte Datensicherung wurde erfolgreich aus der iCloud geladen."
+                            iCloudAlert.toggle()
+                            print("JSON file downloaded successfully.")
+                        } else {
+                            alertTitle = "Download fehlgeschlagen!"
+                            alertMessage = "Es konnte keine Datensicherung gefunden bzw. geladen werden. Bitte prüfen Sie die Internetverbindung oder die iCloud Einstellungen auf ihrem Gerät!"
+                            iCloudAlert.toggle()
+                            print("Failed to download JSON file.")
+                        }
+                    }
+                }
+            }
+            Button("Abbrechen", role: .cancel) {}
+        }, message: { Text("Sie sind gerade dabei Daten aus der iCloud zu laden. Damit überschreiben sie alle Daten auf Ihrem Gerät. Sind sie sicher das sie diese Aktion ausführen wollen?") })
         
         .onAppear {
             if let readedPin = kchainHelper.readPin() {
