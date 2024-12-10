@@ -216,7 +216,7 @@ class JSONHelper {
             } else if let existingRecord = record {
                 // Record existiert, aktualisieren
                 let asset = CKAsset(fileURL: filePathURL)
-                existingRecord.setValue(asset, forKey: "file")
+                existingRecord.setValue(asset, forKey: "shishiVaultBackupFile")
                 
                 // Aktualisieren des bestehenden Records
                 privateDatabase.save(existingRecord) { _, updateError in

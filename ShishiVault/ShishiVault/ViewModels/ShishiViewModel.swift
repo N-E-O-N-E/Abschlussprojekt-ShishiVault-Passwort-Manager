@@ -20,14 +20,14 @@ class ShishiViewModel: ObservableObject {
     @Published var handleLoginFailure: Bool = false
     @Published var isLocked: Bool = false
     
+    private let installHelper = InstallationHelper() // Instanz erstellt da shishiViewModel keine View!
     private let keychainHelper = KeychainHelper.shared
     private let cryptHelper = CryptHelper.shared
-    private let installHelper = InstallationHelper.isFirstLaunch
     private var keychainUserIDHash: Data?
     private var keychainUserSaltHash: Data?
     
     init() {
-        if installHelper {
+        if installHelper.isFirstLaunch() {
             keychainHelper.delete(for: symmetricKeychainString)
             keychainHelper.delete(for: userSaltString)
             keychainHelper.delete(for: symmetricKeychainString)
