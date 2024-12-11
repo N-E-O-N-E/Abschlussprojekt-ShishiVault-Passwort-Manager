@@ -12,6 +12,7 @@ struct SettingsView: View {
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @Environment(\.dismiss) private var dismiss
+    
     private let jsonHelper = JSONHelper.shared
     private let kchainHelper = KeychainHelper.shared
     

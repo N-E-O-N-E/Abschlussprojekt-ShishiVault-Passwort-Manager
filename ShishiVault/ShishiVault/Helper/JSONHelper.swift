@@ -116,7 +116,7 @@ class JSONHelper {
         do {
             if let jsonData = setDateToJSON(entries: entries) {
                 let encryptData = try cryptHelper.encrypt(data: jsonData, key: key)
-                try encryptData.write(to: path)
+                try encryptData.write(to: path, options: [.atomic, .completeFileProtection])
                 print("Entries saved to JSON")
             }
         } catch {
@@ -124,20 +124,24 @@ class JSONHelper {
         }
     }
     
-    // Speichert die Daten (un)verschlüsselt in JSON !!!!!!!!! Aber andere Ansatz beim Speichern versucht
+    // Speichert die Daten (un)verschlüsselt in JSON !
     func saveEntriesToJSONDecrypted(key: SymmetricKey, entries: [EntryData]) {
-        let manager = FileManager.default
-        
+//        let manager = FileManager.default
         guard let path = getJSONFilePathForDecrypted() else {
             print("Path not found for saving entries to JSON")
             return
         }
-        if let jsonData = setDateToJSON(entries: entries) {
-            // try jsonData.write(to: path)
-            manager.createFile(atPath: path.path, contents: jsonData)
-            print("Entries saved to JSON")
+        
+        do {
+            if let jsonData = setDateToJSON(entries: entries) {
+                try jsonData.write(to: path, options: [.atomic, .completeFileProtection])
+                //            manager.createFile(atPath: path.path, contents: jsonData)
+                print("Entries saved to JSON")
+            }
+        } catch {
+                print("Faild to save entries to JSON: \(error.localizedDescription)")
+            }
         }
-    }
     
     func deleteEntiresFromJSON(key: SymmetricKey, entrie: EntryData) {
         guard let path = getJSONFilePath() else {
