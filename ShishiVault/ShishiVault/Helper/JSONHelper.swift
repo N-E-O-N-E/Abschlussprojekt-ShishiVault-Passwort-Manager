@@ -52,7 +52,7 @@ class JSONHelper {
             for: .documentDirectory,
             in: .userDomainMask)
             .first else {
-                print("Error: Could not find Document directory.")
+            print("Error: Could not find directory.")
                 return nil
             }
         
