@@ -27,56 +27,55 @@ struct HelpView: View {
             ScrollView {
                 HStack {
                     VStack(alignment: .leading) {
-                        
-                        
                         Text("Über Shishi Vault")
                             .ueberschriftenTextBold()
-                        Text("Mit der Shishi Vault App speichern sie ihre sensiblen Daten verschlüsselt und sicher auf dem Gerät und in der iCloud. Shishi Vault gewährleistet die Sicherheit und Vertraulichkeit ihrer Daten und schützt vor Datenmissbrauch durch dritte.")
+                        Text("Mit der Shishi Vault App speichern Sie Ihre sensiblen Daten verschlüsselt und sicher auf Ihrem Gerät und in der iCloud. Shishi Vault gewährleistet die Sicherheit und Vertraulichkeit Ihrer Daten und schützt vor Datenmissbrauch durch Dritte.")
                             .normalerText()
-                        Image("pic3")
+                        Image("screen_login")
                             .helpPictures()
                         Divider()
                         
                         Text("\nNach der Anmeldung")
                             .ueberschriftenTextBold()
-                        Text("Nach der Anmeldung haben Sie ein Master-Passwort vegeben. Hinterlegen sie dieses Passwort sicher und geschützt vor dritten an einem Ort außerhalb ihres Geräts. Dieses Passwort dient in Kombination mit Ihrer Apple-ID welches bei der Anmeldung ausgelesen wurde als KeyValue-Paar zur AES-Datenverschlüsselung der gesamten Daten und ist zur Wiederherstellung notwendig.")
+                        Text("Nach der Anmeldung haben Sie ein Master-Passwort vergeben. Hinterlegen Sie dieses Passwort sicher und geschützt vor Dritten an einem Ort außerhalb Ihres Geräts. Dieses Passwort dient in Kombination mit Ihrer Apple-ID, welche bei der Anmeldung ausgelesen wurde, als Key-Value-Paar zur AES-Datenverschlüsselung der gesamten Daten und ist für die Wiederherstellung notwendig.")
                             .normalerText()
-                        Image("pic2")
+                        Image("screen_masterkey")
                             .helpPictures()
                         Divider()
                         
                         Text("\nDaten und Datenexport")
                             .ueberschriftenTextBold()
-                        Text("Alle Daten dieser App werden verschlüsselt in einer JSON Datei auf Ihrem Gerät gespeichert. In den Einstellungen haben sie jederzeit die Möglichkeit diese Daten auch als 'Klartext' zu exportieren. Nutzen Sie diese Möglichkeit nur bedingt um die Daten bei Bedarf außerhalb des Gerätes unverschlüsselt auf eigenes Risiko zu verwenden.")
+                        Text("Alle Daten dieser App werden verschlüsselt in einer JSON-Datei auf Ihrem Gerät gespeichert. In den Einstellungen haben Sie jederzeit die Möglichkeit, diese Daten auch als 'Klartext' zu exportieren. Nutzen Sie diese Option nur bedingt, um die Daten bei Bedarf außerhalb Ihres Geräts unverschlüsselt und auf eigenes Risiko zu verwenden.")
                             .normalerText()
-                        Image("pic4")
+                        Image("screen_settings")
                             .helpPictures()
-                        Text("Nutzen sie regelmäßig die Cloud-Synchronisation um die Daten auf einem anderen Gerät zu synchronisieren oder bei Bedarf wiederherzustellen. Der Upload sowie der Download erfolgt nicht automatisiert!")
+                        
+                        Text("Nutzen Sie regelmäßig die Cloud-Synchronisation, um die Daten auf einem anderen Gerät zu synchronisieren oder bei Bedarf wiederherzustellen. Der Upload sowie der Download erfolgen nicht automatisiert!")
                             .normalerText()
                         Divider()
                         
                         Text("\nHomeScreen")
                             .ueberschriftenTextBold()
-                        Text("Auf dem Homescreen finden sie die obere Navigation zum Hilfebildschirm indem sie sich gerade befinden und zu den Einstellungen. Im mittleren Bereich haben sie die Möglichkeit Einträge nach Textinhalt über den Titel zu suchen oder die Sortierung der Einträge nach Titel oder nach zuletzt Aktualisiert zu wählen. Durch einen Klick auf die jeweiligen Einträge gelangen sie in den Vorschaubereich des einzelnen Eintrages, so sie auch die Möglichkeit zum Bearbeiten oder Löschen finden. Nutzen sie den 'grünen# Add Button um einen neuen Eintrag über den Homescreen zu erstellen.")
+                        Text("Auf dem Homescreen finden Sie in der oberen Navigation den Hilfebildschirm, in dem Sie sich gerade befinden, sowie den Zugang zu den Einstellungen. Im mittleren Bereich haben Sie die Möglichkeit, Einträge anhand ihres Titels zu durchsuchen oder die Sortierung der Einträge nach Titel oder nach dem zuletzt aktualisierten Datum vorzunehmen. Durch einen Klick auf einen Eintrag gelangen Sie in dessen Vorschaubereich, in dem Sie auch die Möglichkeit zum Bearbeiten oder Löschen haben. Nutzen Sie den grünen Add-Button, um einen neuen Eintrag über den Homescreen zu erstellen.")
                             .normalerText()
-                        Image("pic1")
+                        Image("screen_home")
                             .helpPictures()
                         Divider()
                         
-                        Text("\nEinträge verwalten")
+                        Text("\nEinträge anzeigen")
                             .ueberschriftenTextBold()
-                        Text("Über die Seite 'Eintrag hinzufügen' haben sie die Möglichkeit neben den Standardfeldern auch eigene Felder hinzuzufügen, umso jeden Eintrag entsprechend individuell gestalten zu können. Nutzen die die QuickIcons um z.B. ein 12 stelliges Passwort nach dem Zufall zu erstellen oder um das eingegebene Passwort über eine externe API auf dessen Kompromitierungsstatus hin zu prüfen.")
+                        Text("Über die Seite 'Hinzufügen' haben Sie die Möglichkeit, neben den Standardfeldern auch eigene Felder hinzuzufügen, um jeden Eintrag individuell gestalten zu können. Nutzen Sie die QuickIcons, um z. B. ein 12-stelliges Passwort nach dem Zufallsprinzip zu generieren oder um das eingegebene Passwort über eine externe API auf einen möglichen Kompromittierungsstatus prüfen zu lassen.")
                             .normalerText()
                         
-                        Image("pic6")
+                        Image("screen_add")
                             .helpPictures()
                         Divider()
                         
                         Text("\nPasswort-Generator")
                             .ueberschriftenTextBold()
-                        Text("Nutzen sie jederzeit den über die Toolbar erreichbaren Passwort-Generator. Der Passwort-Generator nutzt eine externe API und generiert auf Basis der zuvor eingestellten Parameter sichere passwörter. Gleichzeitig wird auch dieses Passwort einer Prüfung auf desses Kompromitierungsstatus durchgeführt.")
+                        Text("Nutzen Sie jederzeit den über die Toolbar erreichbaren Passwort-Generator. Der Passwort-Generator nutzt eine externe API und generiert auf Basis der zuvor eingestellten Parameter sichere Passwörter. Gleichzeitig wird auch dieses Passwort auf dessen Kompromittierungsstatus geprüft.")
                             .normalerText()
-                        Image("pic7")
+                        Image("screen_generator")
                             .helpPictures()
                         Divider()
                         

@@ -134,7 +134,7 @@ struct EntrieEditView: View {
                     .frame(width: 20).padding(.horizontal, 10)
                 }
                 HStack {
-                    Text("Passworteinagabe")
+                    Text("Passwort vergeben")
                         .customTextFieldTextLow()
                     Spacer()
                 }
@@ -194,7 +194,7 @@ struct EntrieEditView: View {
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
                         .overlay(
-                            Text("Eintrag aktualisieren")
+                            Text("Aktualisieren")
                                 .font(.title3).bold().foregroundColor(.white))
                 }
             }
@@ -273,7 +273,7 @@ struct EntrieEditView: View {
         
         .alert("Fehler", isPresented: $isEmptyOptFieldsAlert, actions: {
             Button("OK", role: .cancel) {}
-        }, message: { Text("Bitte füllen Sie die Felder Username oder E-Mail aus.") })
+        }, message: { Text("Bitte füllen Sie das Feld Username oder E-Mail aus.") })
         
         .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
             Button("OK", role: .cancel) {}
@@ -281,7 +281,7 @@ struct EntrieEditView: View {
         
         .alert("Kein Internet!\n", isPresented: $connectionAlert, actions: {
             Button("OK", role: .cancel) {}
-        }, message: { Text("Kein Internet zur Prüfung des Passwortes vorhanden! Eintrag wird ggf. mit unsicherem Passwort aktualisiert!") })
+        }, message: { Text("Kein Internet zur Überprüfung des Passworts vorhanden!\n\nDer Eintrag wird möglicherweise mit einem unsicheren Passwort aktualisiert!") })
         
         .onAppear {
             print("CustomField Daten wurden zurückgesetzt")
@@ -306,7 +306,7 @@ struct EntrieEditView: View {
         }
         
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("Eintrag bearbeiten")
+        .navigationTitle("Bearbeiten")
         .foregroundStyle(Color.ShishiColorBlue)
     }
 }
