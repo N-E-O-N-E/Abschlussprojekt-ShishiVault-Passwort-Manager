@@ -22,9 +22,9 @@ struct CustomFieldAddView: View {
         Spacer()
         
         VStack(alignment: .leading) {
-            Text("Neues Eingabefeld")
+            Text("Eingabefeld hinzufügen")
                 .ueberschriftenTextBold()
-            TextField("Feldname", text: $name )
+            TextField("Bezeichnung", text: $name )
                 .customTextField()
             HStack {
                 Text(name)
@@ -54,7 +54,7 @@ struct CustomFieldAddView: View {
                     textIsEmptyAlert.toggle()
                 }
             } message: {
-                Text("Das Textfeld für die Bezeichnung darf nicht leer sein!")
+                Text("Das Textfeld für die Feldbezeichnung darf nicht leer sein!")
             }
         
             .presentationDetents([.fraction(0.3)])

@@ -42,7 +42,7 @@ struct SettingsView: View {
             }.padding(.vertical, 5)
             
             VStack(alignment: .leading) {
-                Text("App sperren")
+                Text("PIN-Sperre")
                     .ueberschriftenText()
                 
                 HStack {
@@ -77,7 +77,7 @@ struct SettingsView: View {
                 }.padding(.horizontal, 20)
                 
                 HStack {
-                    Text("App-Sperre für hinterlegten PIN aktivieren!")
+                    Text("PIN eingeben um die Sperre zu aktivieren!")
                         .customTextFieldTextLow()
                     Spacer()
                 }
@@ -105,7 +105,7 @@ struct SettingsView: View {
                 
                 Divider()
                 
-                Text("iCloud synchronisation")
+                Text("iCloud-Synchronisation")
                     .ueberschriftenText()
                 
                 HStack {
@@ -132,12 +132,12 @@ struct SettingsView: View {
                     }
                 }.padding(.horizontal, 22).padding(.vertical, 10)
                 
-                Text("Speichern sie ihre Daten regelmäßig sicher in der iCloud.")
+                Text("Sichern der Daten in der iCloud.")
                     .customTextFieldTextMid()
                 
                 Divider()
                 
-                Text("Datensicherung unverschlüsselt")
+                Text("Datenexport")
                     .ueberschriftenText()
                 
                 Button {
@@ -146,17 +146,17 @@ struct SettingsView: View {
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color.ShishiColorRed).frame(width: 350, height: 35).foregroundColor(.white)
                         .overlay(
-                            Text("Export in Dokumente  \(Image(systemName: "square.and.arrow.up.trianglebadge.exclamationmark.fill"))")
+                            Text("Unverschlüsselt  \(Image(systemName: "square.and.arrow.up.trianglebadge.exclamationmark.fill"))")
                                 .font(.subheadline).bold()
                                 .foregroundColor(.white))
                 }.padding(.horizontal, 20).padding(.vertical, 10)
                 
-                Text("Alle Daten werden in Klartext als JSON-Datei im Dokumenteverzeichnis des Gerätes gespeichert.")
+                Text("Die Daten werden in Klartext als JSON-Datei im Dokumenteverzeichnis des Gerätes gespeichert.")
                     .customTextFieldTextMid()
                 
                 Divider()
                 
-                Text("Datenbereinigung")
+                Text("Bereinigung")
                     .ueberschriftenText()
                 
                 Button {
@@ -165,17 +165,17 @@ struct SettingsView: View {
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color.ShishiColorRed).frame(width: 350, height: 35).foregroundColor(.white)
                         .overlay(
-                            Text("Unwiederruflich löschen   \(Image(systemName: "exclamationmark.triangle"))")
+                            Text("Daten löschen   \(Image(systemName: "exclamationmark.triangle"))")
                                 .font(.subheadline).bold()
                                 .foregroundColor(.white))
                 }.padding(.horizontal, 20).padding(.vertical, 10)
                 
-                Text("Löscht die JSON-Datendatei auf diesem Gerät unwiederruflich. Sie bleiben weiter angemeldet und können neue Daten speichern.")
+                Text("Löscht die JSON-Daten auf diesem Gerät unwiederruflich. Clouddaten werden nicht gelöscht.")
                     .customTextFieldTextMid()
                 
                 Divider()
                 
-                Text("Benutzer abmelden")
+                Text("Abmelden")
                     .ueberschriftenText()
                 
                 Button {
@@ -185,12 +185,12 @@ struct SettingsView: View {
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color.ShishiColorRed).frame(width: 350, height: 35).foregroundColor(.white)
                         .overlay(
-                            Text("Abmelden   \(Image(systemName: "door.left.hand.open"))")
+                            Text("Jetzt abmelden   \(Image(systemName: "door.left.hand.open"))")
                                 .font(.subheadline).bold()
                                 .foregroundColor(.white))
                 }.padding(.horizontal, 20).padding(.vertical, 10)
                 
-                Text("Wenn sie sich Abmelden, werden keine Daten gelöscht! Es werden ihre gespeicherten Benutzerdaten, sowie das hinterlegte Master-Passwort gelöscht. Sie können Ihre Daten durch eine erneute Anmeldung mit der AppleID und dem gültigen Master-Passwort wiederherstellen!")
+                Text("Wenn Sie sich Abmelden, werden keine Daten gelöscht! Lediglich Ihre gespeicherten Anmeldedaten, sowie das hinterlegte Master-Passwort wird gelöscht. Sie können Ihre Daten durch eine erneute Anmeldung mit der Apple-ID und dem gültigen Master-Passwort wiederherstellen!")
                     .customTextFieldTextMid()
                 
                 Divider()
@@ -222,19 +222,19 @@ struct SettingsView: View {
             Button("Abbrechen", role: .cancel) {
                 isLogoutAlert = false
             }
-        }, message: { Text("Sind sie sicher, dass sie sich abmelden möchten?\n") })
+        }, message: { Text("Sind Sie sicher, dass Sie sich abmelden möchten?\n") })
         
-        .alert("Alle Daten Löschen\n", isPresented: $isEraseAll, actions: {
-            Button("Alles Löschen", role: .destructive) {
+        .alert("Alle Daten löschen\n", isPresented: $isEraseAll, actions: {
+            Button("Alles löschen", role: .destructive) {
                 jsonHelper.eraseJSONFile()
                 dismiss()
             }
             Button("Abbrechen", role: .cancel) {
                 isLogoutAlert = false
             }
-        }, message: { Text("Alle Daten werden auf dem Gerät unwiederruflich gelöscht - jedoch nicht in der Cloud!\nSind sie sicher, dass sie alle Daten löschen möchten?\n") })
+        }, message: { Text("Alle Daten auf dem Gerät werden unwiederruflich gelöscht, jedoch nicht in der Cloud!\n\nSind sie sicher, dass Sie alle Daten löschen möchten?\n") })
         
-        .alert("! Unverschlüsselter Export !\n", isPresented: $isExportAlert, actions: {
+        .alert("Export unverschlüsselter!\n", isPresented: $isExportAlert, actions: {
             Button("Exportieren", role: .destructive) {
                 if let key = kchainHelper.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
                     Task {
@@ -247,7 +247,7 @@ struct SettingsView: View {
             Button("Abbrechen", role: .cancel) {}
         }, message: { Text("Möchten Sie alle Einträge unverschlüsselt exportieren?\n") })
         
-        .alert("Lock nicht möglich\n", isPresented: $pinAlertPWEmpty, actions: {
+        .alert("PIN-Sperre nicht möglich\n", isPresented: $pinAlertPWEmpty, actions: {
             Button("OK") {}
         }, message: { Text("Sie haben keinen PIN vergeben!\n") })
         
@@ -269,7 +269,7 @@ struct SettingsView: View {
                     jsonHelper.backupToiCloud { success in
                         if success {
                             self.alertTitle = "Upload erfolgreich!"
-                            alertMessage = "Das Backup wurde erfolgreich in der iCloud gespeichert."
+                            alertMessage = "Die Daten wurden erfolgreich in der iCloud gespeichert."
                             iCloudAlert.toggle()
                             print("JSON file upload successfully.")
                             
@@ -304,7 +304,7 @@ struct SettingsView: View {
                 }
             }
             Button("Abbrechen", role: .cancel) {}
-        }, message: { Text("Sie sind gerade dabei Daten aus der iCloud zu laden. Damit überschreiben sie alle Daten auf Ihrem Gerät. Sind sie sicher das sie diese Aktion ausführen wollen?") })
+        }, message: { Text("Sie sind gerade dabei Daten aus der iCloud zu laden. Damit überschreiben Sie alle Daten auf Ihrem Gerät. Sind Sie sicher das Sie diese Aktion ausführen wollen?") })
         
         .onAppear {
             if let readedPin = kchainHelper.readPin() {

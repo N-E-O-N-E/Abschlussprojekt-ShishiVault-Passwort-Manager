@@ -20,7 +20,7 @@ struct SetSaltKeyView: View {
             Spacer()
             
             VStack(alignment: .leading) {
-                Text("Ihr persönlicher Master-Key")
+                Text("Ihr persönliches Master-Passwort")
                     .ueberschriftenTextBold().padding(.vertical, 15)
                 
                 PWLevelColorView(password: $userSaltInput)
@@ -31,7 +31,7 @@ struct SetSaltKeyView: View {
                 Text("Achtung!")
                     .warningTextLarge().bold().padding(.horizontal, 20)
                 
-                Text("Bitte notieren Sie sich den Master-Key an einem sicheren und für dritte nicht einsehbaren Ort.\n\nDer Verlust dieses Schlüssels bedeutet, dass Sie Ihre Daten nicht wiederherstellen können.\n\nDer Master-Key erzeugt in Verbindung mit Ihrer AppleID den Schlüssel für den Zugriff auf alle Daten!")
+                Text("Bitte notieren Sie sich den Master-Key an einem sicheren und für Dritte nicht einsehbaren Ort.\n\nDer Verlust dieses Schlüssels bedeutet, dass Sie Ihre Daten nicht wiederherstellen können.\n\nDer Master-Key erzeugt in Verbindung mit Ihrer Apple-ID den Schlüssel für den Zugriff auf alle Daten!")
                     .normalerText()
                 
                 Spacer()
@@ -67,7 +67,7 @@ struct SetSaltKeyView: View {
         
         .alert("Master-Key\n", isPresented: $keyAlert, actions: {
             Button("OK", role: .cancel) {}
-        }, message: { Text("Der MasterKey darf nicht leer sein!") })
+        }, message: { Text("Das Master-Passwort darf nicht leer sein!") })
     }
 }
 

@@ -32,7 +32,7 @@ struct EntrieShowView: View {
                 Text(entry.title)
                     .textFieldAlsText()
                 HStack {
-                    Text("Title")
+                    Text("Titel")
                         .customTextFieldTextLow()
                     Spacer()
                 }
@@ -149,7 +149,7 @@ struct EntrieShowView: View {
                 
                 Divider()
                 
-                Text("\nErstellt am: \(entry.created.formatted(.dateTime))")
+                Text("\nAktualisiert am: \(entry.created.formatted(.dateTime))")
                     .customTextFieldTextLow()
                 
             }
@@ -199,7 +199,7 @@ struct EntrieShowView: View {
                 Button("Abbrechen", role: .cancel) {
                     isDeleteAlert.toggle()
                 }
-            }, message: { Text("Sind sie sich sicher, dass sie diesen Eintrag löschen möchten?\nDiese Aktion kann nicht rückgängig gemacht werden. Möchten Sie fortfahren?") })
+            }, message: { Text("Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?\n\nDiese Aktion kann nicht rückgängig gemacht werden.\n\nMöchten Sie fortfahren?") })
         
         
             .navigationDestination(isPresented: $entrieEditView, destination: {

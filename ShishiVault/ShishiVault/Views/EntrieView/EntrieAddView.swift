@@ -139,12 +139,12 @@ struct EntrieAddView: View {
 
                 }
                 HStack {
-                    Text("Passworteinagabe")
+                    Text("Passwort vergeben")
                         .customTextFieldTextLow()
                     Spacer()
                 }
                 HStack {
-                    TextField("PasswortConfirm", text: $passwordConfirm)
+                    TextField("Passwort Confirm", text: $passwordConfirm)
                         .customTextField()
                 }
                 HStack {
@@ -223,7 +223,7 @@ struct EntrieAddView: View {
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
                         .overlay(
-                            Text("Eintrag speichern")
+                            Text("Speichern")
                                 .font(.title3).bold()
                                 .foregroundColor(.white))
                 }
@@ -276,7 +276,7 @@ struct EntrieAddView: View {
             Button("OK", role: .cancel) {
                 showAddEntrieView.toggle()
             }
-        }, message: { Text("Die Daten wurden erfolgreich gespeichert.") })
+        }, message: { Text("Der Eintrag wurde erfolgreich gespeichert!") })
         
         .alert("Fehler", isPresented: $isEmptyFieldsAlert, actions: {
             Button("OK", role: .cancel) {}
@@ -284,7 +284,7 @@ struct EntrieAddView: View {
         
         .alert("Fehler", isPresented: $isEmptyOptFieldsAlert, actions: {
             Button("OK", role: .cancel) {}
-        }, message: { Text("Bitte füllen Sie die Felder Username oder E-Mail aus.") })
+        }, message: { Text("Bitte füllen Sie das Feld Username oder E-Mail aus.") })
         
         .alert("Fehler", isPresented: $isDiffPassAlert, actions: {
             Button("OK", role: .cancel) {}
@@ -299,7 +299,7 @@ struct EntrieAddView: View {
         }, message: { Text("Kein Internet zur Prüfung des Passwortes vorhanden! Eintrag wird ggf. mit unsicherem Passwort aktualisiert!") })
         
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("Eintrag hinzufügen")
+        .navigationTitle("Hinzufügen")
         .foregroundStyle(Color.ShishiColorBlue)
         
         .onAppear {
