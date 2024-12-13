@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PinView: View {
     @EnvironmentObject var shishiViewModel: ShishiViewModel
+    @Environment(\.dismiss) private var dismiss
     @State private var enteredPIN: String = ""
     
     var body: some View {
@@ -20,7 +21,7 @@ struct PinView: View {
                 .ueberschriftenTextBold()
             
             TextField("PIN", text: $enteredPIN)
-                .customTextField().padding(.horizontal, 20)
+                .customTextField().padding(.horizontal, 20).padding(.vertical, 30)
             
             Button(action: {
                 if shishiViewModel.unlockApp(with: enteredPIN) {
@@ -32,13 +33,27 @@ struct PinView: View {
                 }
             }) {
                 RoundedRectangle(cornerRadius: 25)
-                    .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
+                    .fill(Color.ShishiColorBlue).frame(height: 50).padding().foregroundColor(.white)
                     .overlay(
                         Text("Entsperren")
                             .font(.title3).bold()
                             .foregroundColor(.white))
                 
-            }.padding(.horizontal, 20).padding(.vertical, 10)
+            }.padding(.horizontal, 20)
+            
+            Button(action: {
+                shishiViewModel.logout()
+                dismiss()
+            }) {
+                RoundedRectangle(cornerRadius: 25)
+                    .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
+                    .overlay(
+                        Text("Abmelden")
+                            .font(.title3).bold()
+                            .foregroundColor(.white))
+                
+            }.padding(.horizontal, 20)
+            
         }
     }
 }
