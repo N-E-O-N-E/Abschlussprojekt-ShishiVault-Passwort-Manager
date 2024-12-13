@@ -49,7 +49,7 @@ class JSONHelper {
         let manager = FileManager.default
         
         guard let documentDirectory = manager.urls(
-            for: .documentDirectory,
+            for: .downloadsDirectory,
             in: .userDomainMask)
             .first else {
             print("Error: Could not find directory.")
@@ -74,7 +74,7 @@ class JSONHelper {
         // Wandelt die Daten wieder in SHA256 lesbaren String
         let stringPrefix = userSalt.map { String(format: "%02x", $0) }.joined().prefix(10)
         
-        let filePath = passwordFolder.appendingPathComponent("/shishiData_klartext_\(stringPrefix).json")
+        let filePath = passwordFolder.appendingPathComponent("shishiData_klartext_\(stringPrefix).json")
         return filePath
         
     }
