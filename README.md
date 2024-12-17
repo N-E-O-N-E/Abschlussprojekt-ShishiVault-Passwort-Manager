@@ -108,11 +108,11 @@ Benutzer haben die Möglichkeit, ihre Daten als Klartext in eine unverschlüssel
       --  Von hier aus können Einträge nachträglich bearbeitet oder gelöscht werden.
 
   3.	Datenspeicherung lokal:
-      - Alle Einträge werden nach dem Speichern lokal verschlüsselt als JSON im APP-Verzeichniss gesichert. Unverschlüsselte Exports der Daten sind im Documents-Ordner des Benutzers zu finden. Die Dateien enthalten die ersten Stellen des UserID-Hashwertes welcher in der Keychain gespeichert wurde, um so auf Basis der eingegebenen Anmeldetdaten (Hashwert der AppleID und des Master-Passwortes) die Daten für jeden Benutzer identifizieren zu können.
+      - Alle Einträge werden vor dem Speichern verschlüsselt lokal als JSON im APP-Verzeichniss gesichert. Unverschlüsselte Exports der JSON-Daten sind möglich. Die JSON-Dateien enthalten die ersten Stellen des UserID-Hashwertes welcher in der Keychain gespeichert wurde, um so auf Basis der eingegebenen Anmeldetdaten (Hashwert der AppleID und des Master-Passwortes) die Daten für jeden Benutzer identifizieren zu können.
       
   4.    Datenspeicherung iCloud:
       - Über die Einstellungen können alls Daten in die iCloud übermittelt bzw. heruntergeladen werden
-        !!! ACHTUNG !!! Daten sind nur zugänglich solange das gültige Master-Passwort vorliegt.
+        !!! ACHTUNG !!! Daten sind nur zugänglich solange das gültige bzw. passendes Master-Passwort vorliegt.
 
   4.	Passwort-Generator:
       - Der Benutzer kann im Passwortgenerator ein Passwort nach gewünschten Einstellungen (Länge, Groß- und Kleinschreibung, Sonderzeichen) generieren.
@@ -127,7 +127,9 @@ Benutzer haben die Möglichkeit, ihre Daten als Klartext in eine unverschlüssel
 
 ### Aussicht für die Zukunft:
 
-- Der Fokus der aktuellen Weiterentwicklung liegt auf der Verbesserung der Benutzerfreundlichkeit und dem Design. Stetiges Anpassen des Codes ist natürlich selbstverständilich.
+- Zwei-Faktor-Authentifizierung: Ich möchte die Sicherheit weiter erhöhen, indem ich die Möglichkeit integriere,  den Zugriff auf die App zusätzlich über einen Authenticator abzusichern.
+- Plattformübergreifende Versionen: Ich plane, die App auf Android zu bringen, damit sie noch mehr Nutzern zugänglich wird.
+- Veröffentlichung im AppStore: Sobald alle Kernfunktionen stabil sind, soll die App für die breite Öffentlichkeit verfügbar gemacht werden – mit einem besonderen Fokus auf Sicherheit und Benutzerfreundlichkeit 
 
 ---
 
