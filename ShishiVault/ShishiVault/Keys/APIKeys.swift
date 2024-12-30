@@ -11,6 +11,6 @@
 import Foundation
 
 struct APIKey {
-    static let apiKeyPWGen = "b66eeaaea8msha9deb190fad247ap1b7fe9jsnd8d053a90485"
+    static let apiKeyPWGen = "YOUR_NEW_PLACEHOLDER"
     static let apiKeyVerify = "KEY"
 }
