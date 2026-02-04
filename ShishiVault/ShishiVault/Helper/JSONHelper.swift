@@ -1,14 +1,6 @@
-//
-//  JSONHelper.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 19.11.24.
-//
-
 import SwiftUI
 import CryptoKit
 import CloudKit
-// FileManager:  https://www.bing.com/videos/riverview/relatedvideo?q=swift+filemanager&mid=F8E6060C34AC882BB930F8E6060C34AC882BB930&FORM=VIRE
 
 class JSONHelper {
     @EnvironmentObject var shishiViewModel: ShishiViewModel
@@ -17,7 +9,6 @@ class JSONHelper {
     private let cryptHelper = CryptHelper.shared
     private init() {}
     
-    // Liefert den GerätePfad zur JSON datei
     private func getJSONFilePath() -> URL? {
         guard let documentDirectory = FileManager.default.urls(
             for: .documentDirectory,
@@ -40,49 +31,12 @@ class JSONHelper {
             return nil
         }
         
-        // Wandelt die Daten wieder in SHA256 lesbaren String
         let stringPrefix = userSalt.map { String(format: "%02x", $0) }.joined().prefix(10)
         
         let filePath = passwordFolder.appendingPathComponent("shishiDataAES_\(stringPrefix).json")
         return filePath
     }
     
-//    // Liefert den Geräte DokumentPfad zur (un)verschlüsselten JSON datei
-//    private func getJSONFilePathForDecrypted() -> URL? {
-//        let manager = FileManager.default
-//        
-//        guard let documentDirectory = manager.urls(
-//            for: .documentDirectory,
-//            in: .userDomainMask)
-//            .first else {
-//            print("Error: Could not find directory.")
-//                return nil
-//            }
-//        
-//        let passwordFolder = documentDirectory.appendingPathComponent("export_shishiVault_Klartext")
-//        
-//        do {
-//            try manager.createDirectory(
-//                at: passwordFolder,
-//                withIntermediateDirectories: true,
-//                attributes: nil)
-//        } catch {
-//            print("Error creating directory: \(error.localizedDescription)")
-//        }
-//        
-//        guard let userSalt = keychainHelper.read(for: KeyChainKeys().userSaltString) else {
-//            print("Error: No userSalt found")
-//            return nil
-//        }
-//        // Wandelt die Daten wieder in SHA256 lesbaren String
-//        let stringPrefix = userSalt.map { String(format: "%02x", $0) }.joined().prefix(10)
-//        
-//        let filePath = passwordFolder.appendingPathComponent("shishiData_klartext_\(stringPrefix).json")
-//        return filePath
-//        
-//    }
-    
-    // Lädt verschlüsseltes JSON und entschlüsselt es
     func loadEntriesFromJSON(key: SymmetricKey) async -> [EntryData] {
         guard let path = getJSONFilePath() else {
             print("Path not found for loading entries from JSON")
@@ -109,7 +63,6 @@ class JSONHelper {
         }
     }
     
-    // Speichert die Daten verschlüsselt in JSON
     func saveEntriesToJSON(key: SymmetricKey, entries: [EntryData]) {
         guard let path = getJSONFilePath() else {
             print("Path not found for saving entries to JSON")
@@ -126,25 +79,6 @@ class JSONHelper {
             print("Faild to save entries to JSON: \(error.localizedDescription)")
         }
     }
-    
-//    // Speichert die Daten (un)verschlüsselt in JSON !
-//    func saveEntriesToJSONDecrypted(key: SymmetricKey, entries: [EntryData]) {
-////        let manager = FileManager.default
-//        guard let path = getJSONFilePathForDecrypted() else {
-//            print("Path not found for saving entries to JSON")
-//            return
-//        }
-//        
-//        do {
-//            if let jsonData = setDateToJSON(entries: entries) {
-//                try jsonData.write(to: path, options: [.atomic, .completeFileProtection])
-//                //            manager.createFile(atPath: path.path, contents: jsonData)
-//                print("Entries saved to JSON")
-//            }
-//        } catch {
-//                print("Faild to save entries to JSON: \(error.localizedDescription)")
-//            }
-//        }
     
     func deleteEntiresFromJSON(key: SymmetricKey, entrie: EntryData) {
         guard let path = getJSONFilePath() else {
@@ -181,7 +115,6 @@ class JSONHelper {
         }
     }
     
-    // Konvertiere Entries in JSON
     func setDateToJSON(entries: [EntryData]) -> Data? {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
@@ -218,7 +151,6 @@ class JSONHelper {
                 let asset = CKAsset(fileURL: filePathURL)
                 newRecord.setValue(asset, forKey: "shishiVaultBackupFile")
                 
-                // Suche Record
                 privateDatabase.save(newRecord) { _, saveError in
                     if let saveError = saveError {
                         print("Error saving new record: \(saveError.localizedDescription)")
@@ -228,11 +160,9 @@ class JSONHelper {
                 }
                 
             } else if let existingRecord = record {
-                // Record existiert, aktualisieren
                 let asset = CKAsset(fileURL: filePathURL)
                 existingRecord.setValue(asset, forKey: "shishiVaultBackupFile")
                 
-                // Aktualisieren des bestehenden Records
                 privateDatabase.save(existingRecord) { _, updateError in
                     if let updateError = updateError {
                         print("Error updating record: \(updateError.localizedDescription)")
@@ -249,12 +179,10 @@ class JSONHelper {
         }
     }
     
-    // Mit @escaping asynchrone oder verzögerte Aufgaben abarbeiten, auch nach Aufruf
     func restoreFromiCloud(completion: @escaping (Bool) -> Void) {
         let privateDatabase = CKContainer.default().privateCloudDatabase
         let recordID = CKRecord.ID(recordName: "shishiVaultBackup")
         
-        // Record abrufen
            privateDatabase.fetch(withRecordID: recordID) { record, error in
                if let error = error {
                    print("Error fetching record: \(error)")
@@ -268,7 +196,6 @@ class JSONHelper {
                    return
                }
                
-               // Zielpfad Library
                guard let libraryDirectory = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first else {
                    print("Error: Could not find Library directory.")
                    completion(false)
@@ -280,15 +207,13 @@ class JSONHelper {
                    return
                }
                
-               // Wandelt die Daten wieder in SHA256 lesbaren String
                let stringPrefix = userSalt.map { String(format: "%02x", $0) }.joined().prefix(10)
                
                let destinationURL = libraryDirectory.appendingPathComponent("shishiVaultData/shishiDataAES_\(stringPrefix).json")
                
-               // Datei aus dem CKAsset kopieren
                do {
                    if FileManager.default.fileExists(atPath: destinationURL.path) {
-                       try FileManager.default.removeItem(at: destinationURL) // Alte Datei löschen
+                       try FileManager.default.removeItem(at: destinationURL)
                    }
                    
                    try FileManager.default.copyItem(at: fileURL, to: destinationURL)

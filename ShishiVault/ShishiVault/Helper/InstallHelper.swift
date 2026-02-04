@@ -1,10 +1,3 @@
-//
-//  InstallHelper.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 09.12.24.
-//
-
 import Foundation
 import SwiftUI
 

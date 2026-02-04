@@ -1,10 +1,3 @@
-//
-//  EntrieAddView.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 15.11.24.
-//
-
 import SwiftUI
 import CryptoKit
 

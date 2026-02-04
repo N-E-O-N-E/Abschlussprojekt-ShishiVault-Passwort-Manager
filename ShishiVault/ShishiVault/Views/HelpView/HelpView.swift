@@ -1,10 +1,3 @@
-//
-//  HelpView.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 03.12.24.
-//
-
 import SwiftUI
 
 struct HelpView: View {

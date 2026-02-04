@@ -1,9 +1,3 @@
-//
-//  EntireItemsView.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 14.11.24.
-
 import SwiftUI
 
 struct EntrieListItem: View {

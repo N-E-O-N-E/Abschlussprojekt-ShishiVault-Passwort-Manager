@@ -1,10 +1,3 @@
-//
-//  PinView.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 06.12.24.
-//
-
 import SwiftUI
 
 struct PinView: View {

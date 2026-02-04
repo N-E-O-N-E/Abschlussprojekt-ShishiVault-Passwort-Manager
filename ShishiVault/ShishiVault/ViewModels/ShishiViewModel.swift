@@ -1,16 +1,6 @@
-//
-//  SignInViewModel.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 12.11.24.
-//
-
 import SwiftUI
 import AuthenticationServices
 import CryptoKit
-
-// Quelle: https://www.youtube.com/watch?v=O2FVDzoAB34 - https://developer.apple.com/documentation/swift/result
-// Quelle für NetzwerkMonitor: https://www.danijelavrzan.com/posts/2022/11/network-connection-alert-swiftui/
 
 @MainActor
 class ShishiViewModel: ObservableObject {
@@ -20,7 +10,7 @@ class ShishiViewModel: ObservableObject {
     @Published var handleLoginFailure: Bool = false
     @Published var isLocked: Bool = false
     
-    private let installHelper = InstallationHelper() // Instanz erstellt da shishiViewModel keine View!
+    private let installHelper = InstallationHelper()
     private let keychainHelper = KeychainHelper.shared
     private let cryptHelper = CryptHelper.shared
     private var keychainUserIDHash: Data?
@@ -41,12 +31,10 @@ class ShishiViewModel: ObservableObject {
         checkLoginStatus()
     }
     
-    // SignInWithAppleID Button Funktion (configure)
     func configure(request: ASAuthorizationAppleIDRequest) {
-        request.requestedScopes = [.fullName, .email] // Fordert Namen und die E-Mail-Adresse
+        request.requestedScopes = [.fullName, .email]
     }
     
-    // SignInWithAppleID Button Funktion (handle)
     func handleLogin(result: Result<ASAuthorization, Error>) {
         switch result {
             case .success(let auth):
@@ -84,7 +72,6 @@ class ShishiViewModel: ObservableObject {
         }
     }
     
-    // Printet ein Error aus
     private func handleLoginError(with error: Error) {
         appState = .login
         print("Could not authenticate: \(error.localizedDescription)")
@@ -109,8 +96,6 @@ class ShishiViewModel: ObservableObject {
         }
     }
     
-    // Prüft ob Daten in der Keychain vorhanden ist und nicht nil um den
-    // LoginStatus beim start der App über den init() zu setzen
     func checkLoginStatus() {
         if !isLocked {
             if keychainHelper.read(for: symmetricKeychainString) != nil &&
@@ -125,9 +110,7 @@ class ShishiViewModel: ObservableObject {
         }
     }
     
-    // Logout durch setzten des LoginStatus und löschen der Dateb aus der Keychain für den aktuelle UserKey
     func logout() {
-        // KeychainHelper.shared.delete(for: symmetricKeyString)
         keychainHelper.delete(for: symmetricKeychainString)
         keychainHelper.delete(for: userSaltString)
         keychainUserIDHash = nil

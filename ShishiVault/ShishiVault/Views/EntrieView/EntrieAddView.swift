@@ -1,10 +1,3 @@
-//
-//  EntrieAddView.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 15.11.24.
-//
-
 import SwiftUI
 
 struct EntrieAddView: View {
@@ -272,15 +265,15 @@ struct EntrieAddView: View {
                 .environmentObject(entrieViewModel)
         }
         
-//        .alert("Gespeichert", isPresented: $isSavedAlert, actions: {
-//            Button("OK", role: .cancel) {
-//                showAddEntrieView.toggle()
-//            }
-//        }, message: { Text("Der Eintrag wurde erfolgreich gespeichert!") })
-//        
-//        .alert("Pflichtfelder nicht ausgefüllt!", isPresented: $isEmptyFieldsAlert, actions: {
-//            Button("OK", role: .cancel) {}
-//        }, message: { Text("Bitte füllen Sie die Pflichtfelder Titel und Passwort aus.") })
+        .alert("Gespeichert", isPresented: $isSavedAlert, actions: {
+            Button("OK", role: .cancel) {
+                showAddEntrieView.toggle()
+            }
+        }, message: { Text("Der Eintrag wurde erfolgreich gespeichert!") })
+        
+        .alert("Pflichtfelder nicht ausgefüllt!", isPresented: $isEmptyFieldsAlert, actions: {
+            Button("OK", role: .cancel) {}
+        }, message: { Text("Bitte füllen Sie die Pflichtfelder Titel und Passwort aus.") })
         
         .alert("Fehler nicht ausgefüllt!", isPresented: $isEmptyOptFieldsAlert, actions: {
             Button("OK", role: .cancel) {}

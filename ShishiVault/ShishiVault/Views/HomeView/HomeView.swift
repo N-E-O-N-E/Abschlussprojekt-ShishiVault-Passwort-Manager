@@ -1,10 +1,3 @@
-//
-//  HomeView.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 15.11.24.
-//
-
 import SwiftUI
 import CryptoKit
 
@@ -97,8 +90,8 @@ struct HomeView: View {
                             Image(systemName: "gearshape")
                         }
                     }
-                } // End Toolbar
-            } // End ScrollView
+                }
+            }
         }
         .overlay(
             Button(action: {

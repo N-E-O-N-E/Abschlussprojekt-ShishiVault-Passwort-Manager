@@ -1,10 +1,3 @@
-//
-//  viewSetSaltKey.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 27.11.24.
-//
-
 import SwiftUI
 
 struct SetSaltKeyView: View {

@@ -1,10 +1,3 @@
-//
-//  PWLevelColorView.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 28.11.24.
-//
-
 import SwiftUI
 
 struct PWLevelColorView: View {

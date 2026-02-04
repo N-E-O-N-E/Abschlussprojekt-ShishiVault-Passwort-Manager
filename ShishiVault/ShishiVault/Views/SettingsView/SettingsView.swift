@@ -1,14 +1,6 @@
-//
-//  ContentView.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 11.11.24.
-//
-
 import SwiftUI
 
 struct SettingsView: View {
-    // Exemplarisches Einbinden des ViewModels zur Anmeldung mit Apple ID
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @Environment(\.dismiss) private var dismiss
