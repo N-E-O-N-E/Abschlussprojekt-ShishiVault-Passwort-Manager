@@ -267,13 +267,13 @@ struct EntrieEditView: View {
         }, message: { Text("Die Aktualisierung der Daten kann nicht rückgängig gemacht werden!. Möchten Sie die Daten wirklich aktualisieren?") })
         
         
-        .alert("Fehler", isPresented: $isEmptyFieldsAlert, actions: {
-            Button("OK", role: .cancel) {}
-        }, message: { Text("Bitte füllen Sie die Pflichtfelder Titel und Passwort aus.") })
-        
-        .alert("Fehler", isPresented: $isEmptyOptFieldsAlert, actions: {
-            Button("OK", role: .cancel) {}
-        }, message: { Text("Bitte füllen Sie das Feld Username oder E-Mail aus.") })
+//        .alert("Pflichtfelder nicht ausgefüllt!", isPresented: $isEmptyFieldsAlert, actions: {
+//            Button("OK", role: .cancel) {}
+//        }, message: { Text("Bitte füllen Sie die Pflichtfelder Titel und Passwort aus.") })
+//        
+//        .alert("Felder nicht vollständig ausgefüllt!", isPresented: $isEmptyOptFieldsAlert, actions: {
+//            Button("OK", role: .cancel) {}
+//        }, message: { Text("Bitte füllen Sie das Feld Username oder E-Mail aus.") })
         
         .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
             Button("OK", role: .cancel) {}

@@ -21,8 +21,7 @@ struct SettingsView: View {
     
     @State private var alertTitle: String = ""
     @State private var alertMessage: String = ""
-    
-    @State private var showExplorer = false
+
     @State private var isLogoutAlert: Bool = false
     @State private var isExportAlert: Bool = false
     @State private var pinAlertPWEmpty: Bool = false
@@ -238,29 +237,28 @@ struct SettingsView: View {
             }
         }, message: { Text("Alle Daten auf dem Gerät werden unwiederruflich gelöscht, jedoch nicht in der Cloud!\n\nSind sie sicher, dass Sie alle Daten löschen möchten?\n") })
         
-        //        .alert("Export unverschlüsselter!\n", isPresented: $isExportAlert, actions: {
-        //            Button("Exportieren", role: .destructive) {
-        //                if let key = kchainHelper.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
-        //                    Task {
-        //                        jsonHelper.saveEntriesToJSONDecrypted(key: key, entries: entrieViewModel.entries)
-        //                    }
-        //                } else {
-        //                    print("JSON save failed")
-        //                }
-        //            }
-        //            Button("Abbrechen", role: .cancel) {}
-        //        }, message: { Text("Möchten Sie alle Einträge unverschlüsselt exportieren?\n") })
-        
-        .alert("Export unverschlüsselt!\n", isPresented: $isExportAlert, actions: {
+        .alert("Export unverschlüsselter!\n", isPresented: $isExportAlert, actions: {
             Button("Exportieren", role: .destructive) {
-                if let jsonData = jsonHelper.setDateToJSON(entries: entrieViewModel.entries) {
-                    document = JSONDocument(json: jsonData)
-                    showFileExporter = true
+                if let key = kchainHelper.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
+                    Task {
+                        jsonHelper.saveEntriesToJSONDecrypted(key: key, entries: entrieViewModel.entries)
+                    }
+                    if let jsonData = jsonHelper.setDateToJSON(entries: entrieViewModel.entries) {
+                        Task {
+                            document = JSONDocument(json: jsonData)
+                            showFileExporter = true
+                        }
+                    }
+                } else {
+                    print("Export failed")
                 }
             }
-            Button("Abbrechen", role: .cancel) {}
+            Button("Abbrechen", role: .cancel) {
+                
+            }
         }, message: { Text("Möchten Sie alle Einträge unverschlüsselt exportieren?\n") })
         
+                
         .alert("PIN-Sperre nicht möglich\n", isPresented: $pinAlertPWEmpty, actions: {
             Button("OK") {}
         }, message: { Text("Sie haben keinen PIN vergeben!\n") })

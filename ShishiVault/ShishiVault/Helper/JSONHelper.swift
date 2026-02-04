@@ -20,7 +20,7 @@ class JSONHelper {
     // Liefert den GerätePfad zur JSON datei
     private func getJSONFilePath() -> URL? {
         guard let documentDirectory = FileManager.default.urls(
-            for: .libraryDirectory,
+            for: .documentDirectory,
             in: .userDomainMask)
             .first else {
             print("Error: Could not find Library directory.")

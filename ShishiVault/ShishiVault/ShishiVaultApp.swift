@@ -16,7 +16,7 @@ struct ShishiVaultApp: App {
             NavigationStack {
                 switch shishiViewModel.appState {
                     case .login:
-                        SignInView()
+                        HomeView()
                             .environmentObject(shishiViewModel)
                     case .pin:
                         PinView()

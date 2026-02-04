@@ -21,17 +21,17 @@ struct SignInView: View {
                 Image("ShishiLogo_600")
                     .resizable().scaledToFit().frame(width: 300).clipShape(RoundedRectangle(cornerRadius: 20))
                 
-                // SignIn Button (SignUp) > je nach LoginStatus wird dieser angezeigt
-                    SignInWithAppleButton(
-                        .signIn,
-                        onRequest: { request in
-                            shishiViewModel.configure(request: request)
-                        },
-                        onCompletion: { completion in
-                            shishiViewModel.handleLogin(result: completion)
-                        }
-                    )
-                    .frame(height: 50).padding()
+//                // SignIn Button (SignUp) > je nach LoginStatus wird dieser angezeigt
+//                    SignInWithAppleButton(
+//                        .signIn,
+//                        onRequest: { request in
+//                            shishiViewModel.configure(request: request)
+//                        },
+//                        onCompletion: { completion in
+//                            shishiViewModel.handleLogin(result: completion)
+//                        }
+//                    )
+//                    .frame(height: 50).padding()
             }
         }
         
