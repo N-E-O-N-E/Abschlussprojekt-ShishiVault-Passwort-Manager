@@ -2,6 +2,7 @@ import SwiftUI
 
 struct EntrieEditView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     
@@ -259,18 +260,18 @@ struct EntrieEditView: View {
             Button("Abbrechen", role: .cancel) {}
         }, message: { Text("Die Aktualisierung der Daten kann nicht rückgängig gemacht werden!. Möchten Sie die Daten wirklich aktualisieren?") })
         
-        .alert("Pflichtfelder nicht ausgefüllt!", isPresented: $isEmptyFieldsAlert, actions: {
-            Button("OK", role: .cancel) {}
-        }, message: { Text("Bitte füllen Sie die Pflichtfelder Titel und Passwort aus.") })
-        
-        .alert("Felder nicht vollständig ausgefüllt!", isPresented: $isEmptyOptFieldsAlert, actions: {
-            Button("OK", role: .cancel) {}
-        }, message: { Text("Bitte füllen Sie das Feld Username oder E-Mail aus.") })
-        
-        .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
-            Button("OK", role: .cancel) {}
-        }, message: { Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.") })
-        
+//        .alert("Pflichtfelder nicht ausgefüllt!", isPresented: $isEmptyFieldsAlert, actions: {
+//            Button("OK", role: .cancel) {}
+//        }, message: { Text("Bitte füllen Sie die Pflichtfelder Titel und Passwort aus.") })
+//        
+//        .alert("Felder nicht vollständig ausgefüllt!", isPresented: $isEmptyOptFieldsAlert, actions: {
+//            Button("OK", role: .cancel) {}
+//        }, message: { Text("Bitte füllen Sie das Feld Username oder E-Mail aus.") })
+//        
+//        .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
+//            Button("OK", role: .cancel) {}
+//        }, message: { Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.") })
+//        
         .alert("Kein Internet!\n", isPresented: $connectionAlert, actions: {
             Button("OK", role: .cancel) {}
         }, message: { Text("Kein Internet zur Überprüfung des Passworts vorhanden!\n\nDer Eintrag wird möglicherweise mit einem unsicheren Passwort aktualisiert!") })
@@ -301,10 +302,4 @@ struct EntrieEditView: View {
         .navigationTitle("Bearbeiten")
         .foregroundStyle(Color.ShishiColorBlue)
     }
-}
-
-#Preview {
-    EntrieEditView(entrieEditView: .constant(true))
-        .environmentObject(EntriesViewModel(symmetricKeyString: .init([])))
-        .environmentObject(ShishiViewModel())
 }

@@ -15,17 +15,23 @@ final class EntryModel {
     var encryptedNotes: Data
     var encryptedCustomFields: Data // CustomFields als verschlüsseltes JSON
     
-    init(id: UUID = UUID(), title: String, username: String?, email: String, 
-         encryptedPassword: Data, encryptedNotes: Data, encryptedCustomFields: Data, 
-         website: String?) {
+    init(id: UUID = UUID(),
+         title: String,
+         username: String?,
+         email: String,
+         website: String?,
+         created: Date = Date(),
+         encryptedPassword: Data,
+         encryptedNotes: Data,
+         encryptedCustomFields: Data) {
         self.id = id
         self.title = title
         self.username = username
         self.email = email
-        self.created = Date()
+        self.website = website
+        self.created = created
         self.encryptedPassword = encryptedPassword
         self.encryptedNotes = encryptedNotes
         self.encryptedCustomFields = encryptedCustomFields
-        self.website = website
     }
 }

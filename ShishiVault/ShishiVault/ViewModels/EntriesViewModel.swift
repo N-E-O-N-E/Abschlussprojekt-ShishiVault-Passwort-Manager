@@ -1,29 +1,14 @@
 import SwiftUI
 import CryptoKit
+import SwiftData
 
 @MainActor
 class EntriesViewModel: ObservableObject {
     @Published var entries: [EntryData] = []
     @Published var customFieldsForEntrie: [CustomField] = []
-    
-    private let jsonHelper = JSONHelper.shared
-    private let keychainHelper = KeychainHelper.shared
-    private let keychainString: String?
-    
-    init(symmetricKeyString: String?) {
-        self.keychainString = symmetricKeyString
-    }
-    
-    func reloadEntries() async {
-        guard let symmetricKeyString = keychainString,
-              let symmetricKey = keychainHelper.loadCombinedSymmetricKeyFromKeychain(keychainKey: symmetricKeyString) else {
-            print("Failed to reload entries. Symmetric key not found")
-            return
-        }
-        self.entries = await jsonHelper.loadEntriesFromJSON(key: symmetricKey)
-        print("\(entries.count) Entries from JSON reloaded")
-    }
-    
+        
+    init () {}
+       
     func entrieSaveButtomnCheck(title: String, username: String, email: String, password: String, passwordConfirm: String) -> String {
         let mindestFelderNichtLeer = !title.isEmpty && !password.isEmpty && !passwordConfirm.isEmpty
         let wahlFelderNichtLeer = (!username.isEmpty || !email.isEmpty)
@@ -60,15 +45,91 @@ class EntriesViewModel: ObservableObject {
         return "sonstiges"
     }
     
-    func createEntry(title: String, username: String, email: String, password: String, passwordConfirm: String, notes: String, website: String, customFields: [CustomField]) {
+    func createEntry(title: String, username: String, email: String, password: String,passwordConfirm: String,
+                     notes: String, website: String, customFields: [CustomField],
+                     modelContext: ModelContext, vaultContext: VaultContext) {
+        
+        let key = SymmetricKey(data: vaultContext.loginKey)
+        
         guard password == passwordConfirm else {
             return print("Entrie has not been created. Password does not match")
         }
             
-        let newEntrie = EntryData(title: title, username: username, email: email, password: password,
-                                  notes: notes, website: website, customFields: customFields)
-        entries.append(newEntrie)
+        do {
+                // 1. Einzelne Felder verschlüsseln
+                let encPass = try CryptHelper.shared.encrypt(data: Data(password.utf8), key: key)
+                let encNotes = try CryptHelper.shared.encrypt(data: Data(notes.utf8), key: key)
+                
+                // 2. CustomFields (Array) in JSON umwandeln und DANN verschlüsseln
+                let customJSON = try JSONEncoder().encode(customFields)
+                let encCustom = try CryptHelper.shared.encrypt(data: customJSON, key: key)
+                
+                // 3. Das vollständige Modell für SwiftData erstellen
+                let newModel = EntryModel(
+                    title: title,
+                    username: username,
+                    email: email,
+                    website: website,
+                    encryptedPassword: encPass,
+                    encryptedNotes: encNotes,
+                    encryptedCustomFields: encCustom
+                )
+                
+                // 4. In die Datenbank schreiben
+                modelContext.insert(newModel)
+                try modelContext.save()
+                
+                // 5. UI-Liste & JSON-Backup synchronisieren
+                let plainEntry = EntryData(id: newModel.id, title: title, username: username,
+                                           email: email, password: password, notes: notes,
+                                           website: website, customFields: customFields)
+                self.entries.append(plainEntry)
+                JSONHelper.shared.saveEntriesToJSON(key: key, entries: self.entries)
+                
+            } catch {
+                print("Kritischer Fehler beim Speichern aller Felder: \(error)")
+            }
     }
+    
+    func reloadEntries(modelContext: ModelContext, vaultContext: VaultContext) async {
+        let descriptor = FetchDescriptor<EntryModel>(sortBy: [SortDescriptor(\.title)])
+        
+        do {
+            let storedModels = try modelContext.fetch(descriptor)
+            let key = SymmetricKey(data: vaultContext.loginKey)
+            
+            self.entries = storedModels.compactMap { model in
+                decryptModel(model, using: key)
+            }
+            print("\(entries.count) Einträge aus SwiftData geladen.")
+        }catch {
+            print("Failed to fetch Entries: \(error)")
+        }
+    }
+    
+    private func decryptModel(_ model: EntryModel, using key: SymmetricKey) -> EntryData? {
+        do {
+            let passData = try CryptHelper.shared.decrypt(cipherText: model.encryptedPassword, key: key)
+            let notesData = try CryptHelper.shared.decrypt(cipherText: model.encryptedNotes, key: key)
+            let customData = try CryptHelper.shared.decrypt(cipherText: model.encryptedCustomFields, key: key)
+            let customFields = try JSONDecoder().decode([CustomField].self, from: customData)
+            
+            return EntryData(
+                id: model.id,
+                title: model.title,
+                username: model.username,
+                email: model.email,
+                password: String(data: passData, encoding: .utf8) ?? "",
+                notes: String(data: notesData, encoding: .utf8),
+                website: model.website,
+                customFields: customFields
+            )
+        } catch {
+            print("❌ Entschlüsselung fehlgeschlagen für: \(model.title)")
+            return nil
+        }
+    }
+    
     
     func updateEntry(newEntrie: EntryData) {
         if let index = entries.firstIndex(where: { $0.id == newEntrie.id }) {
@@ -96,5 +157,4 @@ class EntriesViewModel: ObservableObject {
         customFieldsForEntrie.removeAll(where: { $0.id == id })
         print("CustomFeld for ID \(id.uuidString) deleted")
     }
-    
 }

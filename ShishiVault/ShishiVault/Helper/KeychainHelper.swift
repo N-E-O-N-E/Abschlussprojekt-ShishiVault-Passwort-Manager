@@ -7,6 +7,40 @@ class KeychainHelper {
     static let shared = KeychainHelper()
     private init() {}
     
+    func saveKeyToKeychain(key: Data) {
+        let access = SecAccessControlCreateWithFlags(
+            nil,
+            kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
+            .biometryCurrentSet,
+            nil
+        )
+
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "login_key",
+            kSecValueData as String: key,
+            kSecAttrAccessControl as String: access as Any
+        ]
+
+        SecItemAdd(query as CFDictionary, nil)
+    }
+    
+    func loadKeyFromKeychain() -> Data? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "login_key",
+            kSecReturnData as String: kCFBooleanTrue!,
+            kSecUseAuthenticationContext as String: "Tresor entsperren"
+        ]
+
+        var dataTypeRef: AnyObject?
+        let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
+
+        return status == errSecSuccess ? (dataTypeRef as? Data) : nil
+    }
+    
+    //-----------------
+    
     func saveCombinedSymmetricKeyInKeychain(symmetricKey: Data, userSaltKey: Data, keychainKey: String) {
         let data = SHA256.hash(data: symmetricKey + userSaltKey)
         let symmetricKey = Data(data)

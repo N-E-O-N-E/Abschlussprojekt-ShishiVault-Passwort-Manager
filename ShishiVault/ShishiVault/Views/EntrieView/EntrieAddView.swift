@@ -1,8 +1,10 @@
 import SwiftUI
+import SwiftData
 
 struct EntrieAddView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @EnvironmentObject var shishiViewModel: ShishiViewModel
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
     @State private var isSavedAlert: Bool = false
@@ -93,18 +95,18 @@ struct EntrieAddView: View {
                         }
                     }) {
                         switch passwordPwnedState {
-                            case 1:
-                                Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                    .foregroundColor(Color.ShishiColorRed_).scaleEffect(1.4).padding(.horizontal, 10)
-                            case 2:
-                                Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                    .foregroundColor(Color.ShishiColorGreen).scaleEffect(1.4).padding(.horizontal, 10)
-                            case 0:
-                                Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                    .foregroundColor(Color.ShishiColorGray).scaleEffect(1.4).padding(.horizontal, 10)
-                            default:
-                                Image(systemName: "shield.lefthalf.filled.badge.checkmark")
-                                    .foregroundColor(Color.ShishiColorGray).scaleEffect(1.4).padding(.horizontal, 10)
+                        case 1:
+                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                .foregroundColor(Color.ShishiColorRed_).scaleEffect(1.4).padding(.horizontal, 10)
+                        case 2:
+                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                .foregroundColor(Color.ShishiColorGreen).scaleEffect(1.4).padding(.horizontal, 10)
+                        case 0:
+                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                .foregroundColor(Color.ShishiColorGray).scaleEffect(1.4).padding(.horizontal, 10)
+                        default:
+                            Image(systemName: "shield.lefthalf.filled.badge.checkmark")
+                                .foregroundColor(Color.ShishiColorGray).scaleEffect(1.4).padding(.horizontal, 10)
                         }
                     }
                     .padding(5).padding(.horizontal, 10)
@@ -129,7 +131,7 @@ struct EntrieAddView: View {
                             .foregroundColor(Color.ShishiColorBlue).scaleEffect(1.4)
                     }
                     .padding(5).padding(.horizontal, 10)
-
+                    
                 }
                 HStack {
                     Text("Passwort vergeben")
@@ -174,14 +176,17 @@ struct EntrieAddView: View {
                     switch entrieViewModel.entrieSaveButtomnCheck(
                         title: title, username: username,
                         email: email, password: password, passwordConfirm: passwordConfirm) {
+                        
+                    case "mindestLeer":
+                        isEmptyFieldsAlert.toggle()
+                    case "wahlLeer":
+                        isEmptyOptFieldsAlert.toggle()
+                    case "passConfirm":
+                        isDiffPassAlert.toggle()
+                    case "ok":
+                        if let loginKey = shishiViewModel.loginKey {
+                            let vaultContext = VaultContext(loginKey: loginKey)
                             
-                        case "mindestLeer":
-                            isEmptyFieldsAlert.toggle()
-                        case "wahlLeer":
-                            isEmptyOptFieldsAlert.toggle()
-                        case "passConfirm":
-                            isDiffPassAlert.toggle()
-                        case "ok":
                             Task {
                                 do {
                                     passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
@@ -190,19 +195,30 @@ struct EntrieAddView: View {
                                 }
                             }
                             if passwordPwnedState == 2 {
-                                entrieViewModel.createEntry(
-                                    title: title, username: username, email: email, password: password, passwordConfirm: passwordConfirm,
-                                    notes: notes, website: website, customFields: entrieViewModel.customFieldsForEntrie)
+                                entrieViewModel
+                                    .createEntry(
+                                        title: title,
+                                        username: username,
+                                        email: email,
+                                        password: password,
+                                        passwordConfirm: passwordConfirm,
+                                        notes: notes,
+                                        website: website,
+                                        customFields: entrieViewModel.customFieldsForEntrie,
+                                        modelContext: modelContext,
+                                        vaultContext: vaultContext
+                                    )
+                            }
                                 
-                                if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
-                                    Task {
-                                        JSONHelper.shared.saveEntriesToJSON(
-                                            key: key,
-                                            entries: entrieViewModel.entries)
-                                    }
-                                } else {
-                                    print("JSON save failed")
-                                }
+                                //                                if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
+                                //                                    Task {
+                                //                                        JSONHelper.shared.saveEntriesToJSON(
+                                //                                            key: key,
+                                //                                            entries: entrieViewModel.entries)
+                                //                                    }
+                                //                                } else {
+                                //                                    print("JSON save failed")
+                                //                                }
                                 entrieViewModel.deleteCustomField()
                                 isSavedAlert.toggle()
                                 
@@ -211,99 +227,93 @@ struct EntrieAddView: View {
                             }
                         default:
                             break
-                    }
-                } label: {
-                    RoundedRectangle(cornerRadius: 25)
-                        .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
-                        .overlay(
-                            Text("Speichern")
-                                .font(.title3).bold()
-                                .foregroundColor(.white))
-                }
-            }
-        }
-        .padding(.horizontal).padding(.vertical, 15)
-        
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "chevron.backward")
-                        .foregroundColor(Color.ShishiColorBlue)
-                    Text("Zurück")
-                        .foregroundColor(Color.ShishiColorBlue)
-                }
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                HStack {
-                    Button {
-                        customFieldSheet.toggle()
+                        }
                     } label: {
-                        HStack {
-                            Image(systemName: "rectangle.badge.plus")
-                                .foregroundStyle(Color.ShishiColorBlue)
+                        RoundedRectangle(cornerRadius: 25)
+                            .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
+                            .overlay(
+                                Text("Speichern")
+                                    .font(.title3).bold()
+                                    .foregroundColor(.white))
+                    }
+                }
+            }
+            .padding(.horizontal).padding(.vertical, 15)
+            
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.backward")
+                            .foregroundColor(Color.ShishiColorBlue)
+                        Text("Zurück")
+                            .foregroundColor(Color.ShishiColorBlue)
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    HStack {
+                        Button {
+                            customFieldSheet.toggle()
+                        } label: {
+                            HStack {
+                                Image(systemName: "rectangle.badge.plus")
+                                    .foregroundStyle(Color.ShishiColorBlue)
+                            }
+                        }
+                        Button(action: {
+                            pwGeneratorSheet.toggle()
+                        }) {
+                            Image(systemName: "lock.square")
+                                .foregroundColor(Color.ShishiColorBlue)
+                                .scaleEffect(1.1)
                         }
                     }
-                    Button(action: {
-                        pwGeneratorSheet.toggle()
-                    }) {
-                        Image(systemName: "lock.square")
-                            .foregroundColor(Color.ShishiColorBlue)
-                            .scaleEffect(1.1)
-                    }
                 }
             }
-        }
-        
-        .sheet(isPresented: $customFieldSheet) {
-            CustomFieldAddView(customFieldSheet: $customFieldSheet)
-                .environmentObject(entrieViewModel)
-        }
-        .sheet(isPresented: $pwGeneratorSheet) {
-            PWGeneratorView(customFieldSheet: $customFieldSheet)
-                .environmentObject(entrieViewModel)
-        }
-        
-        .alert("Gespeichert", isPresented: $isSavedAlert, actions: {
-            Button("OK", role: .cancel) {
-                showAddEntrieView.toggle()
+            
+            .sheet(isPresented: $customFieldSheet) {
+                CustomFieldAddView(customFieldSheet: $customFieldSheet)
+                    .environmentObject(entrieViewModel)
             }
-        }, message: { Text("Der Eintrag wurde erfolgreich gespeichert!") })
-        
-        .alert("Pflichtfelder nicht ausgefüllt!", isPresented: $isEmptyFieldsAlert, actions: {
-            Button("OK", role: .cancel) {}
-        }, message: { Text("Bitte füllen Sie die Pflichtfelder Titel und Passwort aus.") })
-        
-        .alert("Fehler nicht ausgefüllt!", isPresented: $isEmptyOptFieldsAlert, actions: {
-            Button("OK", role: .cancel) {}
-        }, message: { Text("Bitte füllen Sie das Feld Username oder E-Mail aus.") })
-        
-        .alert("Fehler", isPresented: $isDiffPassAlert, actions: {
-            Button("OK", role: .cancel) {}
-        }, message: { Text("Die Passwörter stimmen nicht überein") })
-        
-        .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
-            Button("OK", role: .cancel) {}
-        }, message: { Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.") })
-        
-        .alert("Kein Internet!\n", isPresented: $connectionAlert, actions: {
-            Button("OK", role: .cancel) {}
-        }, message: { Text("Kein Internet zur Prüfung des Passwortes vorhanden! Eintrag wird ggf. mit unsicherem Passwort aktualisiert!") })
-        
-        .navigationBarBackButtonHidden(true)
-        .navigationTitle("Hinzufügen")
-        .foregroundStyle(Color.ShishiColorBlue)
-        
-        .onAppear {
-            entrieViewModel.deleteCustomField()
-            print("CustomField data array cleared")
+            .sheet(isPresented: $pwGeneratorSheet) {
+                PWGeneratorView(customFieldSheet: $customFieldSheet)
+                    .environmentObject(entrieViewModel)
+            }
+            
+            .alert("Gespeichert", isPresented: $isSavedAlert, actions: {
+                Button("OK", role: .cancel) {
+                    showAddEntrieView.toggle()
+                }
+            }, message: { Text("Der Eintrag wurde erfolgreich gespeichert!") })
+            //
+            //        .alert("Pflichtfelder nicht ausgefüllt!", isPresented: $isEmptyFieldsAlert, actions: {
+            //            Button("OK", role: .cancel) {}
+            //        }, message: { Text("Bitte füllen Sie die Pflichtfelder Titel und Passwort aus.") })
+            //
+            //        .alert("Fehler nicht ausgefüllt!", isPresented: $isEmptyOptFieldsAlert, actions: {
+            //            Button("OK", role: .cancel) {}
+            //        }, message: { Text("Bitte füllen Sie das Feld Username oder E-Mail aus.") })
+            //
+            //        .alert("Fehler", isPresented: $isDiffPassAlert, actions: {
+            //            Button("OK", role: .cancel) {}
+            //        }, message: { Text("Die Passwörter stimmen nicht überein") })
+            //
+            //        .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
+            //            Button("OK", role: .cancel) {}
+            //        }, message: { Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.") })
+            //
+            //        .alert("Kein Internet!\n", isPresented: $connectionAlert, actions: {
+            //            Button("OK", role: .cancel) {}
+            //        }, message: { Text("Kein Internet zur Prüfung des Passwortes vorhanden! Eintrag wird ggf. mit unsicherem Passwort aktualisiert!") })
+            
+            .navigationBarBackButtonHidden(true)
+            .navigationTitle("Hinzufügen")
+            .foregroundStyle(Color.ShishiColorBlue)
+            
+            .onAppear {
+                entrieViewModel.deleteCustomField()
+                print("CustomField data array cleared")
+            }
         }
     }
-}
-
-#Preview {
-    EntrieAddView(showAddEntrieView: .constant(true))
-        .environmentObject(EntriesViewModel(symmetricKeyString: .init([])))
-        .environmentObject(ShishiViewModel())
-}

@@ -80,7 +80,7 @@ struct SettingsView: View {
                 Button {
                     if !pin.isEmpty {
                         kchainHelper.savePin(pin: self.pin)
-                        shishiViewModel.lockApp()
+//                        shishiViewModel.lockApp()
                         dismiss()
                         
                     } else {
@@ -212,7 +212,7 @@ struct SettingsView: View {
         .alert("Abmelden\n", isPresented: $isLogoutAlert, actions: {
             Button("Abmelden", role: .destructive) {
                 shishiViewModel.logout()
-                dismiss()
+                //dismiss()
             }
             Button("Abbrechen", role: .cancel) {
                 isLogoutAlert = false
@@ -229,86 +229,86 @@ struct SettingsView: View {
             }
         }, message: { Text("Alle Daten auf dem Gerät werden unwiederruflich gelöscht, jedoch nicht in der Cloud!\n\nSind sie sicher, dass Sie alle Daten löschen möchten?\n") })
         
-        .alert("Export unverschlüsselter!\n", isPresented: $isExportAlert, actions: {
-            Button("Exportieren", role: .destructive) {
-                if let key = kchainHelper.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
-                    Task {
-                        jsonHelper.saveEntriesToJSONDecrypted(key: key, entries: entrieViewModel.entries)
-                    }
-                    if let jsonData = jsonHelper.setDateToJSON(entries: entrieViewModel.entries) {
-                        Task {
-                            document = JSONDocument(json: jsonData)
-                            showFileExporter = true
-                        }
-                    }
-                } else {
-                    print("Export failed")
-                }
-            }
-            Button("Abbrechen", role: .cancel) {
+//        .alert("Export unverschlüsselter!\n", isPresented: $isExportAlert, actions: {
+//            Button("Exportieren", role: .destructive) {
+//                if let key = kchainHelper.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
+//                    Task {
+//                        jsonHelper.saveEntriesToJSONDecrypted(key: key, entries: entrieViewModel.entries)
+//                    }
+//                    if let jsonData = jsonHelper.setDateToJSON(entries: entrieViewModel.entries) {
+//                        Task {
+//                            document = JSONDocument(json: jsonData)
+//                            showFileExporter = true
+//                        }
+//                    }
+//                } else {
+//                    print("Export failed")
+//                }
+//            }
+//            Button("Abbrechen", role: .cancel) {
+//                
+//            }
+//        }, message: { Text("Möchten Sie alle Einträge unverschlüsselt exportieren?\n") })
+//        
                 
-            }
-        }, message: { Text("Möchten Sie alle Einträge unverschlüsselt exportieren?\n") })
+//        .alert("PIN-Sperre nicht möglich\n", isPresented: $pinAlertPWEmpty, actions: {
+//            Button("OK") {}
+//        }, message: { Text("Sie haben keinen PIN vergeben!\n") })
+//        
+//        .alert("PIN-Lock\n", isPresented: $pinAlertDelete, actions: {
+//            Button("OK") {
+//                dismiss()
+//            }
+//        }, message: { Text("Sie haben den PIN-Lock deaktiviert!\n") })
+//        
+//        .alert(alertTitle, isPresented: $iCloudAlert, actions: {
+//            Button("Schließen") {
+//                dismiss()
+//            }
+//        }, message: { Text("\(alertMessage)") })
         
-                
-        .alert("PIN-Sperre nicht möglich\n", isPresented: $pinAlertPWEmpty, actions: {
-            Button("OK") {}
-        }, message: { Text("Sie haben keinen PIN vergeben!\n") })
-        
-        .alert("PIN-Lock\n", isPresented: $pinAlertDelete, actions: {
-            Button("OK") {
-                dismiss()
-            }
-        }, message: { Text("Sie haben den PIN-Lock deaktiviert!\n") })
-        
-        .alert(alertTitle, isPresented: $iCloudAlert, actions: {
-            Button("Schließen") {
-                dismiss()
-            }
-        }, message: { Text("\(alertMessage)") })
-        
-        .alert("Upload bestätigen", isPresented: $uploadConfirm, actions: {
-            Button("Einverstanden", role: .destructive) {
-                Task {
-                    jsonHelper.backupToiCloud { success in
-                        if success {
-                            self.alertTitle = "Upload erfolgreich!"
-                            alertMessage = "Die Daten wurden erfolgreich in der iCloud gespeichert."
-                            iCloudAlert.toggle()
-                            print("JSON file upload successfully.")
-                            
-                        } else {
-                            alertTitle = "Upload fehlgeschlagen!"
-                            alertMessage = "Es konnten keine Daten in der iCloud gesichert werden. Bitte prüfen Sie die Internetverbindung oder die iCloud Einstellungen auf ihrem Gerät!"
-                            iCloudAlert.toggle()
-                            print("Failed to upload JSON file.")
-                        }
-                    }
-                }
-            }
-            Button("Abbrechen", role: .cancel) {}
-        }, message: { Text("Möchten Sie die Daten ihres Gerätes nun in die iCloud sichern? Bereits existierende Sicherungen in der Cloud werden mit den Daten auf ihrem Gerät überschrieben!") })
-        
-        .alert("Download bestätigen", isPresented: $downloadConfirm, actions: {
-            Button("Einverstanden", role: .destructive) {
-                Task {
-                    jsonHelper.restoreFromiCloud { success in
-                        if success {
-                            alertTitle = "Download erfolgreich!"
-                            alertMessage = "Die letzte Datensicherung wurde erfolgreich aus der iCloud geladen."
-                            iCloudAlert.toggle()
-                            print("JSON file downloaded successfully.")
-                        } else {
-                            alertTitle = "Download fehlgeschlagen!"
-                            alertMessage = "Es konnte keine Datensicherung gefunden bzw. geladen werden. Bitte prüfen Sie die Internetverbindung oder die iCloud Einstellungen auf ihrem Gerät!"
-                            iCloudAlert.toggle()
-                            print("Failed to download JSON file.")
-                        }
-                    }
-                }
-            }
-            Button("Abbrechen", role: .cancel) {}
-        }, message: { Text("Sie sind gerade dabei Daten aus der iCloud zu laden. Damit überschreiben Sie alle Daten auf Ihrem Gerät. Sind Sie sicher das Sie diese Aktion ausführen wollen?") })
+//        .alert("Upload bestätigen", isPresented: $uploadConfirm, actions: {
+//            Button("Einverstanden", role: .destructive) {
+//                Task {
+//                    jsonHelper.backupToiCloud { success in
+//                        if success {
+//                            self.alertTitle = "Upload erfolgreich!"
+//                            alertMessage = "Die Daten wurden erfolgreich in der iCloud gespeichert."
+//                            iCloudAlert.toggle()
+//                            print("JSON file upload successfully.")
+//                            
+//                        } else {
+//                            alertTitle = "Upload fehlgeschlagen!"
+//                            alertMessage = "Es konnten keine Daten in der iCloud gesichert werden. Bitte prüfen Sie die Internetverbindung oder die iCloud Einstellungen auf ihrem Gerät!"
+//                            iCloudAlert.toggle()
+//                            print("Failed to upload JSON file.")
+//                        }
+//                    }
+//                }
+//            }
+//            Button("Abbrechen", role: .cancel) {}
+//        }, message: { Text("Möchten Sie die Daten ihres Gerätes nun in die iCloud sichern? Bereits existierende Sicherungen in der Cloud werden mit den Daten auf ihrem Gerät überschrieben!") })
+//        
+//        .alert("Download bestätigen", isPresented: $downloadConfirm, actions: {
+//            Button("Einverstanden", role: .destructive) {
+//                Task {
+//                    jsonHelper.restoreFromiCloud { success in
+//                        if success {
+//                            alertTitle = "Download erfolgreich!"
+//                            alertMessage = "Die letzte Datensicherung wurde erfolgreich aus der iCloud geladen."
+//                            iCloudAlert.toggle()
+//                            print("JSON file downloaded successfully.")
+//                        } else {
+//                            alertTitle = "Download fehlgeschlagen!"
+//                            alertMessage = "Es konnte keine Datensicherung gefunden bzw. geladen werden. Bitte prüfen Sie die Internetverbindung oder die iCloud Einstellungen auf ihrem Gerät!"
+//                            iCloudAlert.toggle()
+//                            print("Failed to download JSON file.")
+//                        }
+//                    }
+//                }
+//            }
+//            Button("Abbrechen", role: .cancel) {}
+//        }, message: { Text("Sie sind gerade dabei Daten aus der iCloud zu laden. Damit überschreiben Sie alle Daten auf Ihrem Gerät. Sind Sie sicher das Sie diese Aktion ausführen wollen?") })
         
         .onAppear {
             if let readedPin = kchainHelper.readPin() {

@@ -4,21 +4,23 @@ struct VaultTransitionView: View {
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     
     var body: some View {
-        VStack(spacing: 20) {
-            ProgressView()
-                .tint(.white)
-                .scaleEffect(1.5)
+        ZStack {
+            Color.ShishiColorRed_.ignoresSafeArea() // Hintergrundfarbe erzwingen
             
-            Text("Sicherheits-Check...")
-                .font(.caption)
-                .foregroundColor(.white.opacity(0.8))
+            VStack(spacing: 20) {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .scaleEffect(1.5)
+                
+                Text("Sicherheits-Check...")
+                    .foregroundColor(.white)
+                    .font(.headline)
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.ShishiColorRed_) // Dein Branding
         .onAppear {
-            // Kurze Verzögerung für eine flüssige Animation
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                withAnimation {
+            // Erhöhe die Zeit auf 1.5 Sekunden zum Testen
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                withAnimation(.easeInOut) {
                     shishiViewModel.appState = .login
                 }
             }

@@ -1,19 +1,27 @@
 import SwiftUI
 import CryptoKit
+import SwiftData
 
 struct HomeView: View {
+    let vaultContext: VaultContext
+    @Environment(\.modelContext) private var modelContext
+    
+    @Query private var rawEntries: [EntryModel]
+    
     @EnvironmentObject var shishiViewModel: ShishiViewModel
-    @StateObject var entrieViewModel: EntriesViewModel
+    @EnvironmentObject var entrieViewModel: EntriesViewModel
+    
     @State private var showAddEntrieView: Bool = false
     @State private var entrieShowView: Bool = false
     @State private var showSettingsView: Bool = false
     @State private var showHelpView: Bool = false
-    @State var sortByDate: Bool = false
+    @State private var sortByDate: Bool = false
     @State private var searchText: String = ""
     
-    init() {
-        let key = ShishiViewModel().symmetricKeychainString
-        _entrieViewModel = StateObject(wrappedValue: EntriesViewModel(symmetricKeyString: key))
+    var filteredEntries: [EntryData] {
+        entrieViewModel.entries.filter { entry in
+            searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
+        }
     }
     
     var body: some View {
@@ -41,40 +49,31 @@ struct HomeView: View {
                     if entrieViewModel.entries.isEmpty {
                         VStack(alignment: .center) {
                             Text("\n\n\nKeine Daten zum Laden vorhanden!\n\n")
-                            Text("\n\nVielleicht haben Sie Daten zur Wiederherstellung aus der iCloud?\n\n")
+                            Text("\n\nVielleicht haben Sie Datensicherungen zum einlesen??\n\n")
                         }.padding().multilineTextAlignment(.center)
                         
                     } else {
-                        if sortByDate {
-                            ForEach(entrieViewModel.entries.filter { entry in
-                                searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
-                            }.sorted(by: { $0.created > $1.created }) ) { entry in
-                                NavigationLink {
-                                    EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
-                                        .environmentObject(entrieViewModel)
-                                        .environmentObject(shishiViewModel)
-                                } label: {
-                                    EntrieListItem(title: entry.title, email: entry.email,
-                                                   created: entry.created, website: entry.website ?? "")
-                                }
-                            }
-                        } else {
-                            ForEach(entrieViewModel.entries.filter { entry in
-                                searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
-                            }.sorted(by: { $0.title < $1.title }) ) { entry in
-                                NavigationLink {
-                                    EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
-                                        .environmentObject(entrieViewModel)
-                                        .environmentObject(shishiViewModel)
-                                } label: {
-                                    EntrieListItem(title: entry.title, email: entry.email,
-                                                   created: entry.created, website: entry.website ?? "")
-                                }
+                        
+                        
+                        
+                        ForEach(filteredEntries) { entry in
+                            NavigationLink {
+                                // Erst beim Klick wird das Modell in das Klartext-Struct umgewandelt
+                                
+                                EntrieShowView(entrieShowView: .constant(true), entry: entry)
+                                    .environmentObject(entrieViewModel)
+                                    .environmentObject(shishiViewModel)
+                                
+                            } label: {
+                                // Für die Liste entschlüsseln wir nur Titel/Mail (bereits im Modell vorhanden)
+                                EntrieListItem(title: entry.title,
+                                               email: entry.email,
+                                               created: entry.created,
+                                               website: entry.website ?? "")
                             }
                         }
                     }
-                } // End VStack
-                
+                }
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         Button {
@@ -107,26 +106,52 @@ struct HomeView: View {
         .navigationDestination(isPresented: $showAddEntrieView, destination: {
             EntrieAddView(showAddEntrieView: $showAddEntrieView)
                 .environmentObject(entrieViewModel)
-                .environmentObject(shishiViewModel) })
+            .environmentObject(shishiViewModel) })
         .navigationDestination(isPresented: $showSettingsView, destination: {
             SettingsView()
                 .environmentObject(shishiViewModel)
-                .environmentObject(entrieViewModel) })
+            .environmentObject(entrieViewModel) })
         .navigationDestination(isPresented: $showHelpView, destination: {
             HelpView() })
         
         .onAppear {
             Task {
-                await entrieViewModel.reloadEntries()
+                await entrieViewModel.reloadEntries(
+                    modelContext: modelContext,
+                    vaultContext: vaultContext
+                )
             }
         }
+        .onChange(of: rawEntries) { reloadEntries() }
         
         .navigationBarBackButtonHidden(true)
         .foregroundStyle(Color.ShishiColorBlue)
     }
-}
-
-#Preview {
-    HomeView()
-        .environmentObject(ShishiViewModel())
+    
+    private func reloadEntries() {
+        Task {
+            await entrieViewModel.reloadEntries(modelContext: modelContext, vaultContext: vaultContext)
+        }
+    }
+    
+    private func decrypt(model: EntryModel) -> EntryData? {
+        let key = SymmetricKey(data: vaultContext.loginKey)
+        do {
+            let passData = try CryptHelper.shared.decrypt(cipherText: model.encryptedPassword, key: key)
+            let notesData = try CryptHelper.shared.decrypt(cipherText: model.encryptedNotes, key: key)
+            
+            return EntryData(
+                id: model.id,
+                title: model.title,
+                username: model.username,
+                email: model.email,
+                password: String(data: passData, encoding: .utf8) ?? "",
+                notes: String(data: notesData, encoding: .utf8),
+                website: model.website
+            )
+        } catch {
+            print("Entschlüsselung fehlgeschlagen")
+            return nil
+        }
+    }
 }

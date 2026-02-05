@@ -4,11 +4,13 @@ import CryptoKit
 
 @MainActor
 class ShishiViewModel: ObservableObject {
-    @Published var appState: AppState = .login
+    @Published var appState: AppState = .home
     @Published var symmetricKeychainString: String = KeyChainKeys().symmetricKeychainString
     @Published var userSaltString: String = KeyChainKeys().userSaltString
     @Published var handleLoginFailure: Bool = false
     @Published var isLocked: Bool = false
+    
+    @Published var loginKey: Data?
     
     private let installHelper = InstallationHelper()
     private let keychainHelper = KeychainHelper.shared
@@ -64,7 +66,7 @@ class ShishiViewModel: ObservableObject {
                 appState = .home
             } else {
                 print("SaltKey not found, no symmetric key will be generated.")
-                appState = .saltKey
+//                appState = .saltKey
             }
         } catch {
             print("UserLogin cannot be completed: \(error.localizedDescription) ")
@@ -106,24 +108,27 @@ class ShishiViewModel: ObservableObject {
                 appState = .login
             }
         } else {
-            appState = .pin
+//            appState = .pin
         }
     }
     
     func logout() {
-        keychainHelper.delete(for: symmetricKeychainString)
-        keychainHelper.delete(for: userSaltString)
-        keychainUserIDHash = nil
-        keychainUserSaltHash = nil
+//        keychainHelper.delete(for: symmetricKeychainString)
+//        keychainHelper.delete(for: userSaltString)
+//        keychainUserIDHash = nil
+//        keychainUserSaltHash = nil
+//        
+//        print("Logout successful - KeyData deleted from Keychain!")
+//        appState = .login
         
-        print("Logout successful - KeyData deleted from Keychain!")
-        appState = .login
+        loginKey = nil
+        
     }
     
-    func lockApp() {
-        isLocked = true
-        appState = .pin
-    }
+//    func lockApp() {
+//        isLocked = true
+//        appState = .pin
+//    }
     
     func unlockApp(with pin: String) -> Bool {
         if let savedPIN = keychainHelper.readPin(), savedPIN == pin {
