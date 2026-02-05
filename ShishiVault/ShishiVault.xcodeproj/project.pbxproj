@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		FA6119472CE34FC300BC3006 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = FA6119462CE34FBC00BC3006 /* .swiftlint.yml */; };
+		FA75E24D2F33EC6500A1894E /* Clibsodium in Frameworks */ = {isa = PBXBuildFile; productRef = FA75E24C2F33EC6500A1894E /* Clibsodium */; };
+		FA75E24F2F33EC6500A1894E /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = FA75E24E2F33EC6500A1894E /* Sodium */; };
 		FAF6027D2CE37D0A0099D40E /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF6027C2CE37D0A0099D40E /* AuthenticationServices.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +45,8 @@
 			isa = PBXFrameworksBuildPhase;
 			files = (
 				FAF6027D2CE37D0A0099D40E /* AuthenticationServices.framework in Frameworks */,
+				FA75E24D2F33EC6500A1894E /* Clibsodium in Frameworks */,
+				FA75E24F2F33EC6500A1894E /* Sodium in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -92,6 +96,10 @@
 				FA7082EC2CE2258B00390113 /* ShishiVault */,
 			);
 			name = ShishiVault;
+			packageProductDependencies = (
+				FA75E24C2F33EC6500A1894E /* Clibsodium */,
+				FA75E24E2F33EC6500A1894E /* Sodium */,
+			);
 			productName = ShishiVault;
 			productReference = FA7082EA2CE2258B00390113 /* ShishiVault.app */;
 			productType = "com.apple.product-type.application";
@@ -121,6 +129,9 @@
 			);
 			mainGroup = FA7082E12CE2258B00390113;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FA75E24B2F33EC6500A1894E /* XCRemoteSwiftPackageReference "swift-sodium" */,
+			);
 			preferredProjectObjectVersion = 90;
 			productRefGroup = FA7082EB2CE2258B00390113 /* Products */;
 			projectDirPath = "";
@@ -405,6 +416,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FA75E24B2F33EC6500A1894E /* XCRemoteSwiftPackageReference "swift-sodium" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jedisct1/swift-sodium.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FA75E24C2F33EC6500A1894E /* Clibsodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA75E24B2F33EC6500A1894E /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Clibsodium;
+		};
+		FA75E24E2F33EC6500A1894E /* Sodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA75E24B2F33EC6500A1894E /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Sodium;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FA7082E22CE2258B00390113 /* Project object */;
 }
