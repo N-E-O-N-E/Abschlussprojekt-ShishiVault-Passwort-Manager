@@ -3,7 +3,6 @@ import CryptoKit
 
 struct EntrieShowView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var modelContext
     
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     @EnvironmentObject var entrieViewModel: EntriesViewModel
@@ -181,21 +180,9 @@ struct EntrieShowView: View {
         
             .alert("Hinweis\n", isPresented: $isDeleteAlert, actions: {
                 Button("Löschen", role: .destructive) {
-                    // 2. Den VaultContext vorbereiten (für das verschlüsselte JSON-Update)
-                    if let loginKey = shishiViewModel.loginKey {
-                        let vaultContext = VaultContext(loginKey: loginKey)
-                        
-                        // 3. Aufruf der synchronisierten Lösch-Logik im ViewModel
-                        entrieViewModel.deleteEntry(
-                            id: entry.id,
-                            modelContext: modelContext,
-                            vaultContext: vaultContext
-                        )
-                        
-                        // 4. UI-Navigation zurücksetzen
-                        entrieShowView = false
-                        dismiss()
-                    }
+                    entrieViewModel.deleteEntry(id: entry.id)
+                    entrieShowView = false
+                    dismiss()
                 }
                 Button("Abbrechen", role: .cancel) {
                     isDeleteAlert.toggle()

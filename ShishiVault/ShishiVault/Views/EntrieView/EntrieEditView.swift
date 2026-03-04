@@ -3,7 +3,6 @@ import SwiftUI
 struct EntrieEditView: View {
     // MARK: - Environments
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var modelContext
     
     // MARK: - ViewModels
     @EnvironmentObject var entrieViewModel: EntriesViewModel
@@ -240,7 +239,7 @@ private extension EntrieEditView {
                 do {
                     passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
                     if passwordPwnedState == 2 {
-                        if let loginKey = shishiViewModel.loginKey, let entryID = entry?.id {
+                        if let _ = shishiViewModel.loginKey, let entryID = entry?.id {
                             await entrieViewModel.updateEntry(
                                 id: entryID,
                                 title: title,
@@ -249,9 +248,7 @@ private extension EntrieEditView {
                                 password: password,
                                 notes: notes,
                                 website: website,
-                                customFields: customFields,
-                                modelContext: modelContext,
-                                vaultContext: VaultContext(loginKey: loginKey)
+                                customFields: customFields
                             )
                             savedAlert.toggle()
                         }

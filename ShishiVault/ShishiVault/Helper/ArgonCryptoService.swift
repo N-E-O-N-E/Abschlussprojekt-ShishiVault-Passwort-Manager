@@ -53,7 +53,7 @@ class ArgonCryptoService {
             return Data(sodium.randomBytes.buf(length: length)!)
     }
     
-    func checkMasterPassword(with key: Data) -> Bool {
+    func checkAppPassword(with key: Data) -> Bool {
         let defaults = UserDefaults.standard
         let symmetricKey = SymmetricKey(data: key)
         
@@ -79,12 +79,12 @@ class ArgonCryptoService {
     
     /// Ändert das Masterpasswort.
     /// Gibt true zurück, wenn die Änderung erfolgreich war.
-    func changeMasterPassword(oldPassword: String, newPassword: String) -> Bool {
+    func changeAppPassword(oldPassword: String, newPassword: String) -> Bool {
         let salt = getSalt() // Wir behalten das gleiche Salt (üblich bei Passwortänderung)
         
         // 1. Altes Passwort prüfen
         guard let oldKey = deriveKey(password: oldPassword, salt: salt),
-              checkMasterPassword(with: oldKey) else {
+              checkAppPassword(with: oldKey) else {
             return false // Altes Passwort war falsch
         }
         

@@ -1,10 +1,8 @@
 import SwiftUI
-import SwiftData
 
 struct EntrieAddView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @EnvironmentObject var shishiViewModel: ShishiViewModel
-    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
     @State private var isSavedAlert: Bool = false
@@ -204,9 +202,7 @@ struct EntrieAddView: View {
                                         passwordConfirm: passwordConfirm,
                                         notes: notes,
                                         website: website,
-                                        customFields: entrieViewModel.customFieldsForEntrie,
-                                        modelContext: modelContext,
-                                        vaultContext: vaultContext
+                                        customFields: entrieViewModel.customFieldsForEntrie
                                     )
                             }
                                 

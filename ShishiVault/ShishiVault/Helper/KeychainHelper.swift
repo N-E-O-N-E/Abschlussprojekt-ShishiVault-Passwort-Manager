@@ -39,8 +39,6 @@ class KeychainHelper {
         return status == errSecSuccess ? (dataTypeRef as? Data) : nil
     }
     
-    //-----------------
-    
     func saveCombinedSymmetricKeyInKeychain(symmetricKey: Data, userSaltKey: Data, keychainKey: String) {
         let data = SHA256.hash(data: symmetricKey + userSaltKey)
         let symmetricKey = Data(data)

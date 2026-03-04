@@ -1,12 +1,8 @@
 import SwiftUI
 import CryptoKit
-import SwiftData
 
 struct HomeView: View {
     let vaultContext: VaultContext
-    @Environment(\.modelContext) private var modelContext
-    
-    @Query private var rawEntries: [EntryModel]
     
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     @EnvironmentObject var entrieViewModel: EntriesViewModel
@@ -116,13 +112,9 @@ struct HomeView: View {
         
         .onAppear {
             Task {
-                await entrieViewModel.reloadEntries(
-                    modelContext: modelContext,
-                    vaultContext: vaultContext
-                )
+                await entrieViewModel.reloadEntries()
             }
         }
-        .onChange(of: rawEntries) { reloadEntries() }
         
         .navigationBarBackButtonHidden(true)
         .foregroundStyle(Color.ShishiColorBlue)
@@ -130,28 +122,7 @@ struct HomeView: View {
     
     private func reloadEntries() {
         Task {
-            await entrieViewModel.reloadEntries(modelContext: modelContext, vaultContext: vaultContext)
-        }
-    }
-    
-    private func decrypt(model: EntryModel) -> EntryData? {
-        let key = SymmetricKey(data: vaultContext.loginKey)
-        do {
-            let passData = try CryptHelper.shared.decrypt(cipherText: model.encryptedPassword, key: key)
-            let notesData = try CryptHelper.shared.decrypt(cipherText: model.encryptedNotes, key: key)
-            
-            return EntryData(
-                id: model.id,
-                title: model.title,
-                username: model.username,
-                email: model.email,
-                password: String(data: passData, encoding: .utf8) ?? "",
-                notes: String(data: notesData, encoding: .utf8),
-                website: model.website
-            )
-        } catch {
-            print("Entschlüsselung fehlgeschlagen")
-            return nil
+            await entrieViewModel.reloadEntries()
         }
     }
 }

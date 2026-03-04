@@ -111,7 +111,7 @@ struct SignInView: View {
             if let derivedKey = ArgonCryptoService.shared.deriveKey(password: password, salt: salt) {
                 
                 // 3. JETZT PRÜFEN: Passt der Key zum Schloss?
-                let success = ArgonCryptoService.shared.checkMasterPassword(with: derivedKey)
+                let success = ArgonCryptoService.shared.checkAppPassword(with: derivedKey)
                 
                 DispatchQueue.main.async {
                     self.isLoading = false

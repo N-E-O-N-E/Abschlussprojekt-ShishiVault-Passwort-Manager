@@ -3,21 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 90;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A475AED2F1FCCC28979C7218 /* Pods_ShishiVault.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79E219412AF28061FBB46C31 /* Pods_ShishiVault.framework */; };
-		FA04A8F92F58F164005D0FA5 /* Clibsodium in Frameworks */ = {isa = PBXBuildFile; productRef = FA04A8F82F58F164005D0FA5 /* Clibsodium */; };
-		FA04A8FB2F58F164005D0FA5 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = FA04A8FA2F58F164005D0FA5 /* Sodium */; };
 		FA6119472CE34FC300BC3006 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = FA6119462CE34FBC00BC3006 /* .swiftlint.yml */; };
+		FA9F54D62F58D6130091FAF7 /* Clibsodium in Frameworks */ = {isa = PBXBuildFile; productRef = FA9F54D52F58D6130091FAF7 /* Clibsodium */; };
+		FA9F54D82F58D6130091FAF7 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = FA9F54D72F58D6130091FAF7 /* Sodium */; };
+		FA9F54DB2F58D64D0091FAF7 /* SQLCipher in Frameworks */ = {isa = PBXBuildFile; productRef = FA9F54DA2F58D64D0091FAF7 /* SQLCipher */; };
 		FAF6027D2CE37D0A0099D40E /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF6027C2CE37D0A0099D40E /* AuthenticationServices.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		04D32CB5203E382453FC41AD /* Pods-ShishiVault.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShishiVault.release.xcconfig"; path = "Target Support Files/Pods-ShishiVault/Pods-ShishiVault.release.xcconfig"; sourceTree = "<group>"; };
-		79E219412AF28061FBB46C31 /* Pods_ShishiVault.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShishiVault.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AEFAF7565A61F80C7D96DB78 /* Pods-ShishiVault.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShishiVault.debug.xcconfig"; path = "Target Support Files/Pods-ShishiVault/Pods-ShishiVault.debug.xcconfig"; sourceTree = "<group>"; };
 		FA6119462CE34FBC00BC3006 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		FA7082EA2CE2258B00390113 /* ShishiVault.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShishiVault.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAF6027C2CE37D0A0099D40E /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
@@ -47,27 +44,16 @@
 /* Begin PBXFrameworksBuildPhase section */
 		FA7082E72CE2258B00390113 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
+				FA9F54DB2F58D64D0091FAF7 /* SQLCipher in Frameworks */,
 				FAF6027D2CE37D0A0099D40E /* AuthenticationServices.framework in Frameworks */,
-				A475AED2F1FCCC28979C7218 /* Pods_ShishiVault.framework in Frameworks */,
-				FA04A8F92F58F164005D0FA5 /* Clibsodium in Frameworks */,
-				FA04A8FB2F58F164005D0FA5 /* Sodium in Frameworks */,
+				FA9F54D62F58D6130091FAF7 /* Clibsodium in Frameworks */,
+				FA9F54D82F58D6130091FAF7 /* Sodium in Frameworks */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		24708559972477C3AA68DCBA /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				AEFAF7565A61F80C7D96DB78 /* Pods-ShishiVault.debug.xcconfig */,
-				04D32CB5203E382453FC41AD /* Pods-ShishiVault.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		FA7082E12CE2258B00390113 = {
 			isa = PBXGroup;
 			children = (
@@ -75,7 +61,6 @@
 				FA7082EC2CE2258B00390113 /* ShishiVault */,
 				FAF6027B2CE37D0A0099D40E /* Frameworks */,
 				FA7082EB2CE2258B00390113 /* Products */,
-				24708559972477C3AA68DCBA /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -91,7 +76,6 @@
 			isa = PBXGroup;
 			children = (
 				FAF6027C2CE37D0A0099D40E /* AuthenticationServices.framework */,
-				79E219412AF28061FBB46C31 /* Pods_ShishiVault.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -103,24 +87,21 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA7082FB2CE2258C00390113 /* Build configuration list for PBXNativeTarget "ShishiVault" */;
 			buildPhases = (
-				9AD1CB15A4CA49D1AEAB4870 /* [CP] Check Pods Manifest.lock */,
 				FA7082E62CE2258B00390113 /* Sources */,
 				FA7082E72CE2258B00390113 /* Frameworks */,
 				FA7082E82CE2258B00390113 /* Resources */,
 				FA6119452CE34F8600BC3006 /* ShellScript */,
-				0E3B8E7CE3F8C1469B4D5963 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
-			);
-			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
 				FA7082EC2CE2258B00390113 /* ShishiVault */,
 			);
 			name = ShishiVault;
 			packageProductDependencies = (
-				FA04A8F82F58F164005D0FA5 /* Clibsodium */,
-				FA04A8FA2F58F164005D0FA5 /* Sodium */,
+				FA9F54D52F58D6130091FAF7 /* Clibsodium */,
+				FA9F54D72F58D6130091FAF7 /* Sodium */,
+				FA9F54DA2F58D64D0091FAF7 /* SQLCipher */,
 			);
 			productName = ShishiVault;
 			productReference = FA7082EA2CE2258B00390113 /* ShishiVault.app */;
@@ -152,9 +133,10 @@
 			mainGroup = FA7082E12CE2258B00390113;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				FA04A8F72F58F164005D0FA5 /* XCRemoteSwiftPackageReference "swift-sodium" */,
+				FA9F54D42F58D6130091FAF7 /* XCRemoteSwiftPackageReference "swift-sodium" */,
+				FA9F54D92F58D64D0091FAF7 /* XCRemoteSwiftPackageReference "SQLCipher.swift" */,
 			);
-			preferredProjectObjectVersion = 77;
+			preferredProjectObjectVersion = 90;
 			productRefGroup = FA7082EB2CE2258B00390113 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -167,71 +149,31 @@
 /* Begin PBXResourcesBuildPhase section */
 		FA7082E82CE2258B00390113 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				FA6119472CE34FC300BC3006 /* .swiftlint.yml in Resources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0E3B8E7CE3F8C1469B4D5963 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ShishiVault/Pods-ShishiVault-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ShishiVault/Pods-ShishiVault-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ShishiVault/Pods-ShishiVault-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9AD1CB15A4CA49D1AEAB4870 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ShishiVault-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		FA6119452CE34F8600BC3006 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
+			shellScript = (
+				"if [[ \"$(uname -m)\" == arm64 ]]",
+				"then",
+				"    export PATH=\"/opt/homebrew/bin:$PATH\"",
+				"fi",
+				"",
+				"if command -v swiftlint >/dev/null 2>&1",
+				"then",
+				"    swiftlint",
+				"else",
+				"    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"",
+				"fi",
+				"",
+			);
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -239,17 +181,14 @@
 /* Begin PBXSourcesBuildPhase section */
 		FA7082E62CE2258B00390113 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		FA7082FC2CE2258C00390113 /* Debug */ = {
+		FA7082FC2CE2258C00390113 /* Debug configuration for PBXNativeTarget "ShishiVault" */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AEFAF7565A61F80C7D96DB78 /* Pods-ShishiVault.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -292,9 +231,8 @@
 			};
 			name = Debug;
 		};
-		FA7082FD2CE2258C00390113 /* Release */ = {
+		FA7082FD2CE2258C00390113 /* Release configuration for PBXNativeTarget "ShishiVault" */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 04D32CB5203E382453FC41AD /* Pods-ShishiVault.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -337,7 +275,7 @@
 			};
 			name = Release;
 		};
-		FA7082FE2CE2258C00390113 /* Debug */ = {
+		FA7082FE2CE2258C00390113 /* Debug configuration for PBXProject "ShishiVault" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -403,7 +341,7 @@
 			};
 			name = Debug;
 		};
-		FA7082FF2CE2258C00390113 /* Release */ = {
+		FA7082FF2CE2258C00390113 /* Release configuration for PBXProject "ShishiVault" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -468,25 +406,23 @@
 		FA7082E52CE2258B00390113 /* Build configuration list for PBXProject "ShishiVault" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FA7082FE2CE2258C00390113 /* Debug */,
-				FA7082FF2CE2258C00390113 /* Release */,
+				FA7082FE2CE2258C00390113 /* Debug configuration for PBXProject "ShishiVault" */,
+				FA7082FF2CE2258C00390113 /* Release configuration for PBXProject "ShishiVault" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		FA7082FB2CE2258C00390113 /* Build configuration list for PBXNativeTarget "ShishiVault" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FA7082FC2CE2258C00390113 /* Debug */,
-				FA7082FD2CE2258C00390113 /* Release */,
+				FA7082FC2CE2258C00390113 /* Debug configuration for PBXNativeTarget "ShishiVault" */,
+				FA7082FD2CE2258C00390113 /* Release configuration for PBXNativeTarget "ShishiVault" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		FA04A8F72F58F164005D0FA5 /* XCRemoteSwiftPackageReference "swift-sodium" */ = {
+		FA9F54D42F58D6130091FAF7 /* XCRemoteSwiftPackageReference "swift-sodium" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jedisct1/swift-sodium.git";
 			requirement = {
@@ -494,18 +430,31 @@
 				minimumVersion = 0.10.0;
 			};
 		};
+		FA9F54D92F58D64D0091FAF7 /* XCRemoteSwiftPackageReference "SQLCipher.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sqlcipher/SQLCipher.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.13.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FA04A8F82F58F164005D0FA5 /* Clibsodium */ = {
+		FA9F54D52F58D6130091FAF7 /* Clibsodium */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FA04A8F72F58F164005D0FA5 /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			package = FA9F54D42F58D6130091FAF7 /* XCRemoteSwiftPackageReference "swift-sodium" */;
 			productName = Clibsodium;
 		};
-		FA04A8FA2F58F164005D0FA5 /* Sodium */ = {
+		FA9F54D72F58D6130091FAF7 /* Sodium */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FA04A8F72F58F164005D0FA5 /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			package = FA9F54D42F58D6130091FAF7 /* XCRemoteSwiftPackageReference "swift-sodium" */;
 			productName = Sodium;
+		};
+		FA9F54DA2F58D64D0091FAF7 /* SQLCipher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA9F54D92F58D64D0091FAF7 /* XCRemoteSwiftPackageReference "SQLCipher.swift" */;
+			productName = SQLCipher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
