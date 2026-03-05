@@ -4,7 +4,7 @@ import Sodium
 
 class ArgonCryptoService {
     var isFirstStart: Bool {
-        return UserDefaults.standard.data(forKey: "user_salt") == nil
+        UserDefaults.standard.data(forKey: "user_salt") == nil
     }
     
     static let shared = ArgonCryptoService()
