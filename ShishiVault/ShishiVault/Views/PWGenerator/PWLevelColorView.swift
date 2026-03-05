@@ -35,7 +35,7 @@ struct PWLevelColorView: View {
     var body: some View {
         VStack {
             ZStack(alignment: .leading) {
-                Capsule().frame(width: .infinity, height: 15).foregroundStyle(Color.gray.opacity(0.35))
+                Capsule().frame(height: 15).foregroundStyle(Color.gray.opacity(0.35))
                 Capsule().frame(width: levelValue(for: password), height: 14).foregroundStyle(levelColor(for: password))
             }
         }
@@ -43,5 +43,5 @@ struct PWLevelColorView: View {
 }
 
 #Preview {
-    PWLevelColorView(password: .constant("25456"))
+    PWLevelColorView(password: .constant("4562456"))
 }

@@ -69,16 +69,16 @@ class EntriesViewModel: ObservableObject {
         do {
             let vaultEntries = try DatabaseManager.shared.fetchAllEntries()
             
-            self.entries = vaultEntries.compactMap { ve in
-                let customFields = decodeCustomFields(ve.customFieldsJSON)
+            self.entries = vaultEntries.compactMap { entire in
+                let customFields = decodeCustomFields(entire.customFieldsJSON)
                 return EntryData(
-                    id: UUID(uuidString: ve.id) ?? UUID(),
-                    title: ve.title,
-                    username: ve.username,
-                    email: ve.email,
-                    password: ve.password,
-                    notes: ve.notes,
-                    website: ve.website,
+                    id: UUID(uuidString: entire.id) ?? UUID(),
+                    title: entire.title,
+                    username: entire.username,
+                    email: entire.email,
+                    password: entire.password,
+                    notes: entire.notes,
+                    website: entire.website,
                     customFields: customFields
                 )
             }

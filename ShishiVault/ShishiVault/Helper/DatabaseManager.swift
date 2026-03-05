@@ -16,10 +16,10 @@ class DatabaseManager {
         
         // SQLCipher Konfiguration
         var config = Configuration()
-        config.prepareDatabase { db in
+        config.prepareDatabase { data in
             // Aktiviert SQLCipher mit dem Key
             let hexKey = key.map { String(format: "%02hhx", $0) }.joined()
-            try db.usePassphrase(hexKey)
+            try data.usePassphrase(hexKey)
             print("🔑 SQLCIPHER PASSWORT: \(hexKey)")
         }
         
@@ -96,6 +96,6 @@ struct VaultEntry: Codable, FetchableRecord, PersistableRecord {
     static var databaseSelection: [SQLSelectable] = [AllColumns()]
     
     static func primaryKey(_ data: Database) throws -> [String] {
-        return ["id"]
+        ["id"]
     }
 }
