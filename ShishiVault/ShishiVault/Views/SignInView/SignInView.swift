@@ -12,77 +12,79 @@ struct SignInView: View {
     
     var body: some View {
         ZStack {
-            Color.ShishiColorRed_.ignoresSafeArea(.all)
-            
-            VStack(spacing: 20) {
-                Image("ShishiLogo_600")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 250)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .shadow(radius: 10)
+            VStack(spacing: 25) {
                 
                 if isFirstRegistration {
                     registrationNotice
                 }
                 
-                VStack(alignment: .leading, spacing: 15) {
-                    Text(isFirstRegistration ? "Neues Masterpasswort setzen" : "Tresor entsperren")
-                        .font(.headline)
-                        .foregroundColor(.white)
+                Image("ShishiLogo_600")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 250)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                
+                
+                    
+                    Text(isFirstRegistration ? "Neues Masterpasswort setzen" : "Vault entsperren")
+                    
+                    PWLevelColorView(password: $password)
                     
                     SecureField("Masterpasswort", text: $password)
-                        .textFieldStyle(.plain)
-                        .padding()
-                        .background(Color.white.opacity(0.9))
-                        .cornerRadius(10)
-                        .disabled(isLoading)
                         .textContentType(.password)
-                    
+                        .textFieldStyle(.roundedBorder)
+                        .disabled(isLoading)
+                        
                     if let error = errorMessage {
                         Text(error)
-                            .foregroundColor(.yellow)
+                            .foregroundColor(.ShishiColorRed_)
                             .font(.caption)
                             .bold()
                     }
                     
                     Button(action: deriveKey) {
-                        HStack {
-                            Text(isFirstRegistration ? "Tresor sicher erstellen..." : "Entsperren")
-                            if isLoading { ProgressView().tint(.white) }
+                        HStack(spacing: 10) {
+                            Text(isFirstRegistration ? "Verschlüsselten Vault erstellen..." : "Vault entsperren")
+                            
+                            if isLoading {
+                                ProgressView()
+                                    .tint(.white)
+                            }
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.black.opacity(0.8))
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
+                        .frame(maxWidth: .infinity) // Macht ihn "flexible"
+                        .fontWeight(.semibold)
                     }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large) // Macht den Button schön "griffig"
+                    .tint(Color.ShishiColorBlue) // Nutzt deine Markenfarbe
                     .disabled(isLoading || password.isEmpty)
+                    
+                    
                 }
-                .padding(.horizontal, 40)
+                .padding()
             }
-        }
+        
         
         
         // Fehler-Handling für falsches Passwort oder Crypto-Fehler
-        .alert("Krypto-Fehler", isPresented: Binding(
+        .alert("Passwort-Fehler", isPresented: Binding(
             get: { errorMessage != nil },
             set: { _ in errorMessage = nil }
         )) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text(errorMessage ?? "Ein unbekannter Fehler ist aufgetreten.")
+            Text(errorMessage ?? "Es gab ein Problem mit dem Passwort!")
         }
         .onAppear {
             if let existingSalt = UserDefaults.standard.data(forKey: "user_salt") {
-                print("Salt gespeichert: \(existingSalt.base64EncodedString())")
+                print("Salt gefunden: \(existingSalt.base64EncodedString())")
             }
         }
     }
     
     var registrationNotice: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Label("Wichtiger Hinweis", systemImage: "shield.auth.titled.fill")
+            Text("Wichtiger Hinweis")
                 .font(.headline)
             
             Text("Dies ist Ihre Erstanmeldung. Wir generieren einen einzigartigen **lokalen Salt**, der fest mit Ihrem Passwort verknüpft wird.")
@@ -92,7 +94,7 @@ struct SignInView: View {
                 .font(.footnote).bold()
         }
         .padding()
-        .background(Color.yellow.opacity(0.9))
+        .background(Color.ShishiColorRed.opacity(0.5))
         .cornerRadius(12)
         .padding(.horizontal)
         .transition(.move(edge: .top).combined(with: .opacity))
@@ -126,4 +128,10 @@ struct SignInView: View {
             }
         }
     }
+}
+
+#Preview {
+    let mockViewModel = ShishiViewModel()
+    SignInView(onUnlock: {_ in })
+        .environmentObject(mockViewModel)
 }

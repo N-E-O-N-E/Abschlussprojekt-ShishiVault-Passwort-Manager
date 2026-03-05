@@ -9,7 +9,7 @@ struct PWLevelColorView: View {
         if password.count < 3 {
             value = 10
         } else if password.count >= 3 && password.count < 5 {
-            value =  50
+            value =  40
         } else if password.count >= 5 && password.count < 7 {
             value =  150
         } else if password.count >= 7 && password.count < 10 {
@@ -35,13 +35,13 @@ struct PWLevelColorView: View {
     var body: some View {
         VStack {
             ZStack(alignment: .leading) {
-                Capsule().frame(width: 330, height: 12).foregroundStyle(Color.gray.opacity(0.35))
-                Capsule().frame(width: levelValue(for: password), height: 10).foregroundStyle(levelColor(for: password))
+                Capsule().frame(width: .infinity, height: 15).foregroundStyle(Color.gray.opacity(0.35))
+                Capsule().frame(width: levelValue(for: password), height: 14).foregroundStyle(levelColor(for: password))
             }
-        }.padding(.horizontal, 20)
+        }
     }
 }
 
 #Preview {
-    PWLevelColorView(password: .constant("muster12"))
+    PWLevelColorView(password: .constant("25456"))
 }

@@ -6,7 +6,7 @@ struct VaultTransitionView: View {
     
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea().opacity(0.9)
+            Color.black.ignoresSafeArea(.all).opacity(0.9)
             
             VStack(spacing: 20) {
                 Image("ShishiLogo_600")

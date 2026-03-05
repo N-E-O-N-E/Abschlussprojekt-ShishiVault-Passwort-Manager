@@ -249,7 +249,7 @@ struct SettingsView: View {
 //                
 //            }
 //        }, message: { Text("Möchten Sie alle Einträge unverschlüsselt exportieren?\n") })
-//        
+        
                 
 //        .alert("PIN-Sperre nicht möglich\n", isPresented: $pinAlertPWEmpty, actions: {
 //            Button("OK") {}

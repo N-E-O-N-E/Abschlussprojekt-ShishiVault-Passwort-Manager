@@ -26,8 +26,7 @@ class ArgonCryptoService {
             
             // 3. Für die Zukunft speichern
             UserDefaults.standard.set(newSalt, forKey: key)
-            
-            print("✨ Neues Salt generiert und gespeichert.")
+            print("✨ Neues Salt \(newSalt.base64EncodedString()) generiert und gespeichert.")
             return newSalt
         }
     }
