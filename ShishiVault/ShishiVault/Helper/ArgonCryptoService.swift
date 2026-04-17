@@ -110,4 +110,12 @@ class ArgonCryptoService {
         }
     }
     
+    /// Löscht alle sicherheitsrelevanten Daten aus den UserDefaults
+    func clearAll() {
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "user_salt")
+        defaults.removeObject(forKey: "key_validator")
+        print("🧹 UserDefaults bereinigt (Salt & Validator).")
+    }
+    
 }

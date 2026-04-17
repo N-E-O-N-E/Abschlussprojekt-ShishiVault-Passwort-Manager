@@ -72,6 +72,19 @@ class DatabaseManager {
             _ = try VaultEntry.deleteOne(data, key: id)
         }
     }
+    
+    /// Löscht die gesamte Datenbankdatei und schließt die Verbindung
+    func resetDatabase() throws {
+        dbQueue = nil
+        let fileManager = FileManager.default
+        let appSupportURL = try fileManager.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        let dbURL = appSupportURL.appendingPathComponent("shishivault.sqlite")
+        
+        if fileManager.fileExists(atPath: dbURL.path) {
+            try fileManager.removeItem(atPath: dbURL.path)
+            print("🗑️ Datenbankdatei gelöscht.")
+        }
+    }
 }
 
 // MARK: - Database Record

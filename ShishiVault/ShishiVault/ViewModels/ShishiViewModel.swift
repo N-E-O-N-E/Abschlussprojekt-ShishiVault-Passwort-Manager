@@ -11,4 +11,21 @@ class ShishiViewModel: ObservableObject {
         loginKey = nil
     }
     
+    func performFullReset() {
+        // 1. Keychain löschen
+        SecurityManager.shared.deleteMasterKey()
+        
+        // 2. Datenbank löschen
+        try? DatabaseManager.shared.resetDatabase()
+        
+        // 3. UserDefaults (Salt/Validator) löschen
+        ArgonCryptoService.shared.clearAll()
+        
+        // 4. Logout & UI Reset
+        loginKey = nil
+        withAnimation {
+            appState = .login
+        }
+    }
+    
 }
