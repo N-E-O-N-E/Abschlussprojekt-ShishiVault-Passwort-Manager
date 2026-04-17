@@ -6,9 +6,25 @@ import CryptoKit
 class ShishiViewModel: ObservableObject {
     @Published var appState: AppState = .home
     @Published var loginKey: Data?
+    
+    @AppStorage("useBiometry") var useBiometry: Bool = false
   
     func logout() {
         loginKey = nil
+    }
+    
+    func toggleBiometry(enabled: Bool) {
+        if enabled {
+            // Speichere den aktuellen Key in der Keychain
+            if let key = loginKey {
+                try? SecurityManager.shared.saveAppKey(key)
+                useBiometry = true
+            }
+        } else {
+            // Lösche den Key aus der Keychain
+            SecurityManager.shared.deleteMasterKey()
+            useBiometry = false
+        }
     }
     
     func performFullReset() {

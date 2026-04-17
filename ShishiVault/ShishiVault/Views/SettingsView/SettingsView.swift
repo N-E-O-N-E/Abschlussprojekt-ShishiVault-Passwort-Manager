@@ -16,6 +16,25 @@ struct SettingsView: View {
         ScrollView {
             VStack {
                 Section {
+                    HStack {
+                        Image(systemName: "faceid")
+                            .foregroundColor(.ShishiColorBlue)
+                        Toggle("FaceID / TouchID nutzen", isOn: Binding(
+                            get: { shishiViewModel.useBiometry },
+                            set: { shishiViewModel.toggleBiometry(enabled: $0) }
+                        ))
+                        .tint(.ShishiColorBlue)
+                    }
+                    .padding(.horizontal, 25).padding(.top, 20)
+                    
+                    Text("Ermöglicht das schnelle Entsperren des Tresors ohne Passworteingabe.")
+                        .customTextFieldTextMid()
+                        .padding(.bottom, 20)
+                }
+                
+                Divider()
+                
+                Section {
                     Button {
                         isLogoutAlert.toggle()
                     } label: {

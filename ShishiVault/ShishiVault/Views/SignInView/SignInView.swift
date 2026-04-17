@@ -30,6 +30,15 @@ struct SignInView: View {
             
             if isFirstRegistration {
                 PWLevelColorView(password: $password)
+                
+                Toggle(isOn: $shishiViewModel.useBiometry) {
+                    HStack {
+                        Image(systemName: "faceid")
+                        Text("FaceID / TouchID aktivieren")
+                    }
+                }
+                .tint(.ShishiColorBlue)
+                .padding(.horizontal)
             }
             
             SecureField("Masterpasswort", text: $password)
@@ -53,13 +62,25 @@ struct SignInView: View {
                             .tint(.white)
                     }
                 }
-                .frame(maxWidth: .infinity) // Macht ihn "flexible"
+                .frame(maxWidth: .infinity)
                 .fontWeight(.semibold)
             }
             .buttonStyle(.borderedProminent)
-            .controlSize(.large) // Macht den Button schön "griffig"
-            .tint(Color.ShishiColorBlue) // Nutzt deine Markenfarbe
+            .controlSize(.large)
+            .tint(Color.ShishiColorBlue)
             .disabled(isLoading || password.isEmpty)
+            
+            if !isFirstRegistration && shishiViewModel.useBiometry {
+                Button(action: unlockWithBiometry) {
+                    HStack {
+                        Image(systemName: "faceid")
+                        Text("Mit FaceID entsperren")
+                    }
+                    .foregroundColor(.ShishiColorBlue)
+                    .fontWeight(.bold)
+                }
+                .padding(.top, 10)
+            }
             
             
         }.frame(width: .infinity, height: .infinity).padding()
@@ -76,6 +97,10 @@ struct SignInView: View {
                 Text(errorMessage ?? "Es gab ein Problem mit dem Passwort!")
             }
             .onAppear {
+                if !isFirstRegistration && shishiViewModel.useBiometry {
+                    unlockWithBiometry()
+                }
+                
                 if let existingSalt = UserDefaults.standard.data(forKey: "user_salt") {
                     print("Salt gefunden: \(existingSalt.base64EncodedString())")
                 }
@@ -100,6 +125,17 @@ struct SignInView: View {
         .transition(.move(edge: .top).combined(with: .opacity))
     }
     
+    
+    private func unlockWithBiometry() {
+        SecurityManager.shared.loadAppKey { result in
+            switch result {
+            case .success(let key):
+                onUnlock(VaultContext(loginKey: key))
+            case .failure(let error):
+                print("FaceID fehlgeschlagen: \(error)")
+            }
+        }
+    }
     
     private func deriveKey() {
         isLoading = true

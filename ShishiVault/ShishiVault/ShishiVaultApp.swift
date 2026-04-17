@@ -16,8 +16,10 @@ struct ShishiVaultApp: App {
                         SignInView(onUnlock: { context in
                             self.shishiViewModel.loginKey = context.loginKey
                             
-                            // 1. Key für FaceID speichern
-                            try? SecurityManager.shared.saveAppKey(context.loginKey)
+                            // 1. Key für FaceID speichern (nur falls gewünscht)
+                            if shishiViewModel.useBiometry {
+                                try? SecurityManager.shared.saveAppKey(context.loginKey)
+                            }
                             
                             // 2. SQLCipher Datenbank öffnen
                             do {
@@ -64,8 +66,8 @@ struct ShishiVaultApp: App {
         case .inactive, .background:
             withAnimation { isBlurred = true }
         case .active:
-            if isBlurred && shishiViewModel.loginKey != nil {
-                // Versuche FaceID, wenn wir schon eingeloggt waren
+            if isBlurred && shishiViewModel.loginKey != nil && shishiViewModel.useBiometry {
+                // Versuche FaceID, wenn wir schon eingeloggt waren und es aktiviert ist
                 SecurityManager.shared.loadAppKey { result in
                     switch result {
                     case .success(let key):
