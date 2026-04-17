@@ -1,154 +1,75 @@
-<p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/N-E-O-N-E/Abschlussprojekt-ShishiVault-Passwort-Manager">Shishi Vault Passwortmanager</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/N-E-O-N-E">Markus Wirtz</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-NC-SA 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt=""></a></p>
 
-<p>
-  <img src="./images/Slide 16_9 - 2.png" width="1000">
+<p align="center">
+  <img src="./images/Slide 16_9 - 2.png" width="800">
 </p>
 
-# Shishi Vault - iOS Passwort-Manager "Abschlussarbeit"
+# Shishi Vault - iOS Passwort-Manager
 
 ### [Besuche Shishi Vault im Web](https://shishivault.de)
 
-ShishiVault ist ein Passwort-Manager für iOS, entwickelt mit SwiftUI für iOS 17+ unter Xcode 16. Der Name „Shishi“ bedeutet sinngemäß „Wächterlöwe“ und ist inspiriert von den chinesischen Shishi-Löwen, die traditionell als Schutzwächter vor Hauseingängen, insbesondere vor den Eingängen traditioneller Gebäude und Tempel, stehen.
-
-Shishi Vault ist eine App, die ausschließlich im Rahmen eines Abschlussprojekts entwickelt wurde. Sie dient aktuell der Demonstration meiner Fähigkeiten als Entwickler und der Präsentation meiner Kenntnisse im Umgang mit modernen Technologien und Frameworks. Die App gewährleistet in ihrer Funktionalität die Sicherheit und Vertraulichkeit von Passwörtern und persönlichen Daten, indem sie sensible Informationen sicher speichert und vor unbefugtem Zugriff schützt.
-
-### Wichtige Hinweise:
-
-  - Meine App wird derzeit ausschließlich für Bildungs- und Präsentationszwecke entwickelt und verfolgt noch keine kommerziellen Absichten.
-  - Die Veröffentlichung im App Store oder anderen Plattformen ist frühestens ab Mitte 2025 geplant.
-  - Der Fokus liegt auf der Erfüllung der prüfungsrelevanten Mindestanforderungen sowie der Demonstration einer soliden und zukunftsfähigen Code-Basis.
-
-Nach Abschluss der Prüfungsphase im Dezember 2024 werde ich das Projekt privat weiterentwickeln, um meine Kenntnisse und Erfahrungen in den Bereichen Benutzerfreundlichkeit, Sicherheit und Funktionsvielfalt zu vertiefen. Eine nebenberufliche Selbstständigkeit als "Freelancer oder Gewerbetreibender" wird angemeldet, sobald eine veröffentlichbare Betaversion den Status des Abschlussprojekts verliert.
+**ShishiVault** ist ein hochsicherer Passwort-Manager für iOS, entwickelt mit **SwiftUI** und einem starken Fokus auf moderne kryptographische Standards. Der Name „Shishi“ (wörtlich: „Wächterlöwe“) steht für die traditionellen chinesischen Schutzwächter – ein Symbol für die Sicherheit, die diese App Ihren Daten bietet. Dieses Projekt wurde als Abschlussarbeit entwickelt und demonstriert die Implementierung einer professionellen, zukunftssicheren Code-Basis unter Verwendung des **MVVM-Entwurfsmusters**.
 
 ---
 
-### Formale Prüfungskriterien sind: 
+## 🔐 Sicherheits-Architektur
 
-  -  Ausarbeiten einer Readme Datei
-  -  Mind. 3 Views umsetzen Design und Logik
-  -  Persistente Datenspeicherung nutzen
-  -  Mind. ein API Call (mit URL Session asynchron) einbinden
-  -  MVVM Architektur anwenden
-  -  Fehler abfangen und für den Benutzer anzeigen
+In der aktuellen Version (**maxRefactoring Update**) wurde die Sicherheitsarchitektur massiv verstärkt. Shishi Vault setzt auf eine mehrschichtige Verschlüsselung („Defense in Depth“):
 
----
-
-## Inhaltsverzeichnis
-
-- Über das Projekt
-- Features
-- Technologien
-- Anwendung
-
-
-### Über das Projekt:
-
-Verwalten Sie Ihre Passwörter, Bankdaten und anderen sensiblen Informationen sicher und zuverlässig mit Shishi Vault.
-
-Die App nutzt ausschließlich native Apple-Technologien wie die Keychain und CryptoKit, um maximale Sicherheit ohne den Einsatz von Diensten Dritter zu gewährleisten. Ihre Daten werden direkt auf dem Gerät sicher verschlüsselt gespeichert.
-
-Für die Benutzeranmeldung wird der ‘Mit Apple anmelden’-Button verwendet, wodurch die Anmeldung nahtlos in das Apple-Ökosystem integriert ist.
-
-Zusätzlich sorgt ein Master-Passwort (“Salt”) für eine erweiterte Verschleierung und erhöht damit den Schutz Ihrer sensiblen Daten.
-
-### Features:
-
-  - Erstellen, Speichern und Verwalten:
-Zugangsdaten, Bankverbindungen sowie Kredit- und Girokarten können sicher verwaltet und bei Bedarf durch benutzerdefinierte Eingabefelder dynamisch erweitert werden.
-
-  - Apple-ID Anmeldung:
-Eine sichere und bequeme Authentifizierung erfolgt über die Apple ID des Benutzers, ohne dass zusätzliche Konten erstellt werden müssen.
-
-  - Master-Passwort für maximale Sicherheit:
-Durch die Vergabe eines Master-Passworts wird die Datenverschlüsselung mittels eines zusätzlichen “Salt”-Mechanismus verstärkt.
-
-  - PIN Sperre der App für flexible Sicherheit: 
-Durch das Vergeben eines PIN über die Einstellungen ist es möglich die APP zu sperren.
-
-  - Passwort-Generator:
-Ein flexibler Passwortgenerator erstellt sichere Passwörter mit benutzerdefinierter Länge, Groß- und Kleinschreibung sowie Sonderzeichen. Diese Funktion wird über eine implementierte externe API bereitgestellt.
-
-  - Passwort-Prüfung:
-Passwörter werden über eine externe API auf Sicherheit geprüft. Dabei werden nur die ersten fünf Ziffern des zuvor in der App generierten Hashwerts übertragen, um mögliche Kompromittierungen zu identifizieren.
-
-  - Lokale Speicherung:
-Alle Daten werden lokal als verschlüsselte JSON-Datei gespeichert. Die Verschlüsselung erfolgt mittels AES-GCM, um maximale Datensicherheit zu gewährleisten.
-
-  - iCloud Speicherung:
-Alle Daten können mittels Datenupload bzw. -download geräteübergreifend gesichert werden. Hierbei werden die Daten über das CloudKit gehandelt.
-
-  - Schlüsselableitung:
-Der AES-Schlüssel wird aus einem intern generierten Hashwert abgeleitet, der sich aus der Apple-ID und dem Hashwert des Master-Passworts zusammensetzt.
-
-  - Datenexport:
-Benutzer haben die Möglichkeit, ihre Daten als Klartext in eine unverschlüsselte JSON-Datei zu exportieren.
-    
-### Technologien:
-
-  - SwiftUI für die Benutzeroberfläche, entwickelt mit modernsten Frameworks von Apple.
-  - Keychain und CryptKit (SHA-256, AES-GCM) für sichere Datenspeicherung und Verschlüsselung.
-  - AppleSignInButton – Nahtlose Integration der Authentifizierungsdienste von Apple.
-  - PIN Sperre - für den smarten Zugriff auf die App
-  - Verwendung des JSON-Datenformats für die persistente und strukturierte Datenspeicherung.
-  - Verwendung des CloudKit für die sichere und geräteübergreifende Speicherung der Daten.
-  - Passwort-Generator über eine externe API zur Erstellung sicherer Passwörter.
-  - Passwort-Verifikation mithilfe einer API, die Hashwerte überträgt und sicher verifiziert.
+- **Mastercode & Argon2id**: Ihr Master-Passwort wird niemals im Klartext gespeichert. Zur Ableitung des Hauptschlüssels verwenden wir **Argon2id** (via Sodium), den aktuellen Goldstandard für Key Derivation Functions (KDF), ergänzt durch ein individuelles Benutzer-Salt.
+- **Biometrischer Schutz (FaceID/TouchID)**: Nach der Erstanmeldung kann der abgeleitete Schlüssel sicher in der **iOS Keychain** (Secure Enclave) abgelegt werden. Der Zugriff darauf ist strikt an eine erfolgreiche biometrische Authentifizierung gebunden.
+- **Datenbank-Verschlüsselung (SQLCipher)**: Alle Einträge werden in einer lokalen SQLite-Datenbank gespeichert, die mittels **256-Bit AES (SQLCipher)** verschlüsselt ist.
+- **ChaChaPoly-Validierung**: Die Integrität des Mastercodes wird über einen ChaCha20-Poly1305 versiegelten Validator geprüft.
 
 ---
 
-## Anwendung
+## ✨ Neue Features & Refactoring (v2.0)
 
-### Benutzerführung:
+Mit dem letzten großen Merge wurden folgende Verbesserungen implementiert:
 
-  1.	Anmeldung:
-      - Anmeldung mittels der Apple-ID über den SignInButton und Vergabe eines Master-Passworts "salt".
-
-  2.  Einträge verwalten:
-      - Über den FAB-Button auf dem Homescreen lassen sich neue Einträge hinzufügen.
-      - Durch Klick auf einen Eintrag gelangt man in die Eintragsvorschau.
-      --  Dort kann der Benutzer Werte direkt in die Zwischenablage kopieren.
-      --  Von hier aus können Einträge nachträglich bearbeitet oder gelöscht werden.
-
-  3.	Datenspeicherung lokal:
-      - Alle Einträge werden vor dem Speichern verschlüsselt lokal als JSON im APP-Verzeichniss gesichert. Unverschlüsselte Exports der JSON-Daten sind möglich. Die JSON-Dateien enthalten die ersten Stellen des UserID-Hashwertes welcher in der Keychain gespeichert wurde, um so auf Basis der eingegebenen Anmeldetdaten (Hashwert der AppleID und des Master-Passwortes) die Daten für jeden Benutzer identifizieren zu können.
-      
-  4.    Datenspeicherung iCloud:
-      - Über die Einstellungen können alls Daten in die iCloud übermittelt bzw. heruntergeladen werden
-        !!! ACHTUNG !!! Daten sind nur zugänglich solange das gültige bzw. passendes Master-Passwort vorliegt.
-
-  4.	Passwort-Generator:
-      - Der Benutzer kann im Passwortgenerator ein Passwort nach gewünschten Einstellungen (Länge, Groß- und Kleinschreibung, Sonderzeichen) generieren.
-    	Dies geschieht über eine eingebundene API, die sicherstellt, dass die erzeugten Passwörter den Anforderungen entsprechen.
-    	- Jedes Passwort wird über weitere API auf seinen Kompromitierungsstatus geprüft.
-
-  5.	Abmeldung:
-      - Wenn der Benutzer sich von der App abmeldet, werden nur die Anmeldedaten gelöscht. Die verschlüsselten JSON Dateien werden nur gelöscht wenn der Benutzer die APP deinstalliert oder in den Einstellungen der APP bei aktiver Anmeldung die Daten über den "Löschen" Button explizit löscht! 
-      Bei einer Neuanmeldung gibt der Benutzer einfach sein Master-Passwort an und schon kann er seine Daten (bei gleicher Apple ID) laden.
-     
---- 
-
-### Aussicht für die Zukunft:
-
-- Zwei-Faktor-Authentifizierung: Ich möchte die Sicherheit weiter erhöhen, indem ich die Möglichkeit integriere,  den Zugriff auf die App zusätzlich über einen Authenticator abzusichern.
-- Plattformübergreifende Versionen: Ich plane, die App auf Android zu bringen, damit sie noch mehr Nutzern zugänglich wird.
-- Veröffentlichung im AppStore: Sobald alle Kernfunktionen stabil sind, soll die App für die breite Öffentlichkeit verfügbar gemacht werden – mit einem besonderen Fokus auf Sicherheit und Benutzerfreundlichkeit 
+- **🚀 FaceID & Biometrie-Login**: Nahtloser und sicherer Zugriff auf den Tresor ohne ständige Mastercode-Eingabe.
+- **🛠 Refactored Architecture**: Migration zu einem modularen `SecurityManager` und `ArgonCryptoService` für saubere Trennung von Logik und UI.
+- **🔑 ConfigManager & Secrets**: API-Schlüssel (z.B. für den Passwort-Check) werden jetzt sicher über einen dedizierten `ConfigManager` verwaltet und sind nicht mehr in der `Info.plist` exponiert.
+- **☁️ CloudKit Sync 2.0**: Verbesserte Synchronisation der verschlüsselten Daten über das persönliche iCloud-Konto des Benutzers. ( in finaler Version, noch nicht komplett implementiert)
+- **🎨 UI/UX Performance**: Behebung von Layout-Instabilitäten und Optimierung der View-Transitions für ein flüssigeres Erlebnis.
 
 ---
 
-### App-Download und fehlende Daten:
+## 🛠 Technologien
 
-  - Damit die App funktioniert müssen die Dateien "API-Keys.swift und KeyChainKeys.swift" immer anlegegt werden! Diese enthalten die Keys der API und der Keychain intern.
-  - - APIKeys: Enthält den API Schlüssel der API von "Random Password Generator" by apipigu (https://rapidapi.com/apipigu/api/random-password-generator5)
-  - - KeyChainKeys: Enthällt die spezifischen Key-Strings unter denen die KeyChain die Werte speichert.
-
-  ## In dieser Git-Version im Rahmen der Projektarbeit werden diese beiden Dateien angezeigt und mit einem gültigen API-Key befüllt. 
-  Diese Keys werden nach der Projektarbeit gelöscht! Aus Sicherheitsgründen sollten die beiden Dateien auch in die .gitignore Datei aufgenommen werden!
+- **Sprache**: Swift 6.0+
+- **UI-Framework**: SwiftUI (Native Apple Look & Feel)
+- **Persistenz**: SQLCipher & GRDB (Verschlüsseltes SQLite)
+- **Kryptographie**: LiquidSodium (Argon2id), CryptoKit (ChaChaPoly), AES-GCM
+- **Synchronisation**: CloudKit (Apple native Cloud-Lösung)
+- **Authentifizierung**: LocalAuthentication (FaceID/TouchID) & Apple Sign-In
+- **Networking**: URLSession (asynchrone API-Calls für Passwort-Generator & Check)
 
 ---
 
-<p>
-  <img src="./images/Slide 16_9 - 1.png" width="333">
-   <img src="./images/Slide 16_9 - 3.png" width="333">
+## 🚀 Setup für Entwickler
+
+Um das Projekt lokal zu bauen, ist eine manuelle Konfiguration der geheimen Keys notwendig (aus Sicherheitsgründen nicht im Git):
+
+1. Erstellen Sie eine Datei `Secrets.swift` im Helper-Verzeichnis.
+2. Implementieren Sie das `Secrets`-Enum:
+   ```swift
+   enum Secrets {
+       static let rapidAPIKey = "DEIN_API_KEY"
+   }
+   ```
+3. Der `ConfigManager` greift automatisch auf diese Werte zu, um z.B. die Passwort-Einstufungs-API zu bedienen.
+
+---
+
+## 📅 Roadmap & Zukunft
+
+- **Design der App**: Die App bekommt nochmal ein großes Designupdate welches nach der technischen Umsetllung stattfinden wird. 
+- **App Store Release**: Geplant nach einer geschlossenen Beta-Phase.
+
+---
+
+
+<p align="center">
+  <img src="./images/Slide 16_9 - 1.png" width="400">
+  <img src="./images/Slide 16_9 - 3.png" width="400">
 </p>
-
-<p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/N-E-O-N-E/Abschlussprojekt-ShishiVault-Passwort-Manager">Shishi Vault Passwortmanager</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/N-E-O-N-E">Markus Wirtz</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-NC-SA 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt=""></a></p>
