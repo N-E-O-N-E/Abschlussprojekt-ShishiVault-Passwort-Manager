@@ -78,7 +78,13 @@ struct EntrieEditView: View {
         .toolbar { toolbarContent }
         .sheet(isPresented: $customFieldSheet) { customFieldSheetContent }
         .sheet(isPresented: $pwGeneratorSheet) { passwordGeneratorSheetContent }
-        .alert("Hinweis", isPresented: $savedAlert, actions: { alertActions }, message: { alertMessage })
+        .alert(isDeleteAlert ? "Eintrag löschen" : "Daten aktualisieren", isPresented: Binding(
+            get: { savedAlert || isDeleteAlert },
+            set: { _ in 
+                savedAlert = false
+                isDeleteAlert = false
+            }
+        ), actions: { alertActions }, message: { alertMessage })
         .onAppear { setupView() }
         .onChange(of: customFieldSheet) { _, isPresented in handleCustomFieldSheetChange(isPresented) }
         .navigationBarBackButtonHidden(true)
@@ -178,14 +184,26 @@ private extension EntrieEditView {
     }
     
     var updateButton: some View {
-        Button {
-            handleUpdateAction()
-        } label: {
-            RoundedRectangle(cornerRadius: 25)
-                .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
-                .overlay(
-                    Text("Aktualisieren")
-                        .font(.title3).bold().foregroundColor(.white))
+        VStack(spacing: 0) {
+            Button {
+                handleUpdateAction()
+            } label: {
+                RoundedRectangle(cornerRadius: 25)
+                    .fill(Color.ShishiColorBlue).frame(height: 50).padding(.horizontal).foregroundColor(.white)
+                    .overlay(
+                        Text("Aktualisieren")
+                            .font(.title3).bold().foregroundColor(.white))
+            }
+            
+            Button {
+                isDeleteAlert = true
+            } label: {
+                Text("Eintrag unwiderruflich löschen")
+                    .font(.subheadline)
+                    .foregroundColor(.ShishiColorRed_)
+                    .padding(.top, 20)
+                    .padding(.bottom, 40)
+            }
         }
     }
     
@@ -200,12 +218,18 @@ private extension EntrieEditView {
             }
         }
         ToolbarItem(placement: .topBarTrailing) {
-            HStack {
+            HStack(spacing: 15) {
                 Button { customFieldSheet = true } label: {
                     Image(systemName: "rectangle.badge.plus").foregroundStyle(Color.ShishiColorBlue)
                 }
                 Button { pwGeneratorSheet.toggle() } label: {
                     Image(systemName: "lock.square").foregroundColor(.ShishiColorBlue).scaleEffect(1.1)
+                }
+                Button {
+                    isDeleteAlert = true
+                } label: {
+                    Image(systemName: "trash")
+                        .foregroundColor(.ShishiColorRed_)
                 }
             }
         }
@@ -270,18 +294,32 @@ private extension EntrieEditView {
     
     var alertActions: some View {
         Group {
-            Button("Aktualisieren", role: .destructive) {
-                // Hinweis: Die eigentliche updateEntry Logik wird nun im Button oben via savedAlert.toggle() vorbereitet.
-                // In deinem ursprünglichen Code war hier redundanter Save-Code.
-                entrieViewModel.deleteCustomField()
-                dismiss()
+            if isDeleteAlert {
+                Button("Löschen", role: .destructive) {
+                    if let entryID = entry?.id {
+                        entrieViewModel.deleteEntry(id: entryID)
+                        entrieEditView = false
+                        dismiss()
+                    }
+                }
+            } else {
+                Button("Aktualisieren", role: .destructive) {
+                    entrieViewModel.deleteCustomField()
+                    dismiss()
+                }
             }
-            Button("Abbrechen", role: .cancel) {}
+            Button("Abbrechen", role: .cancel) {
+                isDeleteAlert = false
+            }
         }
     }
     
     var alertMessage: some View {
-        Text("Die Aktualisierung der Daten kann nicht rückgängig gemacht werden!. Möchten Sie die Daten wirklich aktualisieren?")
+        if isDeleteAlert {
+            return Text("Sind Sie sicher, dass Sie diesen Eintrag löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.")
+        } else {
+            return Text("Die Aktualisierung der Daten kann nicht rückgängig gemacht werden!. Möchten Sie die Daten wirklich aktualisieren?")
+        }
     }
     
     var customFieldSheetContent: some View {
