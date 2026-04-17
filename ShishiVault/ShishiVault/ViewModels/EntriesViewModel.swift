@@ -55,6 +55,13 @@ class EntriesViewModel: ObservableObject {
             
             try DatabaseManager.shared.saveEntry(newVaultEntry)
             
+            // Cloud-Sync
+            if UserDefaults.standard.bool(forKey: "isCloudSyncEnabled") {
+                Task {
+                    try? await CloudKitManager.shared.saveToCloud(entry: newVaultEntry)
+                }
+            }
+            
             let uiEntry = EntryData(id: id, title: title, username: username, email: email,
                                    password: password, notes: notes, website: website,
                                    customFields: customFields)
@@ -91,6 +98,13 @@ class EntriesViewModel: ObservableObject {
         do {
             try DatabaseManager.shared.deleteEntry(id: id.uuidString)
             self.entries.removeAll(where: { $0.id == id })
+            
+            // Cloud-Sync
+            if UserDefaults.standard.bool(forKey: "isCloudSyncEnabled") {
+                Task {
+                    try? await CloudKitManager.shared.deleteFromCloud(id: id.uuidString)
+                }
+            }
         } catch {
             print("Fehler beim Löschen: \(error)")
         }
@@ -117,6 +131,11 @@ class EntriesViewModel: ObservableObject {
             )
             
             try DatabaseManager.shared.saveEntry(updatedVaultEntry) // saveEntry nutzt insert(db), GRDB .save() macht upsert
+            
+            // Cloud-Sync
+            if UserDefaults.standard.bool(forKey: "isCloudSyncEnabled") {
+                try? await CloudKitManager.shared.saveToCloud(entry: updatedVaultEntry)
+            }
             
             if let index = self.entries.firstIndex(where: { $0.id == id }) {
                 self.entries[index] = EntryData(id: id, title: title, username: username, email: email,

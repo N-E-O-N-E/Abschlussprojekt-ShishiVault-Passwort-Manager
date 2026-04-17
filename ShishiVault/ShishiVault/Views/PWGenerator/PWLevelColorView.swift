@@ -3,42 +3,35 @@ import SwiftUI
 struct PWLevelColorView: View {
     @Binding var password: String
     
-    func levelValue(for password: String) -> CGFloat {
-        var value: CGFloat = 0
-        
-        if password.count < 3 {
-            value = 10
-        } else if password.count >= 3 && password.count < 5 {
-            value =  40
-        } else if password.count >= 5 && password.count < 7 {
-            value =  150
-        } else if password.count >= 7 && password.count < 10 {
-            value =  230
-        } else if password.count >= 10 && password.count < 16 {
-            value =  330
-        }
-        return value
+    func levelProgress(for password: String) -> Double {
+        if password.count < 3 { return 0.1 }
+        else if password.count < 5 { return 0.2 }
+        else if password.count < 7 { return 0.4 }
+        else if password.count < 10 { return 0.6 }
+        else if password.count < 16 { return 0.8 }
+        else { return 1.0 }
     }
     
     func levelColor(for password: String) -> Color {
-        var color = Color.gray
-        if password.count <= 4 {
-            color = .ShishiColorRed_
-        } else if password.count > 4 && password.count <= 6 {
-            color = .orange
-        } else if password.count > 6 {
-            color = .ShishiColorGreen
-        }
-        return color
+        if password.count <= 4 { return .ShishiColorRed_ }
+        else if password.count <= 6 { return .orange }
+        else { return .ShishiColorGreen }
     }
     
     var body: some View {
-        VStack {
+        GeometryReader { geometry in
             ZStack(alignment: .leading) {
-                Capsule().frame(height: 15).foregroundStyle(Color.gray.opacity(0.35))
-                Capsule().frame(width: levelValue(for: password), height: 14).foregroundStyle(levelColor(for: password))
+                Capsule()
+                    .frame(height: 15)
+                    .foregroundStyle(Color.gray.opacity(0.35))
+                
+                Capsule()
+                    .frame(width: geometry.size.width * levelProgress(for: password), height: 14)
+                    .foregroundStyle(levelColor(for: password))
             }
         }
+        .frame(height: 15)
+        .padding(.horizontal)
     }
 }
 

@@ -4,9 +4,5 @@
 <dict>
 	<key>UIFileSharingEnabled</key>
 	<true/>
-	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<true/>
-	<key>NSFaceIDUsageDescription</key>
-	<string>ShishiVault benötigt FaceID, um Ihren Tresor sicher zu entsperren.</string>
 </dict>
 </plist>

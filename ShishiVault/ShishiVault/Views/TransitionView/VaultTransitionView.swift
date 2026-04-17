@@ -25,10 +25,8 @@ struct VaultTransitionView: View {
             }
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                withAnimation(.easeInOut) {
-                    shishiViewModel.appState = .login
-                }
+            withAnimation(.easeInOut) {
+                shishiViewModel.appState = .login
             }
         }
     }

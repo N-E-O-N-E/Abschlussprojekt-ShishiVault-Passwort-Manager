@@ -11,100 +11,95 @@ struct SignInView: View {
     var onUnlock: (VaultContext) -> Void
     
     var body: some View {
-        
-        VStack(spacing: 25) {
-            
-            if isFirstRegistration {
-                registrationNotice
-            }
-            
-            Image("ShishiLogo_600")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 250)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-            
-            
-            
-            Text(isFirstRegistration ? "Neues Masterpasswort setzen" : "Vault entsperren")
-            
-            if isFirstRegistration {
-                PWLevelColorView(password: $password)
+        ScrollView {
+            VStack(spacing: 25) {
                 
-                Toggle(isOn: $shishiViewModel.useBiometry) {
-                    HStack {
-                        Image(systemName: "faceid")
-                        Text("FaceID / TouchID aktivieren")
-                    }
+                if isFirstRegistration {
+                    registrationNotice
                 }
-                .tint(.ShishiColorBlue)
-                .padding(.horizontal)
-            }
-            
-            SecureField("Masterpasswort", text: $password)
-                .textContentType(.password)
-                .textFieldStyle(.roundedBorder)
-                .disabled(isLoading)
-            
-            if let error = errorMessage {
-                Text(error)
-                    .foregroundColor(.ShishiColorRed_)
-                    .font(.caption)
-                    .bold()
-            }
-            
-            Button(action: deriveKey) {
-                HStack(spacing: 10) {
-                    Text(isFirstRegistration ? "Verschlüsselten Vault erstellen..." : "Vault entsperren")
+                
+                Image("ShishiLogo_600")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 250)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                
+                Text(isFirstRegistration ? "Neues Masterpasswort setzen" : "Vault entsperren")
+                
+                if isFirstRegistration {
+                    PWLevelColorView(password: $password)
                     
-                    if isLoading {
-                        ProgressView()
-                            .tint(.white)
+                    Toggle(isOn: $shishiViewModel.useBiometry) {
+                        HStack {
+                            Image(systemName: "faceid")
+                            Text("FaceID / TouchID aktivieren")
+                        }
                     }
-                }
-                .frame(maxWidth: .infinity)
-                .fontWeight(.semibold)
-            }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
-            .tint(Color.ShishiColorBlue)
-            .disabled(isLoading || password.isEmpty)
-            
-            if !isFirstRegistration && shishiViewModel.useBiometry {
-                Button(action: unlockWithBiometry) {
-                    HStack {
-                        Image(systemName: "faceid")
-                        Text("Mit FaceID entsperren")
-                    }
-                    .foregroundColor(.ShishiColorBlue)
-                    .fontWeight(.bold)
-                }
-                .padding(.top, 10)
-            }
-            
-            
-        }.frame(width: .infinity, height: .infinity).padding()
-        
-        
-        
-        // Fehler-Handling für falsches Passwort oder Crypto-Fehler
-            .alert("Passwort-Fehler", isPresented: Binding(
-                get: { errorMessage != nil },
-                set: { _ in errorMessage = nil }
-            )) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text(errorMessage ?? "Es gab ein Problem mit dem Passwort!")
-            }
-            .onAppear {
-                if !isFirstRegistration && shishiViewModel.useBiometry {
-                    unlockWithBiometry()
+                    .tint(.ShishiColorBlue)
+                    .padding(.horizontal)
                 }
                 
-                if let existingSalt = UserDefaults.standard.data(forKey: "user_salt") {
-                    print("Salt gefunden: \(existingSalt.base64EncodedString())")
+                SecureField("Masterpasswort", text: $password)
+                    .textContentType(.password)
+                    .textFieldStyle(.roundedBorder)
+                    .disabled(isLoading)
+                
+                if let error = errorMessage {
+                    Text(error)
+                        .foregroundColor(.ShishiColorRed_)
+                        .font(.caption)
+                        .bold()
+                }
+                
+                Button(action: deriveKey) {
+                    HStack(spacing: 10) {
+                        Text(isFirstRegistration ? "Verschlüsselten Vault erstellen..." : "Vault entsperren")
+                        
+                        if isLoading {
+                            ProgressView()
+                                .tint(.white)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .fontWeight(.semibold)
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .tint(Color.ShishiColorBlue)
+                .disabled(isLoading || password.isEmpty)
+                
+                if !isFirstRegistration && shishiViewModel.useBiometry {
+                    Button(action: unlockWithBiometry) {
+                        HStack {
+                            Image(systemName: "faceid")
+                            Text("Mit FaceID entsperren")
+                        }
+                        .foregroundColor(.ShishiColorBlue)
+                        .fontWeight(.bold)
+                    }
+                    .padding(.top, 10)
                 }
             }
+            .padding()
+        }
+        // Fehler-Handling für falsches Passwort oder Crypto-Fehler
+        .alert("Passwort-Fehler", isPresented: Binding(
+            get: { errorMessage != nil },
+            set: { _ in errorMessage = nil }
+        )) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(errorMessage ?? "Es gab ein Problem mit dem Passwort!")
+        }
+        .onAppear {
+            if !isFirstRegistration && shishiViewModel.useBiometry {
+                unlockWithBiometry()
+            }
+            
+            if let existingSalt = UserDefaults.standard.data(forKey: "user_salt") {
+                print("Salt gefunden: \(existingSalt.base64EncodedString())")
+            }
+        }
     }
     
     var registrationNotice: some View {
@@ -119,7 +114,7 @@ struct SignInView: View {
                 .font(.footnote).bold()
         }
         .padding()
-        .background(Color.ShishiColorRed.opacity(0.5))
+        .background(Color.ShishiColorRed_.opacity(0.5))
         .cornerRadius(12)
         .padding(.horizontal)
         .transition(.move(edge: .top).combined(with: .opacity))

@@ -8,9 +8,29 @@ class ShishiViewModel: ObservableObject {
     @Published var loginKey: Data?
     
     @AppStorage("useBiometry") var useBiometry: Bool = false
+    @AppStorage("isCloudSyncEnabled") var isCloudSyncEnabled: Bool = false
   
     func logout() {
         loginKey = nil
+    }
+    
+    /// Startet oder stoppt die Cloud-Synchronisation
+    func toggleCloudSync(enabled: Bool) {
+        isCloudSyncEnabled = enabled
+        if enabled {
+            print("☁️ Cloud-Sync aktiviert.")
+            // Hier könnte man einen initialen Upload aller lokalen Daten anstoßen
+        }
+    }
+    
+    /// Löscht alle Daten aus CloudKit
+    func wipeCloudData() async {
+        do {
+            try await CloudKitManager.shared.wipeCloudDatabase()
+            print("☁️ Cloud-Daten erfolgreich gelöscht.")
+        } catch {
+            print("❌ Fehler beim Löschen der Cloud-Daten: \(error)")
+        }
     }
     
     func toggleBiometry(enabled: Bool) {

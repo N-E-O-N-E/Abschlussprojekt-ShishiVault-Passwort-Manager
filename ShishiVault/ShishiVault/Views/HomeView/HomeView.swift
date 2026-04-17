@@ -44,8 +44,8 @@ struct HomeView: View {
                 VStack {
                     if entrieViewModel.entries.isEmpty {
                         VStack(alignment: .center) {
-                            Text("\n\n\nKeine Daten zum Laden vorhanden!\n\n")
-                            Text("\n\nVielleicht haben Sie Datensicherungen zum einlesen??\n\n")
+                            Text("\n\n\nKeine Daten zum Laden vorhanden!\n")
+                            Text("Vielleicht haben Sie Datensicherungen zum einlesen??\n\n")
                         }.padding().multilineTextAlignment(.center)
                         
                     } else {
