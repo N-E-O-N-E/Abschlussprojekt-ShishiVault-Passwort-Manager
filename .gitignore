@@ -53,3 +53,7 @@ ehthumbs.db
 Thumbs.db
 
 Pods/
+
+# Secrets
+*.xcconfig
+Secrets.swift

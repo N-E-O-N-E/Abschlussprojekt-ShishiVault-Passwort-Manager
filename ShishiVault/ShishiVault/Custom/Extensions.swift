@@ -1,13 +1,4 @@
-//
-//  Colors.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 12.11.24.
-//
-
 import SwiftUI
-
-// Shishi Vault spezifische Farben, Text- und TextFeld formatierungen
 
 extension Color {
     static let ShishiColorGreen = Color(red: 0.15, green: 0.55, blue: 0.20)
@@ -27,7 +18,6 @@ extension Color {
                       Color(red: 245/255, green: 250/255, blue: 255/255)])
 }
 
-// Formatierung Bilder im Hilfebereich
 extension Image {
     func helpPictures() -> some View {
         self
@@ -37,7 +27,6 @@ extension Image {
     }
 }
 
-// Formatierung Text für Warnhinweise in Rot
 extension Text {
     func warningTextLarge() -> some View {
         self
@@ -54,7 +43,6 @@ extension Text {
     }
 }
 
-// Formatierung Text für fette Überschrift Groß
 extension Text {
     func ueberschriftLargeBold() -> some View {
         self
@@ -63,7 +51,6 @@ extension Text {
     }
 }
 
-// Formatierung Text für Überschrift
 extension Text {
     func ueberschriftenText() -> some View {
         self
@@ -72,7 +59,6 @@ extension Text {
     }
 }
 
-// Formatierung Text für fette Überschrift
 extension Text {
     func ueberschriftenTextBold() -> some View {
         self
@@ -81,7 +67,6 @@ extension Text {
     }
 }
 
-// Formatierung Text für normalen Fließtext
 extension Text {
     func normalerText() -> some View {
         self
@@ -90,7 +75,6 @@ extension Text {
     }
 }
 
-// Formatierung Text für Fließtext in Fett
 extension Text {
     func normalerTextBold() -> some View {
         self
@@ -99,7 +83,6 @@ extension Text {
     }
 }
 
-// Formatierung Text für Paneltext in Fett
 extension Text {
     func panelTextBold() -> some View {
         self
@@ -107,7 +90,7 @@ extension Text {
             .padding(.horizontal, 1).padding(.vertical, 0)
     }
 }
-// Formatierung Text für Paneltext
+
 extension Text {
     func panelText() -> some View {
         self
@@ -116,7 +99,6 @@ extension Text {
     }
 }
 
-// Formatierung Text für die Anzeige der Daten mit Rahmen ohne Bearbeitungsfunktion
 extension Text {
     func textFieldAlsText() -> some View {
         self
@@ -128,7 +110,6 @@ extension Text {
     }
 }
 
-// Formatierung Text für die Notizen mit Rahmen
 extension Text {
     func notizenText() -> some View {
         self
@@ -138,8 +119,7 @@ extension Text {
             .padding(1)
     }
 }
-   
-// Texteingabe Multiline
+
 extension TextEditor {
     func customTextFieldNotes() -> some View {
         self
@@ -152,7 +132,6 @@ extension TextEditor {
     }
 }
 
-// Texteingabe für Daten
 extension TextField {
     func customTextField() -> some View {
         self
@@ -164,7 +143,6 @@ extension TextField {
     }
 }
 
-// Texteingabe für das Suchefeld im HomeScreen
 extension TextField {
     func customSearchField() -> some View {
         self
@@ -176,7 +154,6 @@ extension TextField {
     }
 }
 
-// Passender kleiner Text für Textfelder
 extension Text {
     func customTextFieldTextLow() -> some View {
         self
@@ -185,7 +162,6 @@ extension Text {
     }
 }
 
-// Passender kleiner Text für Beschreibungen
 extension Text {
     func customTextFieldTextMid() -> some View {
         self
@@ -194,7 +170,6 @@ extension Text {
     }
 }
 
-// Passwortfeld klartext
 extension TextField {
     func customPasswordField() -> some View {
         self
@@ -206,7 +181,6 @@ extension TextField {
     }
 }
 
-// Passwortfeld mit Sichtschutz
 extension SecureField {
     func customSecureField() -> some View {
         self
@@ -217,17 +191,3 @@ extension SecureField {
             .padding(0.5)
     }
 }
-
-/**
-Button {
-    
-} label: {
-    RoundedRectangle(cornerRadius: 25)
-        .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
-        .overlay(
-            Text("Eintrag speichern")
-                .font(.title3).bold()
-                .foregroundColor(.white))
-}
-.padding(.horizontal).padding(.vertical, 5)
-**/

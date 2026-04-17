@@ -1,26 +1,23 @@
-//
-//  HomeView.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 15.11.24.
-//
-
 import SwiftUI
 import CryptoKit
 
 struct HomeView: View {
+    let vaultContext: VaultContext
+    
     @EnvironmentObject var shishiViewModel: ShishiViewModel
-    @StateObject var entrieViewModel: EntriesViewModel
+    @EnvironmentObject var entrieViewModel: EntriesViewModel
+    
     @State private var showAddEntrieView: Bool = false
     @State private var entrieShowView: Bool = false
     @State private var showSettingsView: Bool = false
     @State private var showHelpView: Bool = false
-    @State var sortByDate: Bool = false
+    @State private var sortByDate: Bool = false
     @State private var searchText: String = ""
     
-    init() {
-        let key = ShishiViewModel().symmetricKeychainString
-        _entrieViewModel = StateObject(wrappedValue: EntriesViewModel(symmetricKeyString: key))
+    var filteredEntries: [EntryData] {
+        entrieViewModel.entries.filter { entry in
+            searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
+        }
     }
     
     var body: some View {
@@ -47,41 +44,32 @@ struct HomeView: View {
                 VStack {
                     if entrieViewModel.entries.isEmpty {
                         VStack(alignment: .center) {
-                            Text("\n\n\nKeine Daten zum Laden vorhanden!\n\n")
-                            Text("\n\nVielleicht haben Sie Daten zur Wiederherstellung aus der iCloud?\n\n")
+                            Text("\n\n\nKeine Daten zum Laden vorhanden!\n")
+                            Text("Vielleicht haben Sie Datensicherungen zum einlesen??\n\n")
                         }.padding().multilineTextAlignment(.center)
                         
                     } else {
-                        if sortByDate {
-                            ForEach(entrieViewModel.entries.filter { entry in
-                                searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
-                            }.sorted(by: { $0.created > $1.created }) ) { entry in
-                                NavigationLink {
-                                    EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
-                                        .environmentObject(entrieViewModel)
-                                        .environmentObject(shishiViewModel)
-                                } label: {
-                                    EntrieListItem(title: entry.title, email: entry.email,
-                                                   created: entry.created, website: entry.website ?? "")
-                                }
-                            }
-                        } else {
-                            ForEach(entrieViewModel.entries.filter { entry in
-                                searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
-                            }.sorted(by: { $0.title < $1.title }) ) { entry in
-                                NavigationLink {
-                                    EntrieShowView(entrieShowView: $entrieShowView, entry: entry)
-                                        .environmentObject(entrieViewModel)
-                                        .environmentObject(shishiViewModel)
-                                } label: {
-                                    EntrieListItem(title: entry.title, email: entry.email,
-                                                   created: entry.created, website: entry.website ?? "")
-                                }
+                        
+                        
+                        
+                        ForEach(filteredEntries) { entry in
+                            NavigationLink {
+                                // Erst beim Klick wird das Modell in das Klartext-Struct umgewandelt
+                                
+                                EntrieShowView(entrieShowView: .constant(true), entry: entry)
+                                    .environmentObject(entrieViewModel)
+                                    .environmentObject(shishiViewModel)
+                                
+                            } label: {
+                                // Für die Liste entschlüsseln wir nur Titel/Mail (bereits im Modell vorhanden)
+                                EntrieListItem(title: entry.title,
+                                               email: entry.email,
+                                               created: entry.created,
+                                               website: entry.website ?? "")
                             }
                         }
                     }
-                } // End VStack
-                
+                }
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         Button {
@@ -97,8 +85,8 @@ struct HomeView: View {
                             Image(systemName: "gearshape")
                         }
                     }
-                } // End Toolbar
-            } // End ScrollView
+                }
+            }
         }
         .overlay(
             Button(action: {
@@ -114,11 +102,11 @@ struct HomeView: View {
         .navigationDestination(isPresented: $showAddEntrieView, destination: {
             EntrieAddView(showAddEntrieView: $showAddEntrieView)
                 .environmentObject(entrieViewModel)
-                .environmentObject(shishiViewModel) })
+            .environmentObject(shishiViewModel) })
         .navigationDestination(isPresented: $showSettingsView, destination: {
             SettingsView()
                 .environmentObject(shishiViewModel)
-                .environmentObject(entrieViewModel) })
+            .environmentObject(entrieViewModel) })
         .navigationDestination(isPresented: $showHelpView, destination: {
             HelpView() })
         
@@ -131,9 +119,10 @@ struct HomeView: View {
         .navigationBarBackButtonHidden(true)
         .foregroundStyle(Color.ShishiColorBlue)
     }
-}
-
-#Preview {
-    HomeView()
-        .environmentObject(ShishiViewModel())
+    
+    private func reloadEntries() {
+        Task {
+            await entrieViewModel.reloadEntries()
+        }
+    }
 }

@@ -1,12 +1,4 @@
-//
-//  Item.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 11.11.24.
-//
 import Foundation
-
-// Standardfelder der APP zum Anlegen der Einträge und der Möglichkeit für individuelle Felder
 
 struct EntryData: Identifiable, Codable {
     

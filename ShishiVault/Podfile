@@ -1,0 +1,7 @@
+platform :ios, '17.6'
+
+target 'ShishiVault' do
+  use_frameworks!
+
+  pod 'GRDB.swift/SQLCipher'
+end

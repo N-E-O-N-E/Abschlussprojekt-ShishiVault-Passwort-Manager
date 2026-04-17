@@ -1,10 +1,3 @@
-//
-//  API Error.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 21.11.24.
-//
-
 import Foundation
 
 enum APIError: Error {
@@ -15,9 +8,7 @@ enum APIError: Error {
 
 enum AppState {
     case login
-    case saltKey
     case home
-    case pin
 }
 
 enum NetworkState {

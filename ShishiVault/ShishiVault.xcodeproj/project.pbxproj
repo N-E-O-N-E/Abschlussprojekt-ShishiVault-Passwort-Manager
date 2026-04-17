@@ -7,11 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A475AED2F1FCCC28979C7218 /* Pods_ShishiVault.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79E219412AF28061FBB46C31 /* Pods_ShishiVault.framework */; };
+		FA04A8F92F58F164005D0FA5 /* Clibsodium in Frameworks */ = {isa = PBXBuildFile; productRef = FA04A8F82F58F164005D0FA5 /* Clibsodium */; };
+		FA04A8FB2F58F164005D0FA5 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = FA04A8FA2F58F164005D0FA5 /* Sodium */; };
 		FA6119472CE34FC300BC3006 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = FA6119462CE34FBC00BC3006 /* .swiftlint.yml */; };
 		FAF6027D2CE37D0A0099D40E /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF6027C2CE37D0A0099D40E /* AuthenticationServices.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04D32CB5203E382453FC41AD /* Pods-ShishiVault.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShishiVault.release.xcconfig"; path = "Target Support Files/Pods-ShishiVault/Pods-ShishiVault.release.xcconfig"; sourceTree = "<group>"; };
+		79E219412AF28061FBB46C31 /* Pods_ShishiVault.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShishiVault.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEFAF7565A61F80C7D96DB78 /* Pods-ShishiVault.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShishiVault.debug.xcconfig"; path = "Target Support Files/Pods-ShishiVault/Pods-ShishiVault.debug.xcconfig"; sourceTree = "<group>"; };
 		FA6119462CE34FBC00BC3006 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		FA7082EA2CE2258B00390113 /* ShishiVault.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShishiVault.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAF6027C2CE37D0A0099D40E /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
@@ -44,12 +50,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAF6027D2CE37D0A0099D40E /* AuthenticationServices.framework in Frameworks */,
+				A475AED2F1FCCC28979C7218 /* Pods_ShishiVault.framework in Frameworks */,
+				FA04A8F92F58F164005D0FA5 /* Clibsodium in Frameworks */,
+				FA04A8FB2F58F164005D0FA5 /* Sodium in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		24708559972477C3AA68DCBA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AEFAF7565A61F80C7D96DB78 /* Pods-ShishiVault.debug.xcconfig */,
+				04D32CB5203E382453FC41AD /* Pods-ShishiVault.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		FA7082E12CE2258B00390113 = {
 			isa = PBXGroup;
 			children = (
@@ -57,6 +75,7 @@
 				FA7082EC2CE2258B00390113 /* ShishiVault */,
 				FAF6027B2CE37D0A0099D40E /* Frameworks */,
 				FA7082EB2CE2258B00390113 /* Products */,
+				24708559972477C3AA68DCBA /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -72,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				FAF6027C2CE37D0A0099D40E /* AuthenticationServices.framework */,
+				79E219412AF28061FBB46C31 /* Pods_ShishiVault.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -83,10 +103,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA7082FB2CE2258C00390113 /* Build configuration list for PBXNativeTarget "ShishiVault" */;
 			buildPhases = (
+				9AD1CB15A4CA49D1AEAB4870 /* [CP] Check Pods Manifest.lock */,
 				FA7082E62CE2258B00390113 /* Sources */,
 				FA7082E72CE2258B00390113 /* Frameworks */,
 				FA7082E82CE2258B00390113 /* Resources */,
 				FA6119452CE34F8600BC3006 /* ShellScript */,
+				0E3B8E7CE3F8C1469B4D5963 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -97,6 +119,8 @@
 			);
 			name = ShishiVault;
 			packageProductDependencies = (
+				FA04A8F82F58F164005D0FA5 /* Clibsodium */,
+				FA04A8FA2F58F164005D0FA5 /* Sodium */,
 			);
 			productName = ShishiVault;
 			productReference = FA7082EA2CE2258B00390113 /* ShishiVault.app */;
@@ -110,7 +134,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1610;
-				LastUpgradeCheck = 1620;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					FA7082E92CE2258B00390113 = {
 						CreatedOnToolsVersion = 16.1;
@@ -127,6 +151,9 @@
 			);
 			mainGroup = FA7082E12CE2258B00390113;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FA04A8F72F58F164005D0FA5 /* XCRemoteSwiftPackageReference "swift-sodium" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA7082EB2CE2258B00390113 /* Products */;
 			projectDirPath = "";
@@ -149,17 +176,56 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		FA6119452CE34F8600BC3006 /* ShellScript */ = {
+		0E3B8E7CE3F8C1469B4D5963 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ShishiVault/Pods-ShishiVault-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ShishiVault/Pods-ShishiVault-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ShishiVault/Pods-ShishiVault-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9AD1CB15A4CA49D1AEAB4870 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
+			name = "[CP] Check Pods Manifest.lock";
 			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ShishiVault-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FA6119452CE34F8600BC3006 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
 			);
 			outputPaths = (
 			);
@@ -183,39 +249,41 @@
 /* Begin XCBuildConfiguration section */
 		FA7082FC2CE2258C00390113 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AEFAF7565A61F80C7D96DB78 /* Pods-ShishiVault.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ShishiVault/ShishiVault.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ShishiVault/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4FM8LG4J6P;
+				DEVELOPMENT_TEAM = 4FM8LG4J6P;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ShishiVault/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ShishiVault;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "ShishiVault benötigt FaceID, um Ihren Tresor sicher zu entsperren.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = de.shishivault.ShishiVault;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Apple Disposition";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -228,39 +296,41 @@
 		};
 		FA7082FD2CE2258C00390113 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 04D32CB5203E382453FC41AD /* Pods-ShishiVault.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ShishiVault/ShishiVault.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ShishiVault/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4FM8LG4J6P;
+				DEVELOPMENT_TEAM = 4FM8LG4J6P;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ShishiVault/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ShishiVault;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "ShishiVault benötigt FaceID, um Ihren Tresor sicher zu entsperren.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = de.shishivault.ShishiVault;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Apple Disposition";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -307,6 +377,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 4FM8LG4J6P;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -324,12 +395,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -371,6 +443,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 4FM8LG4J6P;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -382,11 +455,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -414,6 +488,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FA04A8F72F58F164005D0FA5 /* XCRemoteSwiftPackageReference "swift-sodium" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jedisct1/swift-sodium.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FA04A8F82F58F164005D0FA5 /* Clibsodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA04A8F72F58F164005D0FA5 /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Clibsodium;
+		};
+		FA04A8FA2F58F164005D0FA5 /* Sodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA04A8F72F58F164005D0FA5 /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Sodium;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FA7082E22CE2258B00390113 /* Project object */;
 }

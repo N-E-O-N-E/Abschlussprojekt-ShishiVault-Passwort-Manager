@@ -1,15 +1,9 @@
-//
-//  EntrieAddView.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 15.11.24.
-//
-
 import SwiftUI
 import CryptoKit
 
 struct EntrieShowView: View {
     @Environment(\.dismiss) private var dismiss
+    
     @EnvironmentObject var shishiViewModel: ShishiViewModel
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @Binding var entrieShowView: Bool
@@ -186,20 +180,14 @@ struct EntrieShowView: View {
         
             .alert("Hinweis\n", isPresented: $isDeleteAlert, actions: {
                 Button("Löschen", role: .destructive) {
-                    entrieViewModel.deleteEntry(entrie: entry)
-                    Task {
-                        if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
-                            JSONHelper.shared.deleteEntiresFromJSON(key: key, entrie: entry)
-                            JSONHelper.shared.saveEntriesToJSON(key: key, entries: entrieViewModel.entries)
-                        }
-                    }
+                    entrieViewModel.deleteEntry(id: entry.id)
                     entrieShowView = false
                     dismiss()
                 }
                 Button("Abbrechen", role: .cancel) {
                     isDeleteAlert.toggle()
                 }
-            }, message: { Text("Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?\n\nDiese Aktion kann nicht rückgängig gemacht werden.\n\nMöchten Sie fortfahren?") })
+            }, message: { Text("Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?\n\nDiese Aktion kann nicht rückgängig gemacht werden.") })
         
         
             .navigationDestination(isPresented: $entrieEditView, destination: {

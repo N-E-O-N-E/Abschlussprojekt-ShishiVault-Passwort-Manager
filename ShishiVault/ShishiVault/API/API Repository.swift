@@ -1,14 +1,6 @@
-//
-//  API Repository.swift
-//  ShishiVault
-//
-//  Created by Markus Wirtz on 21.11.24.
-//
-
 import Foundation
 
 final class APIRepository {
-    
     func getPassword(length: Int, lowerCase: Bool, upperCase: Bool, numbers: Bool, symbols: Bool) async throws -> APIData {
         let baseURL = "https://random-password-generator5.p.rapidapi.com/random-password/index.php"
         let length = "length=\(length)"
@@ -27,7 +19,7 @@ final class APIRepository {
         var urlRequest = URLRequest(url: url)
         
         urlRequest.allHTTPHeaderFields = [
-            "x-rapidapi-key": APIKey.apiKeyPWGen,
+            "x-rapidapi-key": "\(ConfigManager.rapidAPIKey)",
             "x-rapidapi-host": "random-password-generator5.p.rapidapi.com"
         ]
         
