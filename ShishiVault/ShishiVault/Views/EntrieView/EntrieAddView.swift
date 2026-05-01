@@ -77,7 +77,6 @@ struct EntrieAddView: View {
                         }
                     
                     Button(action: {
-                        password = CryptHelper.shared.randomPasswordMaker()
                         passwordConfirm = password
                         passwordPwnedState = 0
                         
@@ -182,16 +181,13 @@ struct EntrieAddView: View {
                     case "passConfirm":
                         isDiffPassAlert.toggle()
                     case "ok":
-                        if let loginKey = shishiViewModel.loginKey {
-                            let vaultContext = VaultContext(loginKey: loginKey)
-                            
-                            Task {
-                                do {
-                                    passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
-                                } catch {
-                                    connectionAlert.toggle()
-                                }
+                        Task {
+                            do {
+                                passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
+                            } catch {
+                                connectionAlert.toggle()
                             }
+                            
                             if passwordPwnedState == 2 {
                                 entrieViewModel
                                     .createEntry(
@@ -204,29 +200,22 @@ struct EntrieAddView: View {
                                         website: website,
                                         customFields: entrieViewModel.customFieldsForEntrie
                                     )
-                            }
-                                
-                                //                                if let key = KeychainHelper.shared.loadCombinedSymmetricKeyFromKeychain(keychainKey: shishiViewModel.symmetricKeychainString) {
-                                //                                    Task {
-                                //                                        JSONHelper.shared.saveEntriesToJSON(
-                                //                                            key: key,
-                                //                                            entries: entrieViewModel.entries)
-                                //                                    }
-                                //                                } else {
-                                //                                    print("JSON save failed")
-                                //                                }
-                                entrieViewModel.deleteCustomField()
                                 isSavedAlert.toggle()
-                                
-                            } else if passwordPwnedState == 1 {
+                            }
+                            else if passwordPwnedState == 1 {
                                 pwnedAlert = true
                             }
-                        default:
-                            break
                         }
-                    } label: {
-                        RoundedRectangle(cornerRadius: 25)
-                            .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
+                        entrieViewModel.deleteCustomField()
+                        print("Customfields reset")
+                        
+                    default:
+                        break
+                    }
+                    
+                } label: {
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(Color.ShishiColorRed).frame(height: 50).padding().foregroundColor(.white)
                             .overlay(
                                 Text("Speichern")
                                     .font(.title3).bold()
@@ -295,9 +284,9 @@ struct EntrieAddView: View {
             //            Button("OK", role: .cancel) {}
             //        }, message: { Text("Die Passwörter stimmen nicht überein") })
             //
-            //        .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
-            //            Button("OK", role: .cancel) {}
-            //        }, message: { Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.") })
+                    .alert("Passwort unsicher!\n", isPresented: $pwnedAlert, actions: {
+                        Button("OK", role: .cancel) {}
+                    }, message: { Text("Das gewählte Passwort ist kompromittiert! Bitte wählen Sie ein anderes Passwort.") })
             //
             //        .alert("Kein Internet!\n", isPresented: $connectionAlert, actions: {
             //            Button("OK", role: .cancel) {}
