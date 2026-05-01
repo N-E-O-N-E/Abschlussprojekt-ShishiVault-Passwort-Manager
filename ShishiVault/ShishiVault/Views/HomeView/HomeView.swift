@@ -14,7 +14,7 @@ struct HomeView: View {
     @State private var sortByDate: Bool = false
     @State private var searchText: String = ""
     
-    var filteredEntries: [EntryData] {
+    var filteredEntries: [EntryDataModel] {
         entrieViewModel.entries.filter { entry in
             searchText.isEmpty || entry.title.lowercased().contains(searchText.lowercased())
         }

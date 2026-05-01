@@ -1,7 +1,7 @@
 import Foundation
 
-final class APIRepository {
-    func getPassword(length: Int, lowerCase: Bool, upperCase: Bool, numbers: Bool, symbols: Bool) async throws -> APIData {
+final class ApiPasswordRepository {
+    func getPassword(length: Int, lowerCase: Bool, upperCase: Bool, numbers: Bool, symbols: Bool) async throws -> ApiPasswordDataModel {
         let baseURL = "https://random-password-generator5.p.rapidapi.com/random-password/index.php"
         let length = "length=\(length)"
         let lowerCase = "lower_case=\(lowerCase)"
@@ -24,7 +24,7 @@ final class APIRepository {
         ]
         
         let data = try await self.handleDataResponse(forRequest: urlRequest)
-        let results = try JSONDecoder().decode(APIData.self, from: data)
+        let results = try JSONDecoder().decode(ApiPasswordDataModel.self, from: data)
         return results
     }
     

@@ -6,7 +6,7 @@ class RandomPassword {
     static let shared = RandomPassword()
     private init() {}
 
-    func copyToClipboard(input: String) throws {
+    func copyPasswordToClipboard(input: String) throws {
         guard !input.isEmpty else {
             throw EncryptionError.emptyClipboard
         }
@@ -14,7 +14,7 @@ class RandomPassword {
         clipboard.string = input
     }
 
-    func randomPasswordMaker() -> String {
+    func generateRandomPassword() -> String {
         let length = 12
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&()0123456789"
         var password = ""

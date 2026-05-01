@@ -2,7 +2,7 @@ import SwiftUI
 
 @MainActor
 class EntriesViewModel: ObservableObject {
-    @Published var entries: [EntryData] = []
+    @Published var entries: [EntryDataModel] = []
     @Published var customFieldsForEntrie: [CustomField] = []
        
     // MARK: - Validation
@@ -62,7 +62,7 @@ class EntriesViewModel: ObservableObject {
                 }
             }
             
-            let uiEntry = EntryData(id: id, title: title, username: username, email: email,
+            let uiEntry = EntryDataModel(id: id, title: title, username: username, email: email,
                                    password: password, notes: notes, website: website,
                                    customFields: customFields)
             self.entries.append(uiEntry)
@@ -78,7 +78,7 @@ class EntriesViewModel: ObservableObject {
             
             self.entries = vaultEntries.compactMap { entire in
                 let customFields = decodeCustomFields(entire.customFieldsJSON)
-                return EntryData(
+                return EntryDataModel(
                     id: UUID(uuidString: entire.id) ?? UUID(),
                     title: entire.title,
                     username: entire.username,
@@ -138,7 +138,7 @@ class EntriesViewModel: ObservableObject {
             }
             
             if let index = self.entries.firstIndex(where: { $0.id == id }) {
-                self.entries[index] = EntryData(id: id, title: title, username: username, email: email,
+                self.entries[index] = EntryDataModel(id: id, title: title, username: username, email: email,
                                                 password: password, notes: notes, website: website,
                                                 customFields: customFields)
             }

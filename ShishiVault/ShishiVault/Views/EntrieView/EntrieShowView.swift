@@ -8,7 +8,7 @@ struct EntrieShowView: View {
     @EnvironmentObject var entrieViewModel: EntriesViewModel
     @Binding var entrieShowView: Bool
     @State var entrieEditView: Bool = false
-    var entry: EntryData
+    var entry: EntryDataModel
     
     @State private var isDeleteAlert: Bool = false
     @State private var isPasswordVisible: Bool = false
@@ -38,7 +38,7 @@ struct EntrieShowView: View {
                     Button(action: {
                         if let username = entry.username {
                             do {
-                                try CryptHelper.shared.copyToClipboard(input: username)
+                                try RandomPassword.shared.copyPasswordToClipboard(input: username)
                                 print("Copy to clipboard: \(username)")
                             } catch {
                                 print("Cannot copy to clipboard: \(error.localizedDescription)")
@@ -63,7 +63,7 @@ struct EntrieShowView: View {
                     Button(action: {
                         if !entry.email.isEmpty {
                             do {
-                                try CryptHelper.shared.copyToClipboard(input: entry.email)
+                                try RandomPassword.shared.copyPasswordToClipboard(input: entry.email)
                                 print("Copy to clipboard: \(entry.email)")
                             } catch {
                                 print("Cannot copy to clipboard: \(error.localizedDescription)")
@@ -104,7 +104,7 @@ struct EntrieShowView: View {
                     Button(action: {
                         if !entry.password.isEmpty {
                             do {
-                                try CryptHelper.shared.copyToClipboard(input: entry.password)
+                                try RandomPassword.shared.copyPasswordToClipboard(input: entry.password)
                                 print("Copy to clipboard: \(entry.password)")
                             } catch {
                                 print("Cannot copy to clipboard: \(error.localizedDescription)")

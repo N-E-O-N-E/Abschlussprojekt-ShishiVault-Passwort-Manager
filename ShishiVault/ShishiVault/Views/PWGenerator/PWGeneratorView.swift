@@ -72,7 +72,7 @@ struct PWGeneratorView: View {
                 Button(action: {
                     if !generatedPassword.isEmpty {
                         do {
-                            try CryptHelper.shared.copyToClipboard(input: generatedPassword)
+                            try RandomPassword.shared.copyPasswordToClipboard(input: generatedPassword)
                             print("Copy to clipboard: \(generatedPassword)")
                         } catch {
                             print("Cannot copy to clipboard: \(error.localizedDescription)")
@@ -117,7 +117,7 @@ struct PWGeneratorView: View {
                             lowerCase.toggle()
                             numbers.toggle()
                         }
-                        let data = try await APIRepository().getPassword(
+                        let data = try await ApiPasswordRepository().getPassword(
                             length: Int(length), lowerCase: lowerCase,
                             upperCase: upperCase, numbers: numbers, symbols: symbols
                         )

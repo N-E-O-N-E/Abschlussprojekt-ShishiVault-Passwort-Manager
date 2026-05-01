@@ -35,12 +35,12 @@ class CloudKitManager: ObservableObject {
             record["updatedAt"] = entry.updatedAt as CKRecordValue
             
             try await privateDatabase.save(record)
-            print("✅ ☁️ CloudKit: Eintrag '\(entry.title)' erfolgreich synchronisiert.")
+            print("CloudKit: Eintrag '\(entry.title)' erfolgreich synchronisiert.")
         } catch let error as CKError {
             handleCloudKitError(error, operation: "Speichern")
             throw error
         } catch {
-            print("❌ ☁️ Unbekannter CloudKit Fehler beim Speichern: \(error)")
+            print("Unbekannter CloudKit Fehler beim Speichern: \(error)")
             throw error
         }
     }
@@ -50,26 +50,26 @@ class CloudKitManager: ObservableObject {
         let recordID = CKRecord.ID(recordName: id)
         do {
             try await privateDatabase.deleteRecord(withID: recordID)
-            print("✅ ☁️ CloudKit: Eintrag \(id) gelöscht.")
+            print("CloudKit: Eintrag \(id) gelöscht.")
         } catch let error as CKError {
             handleCloudKitError(error, operation: "Löschen")
         } catch {
-            print("❌ ☁️ Unbekannter Fehler beim Löschen aus der Cloud.")
+            print("Unbekannter Fehler beim Löschen aus der Cloud.")
         }
     }
     
     private func handleCloudKitError(_ error: CKError, operation: String) {
         switch error.code {
         case .notAuthenticated:
-            print("☁️ ❌ Fehler (\(operation)): Nutzer ist nicht bei iCloud angemeldet.")
+            print("Fehler (\(operation)): Nutzer ist nicht bei iCloud angemeldet.")
         case .networkUnavailable, .networkFailure:
-            print("☁️ ❌ Fehler (\(operation)): Keine Netzwerkverbindung.")
+            print("Fehler (\(operation)): Keine Netzwerkverbindung.")
         case .quotaExceeded:
-            print("☁️ ❌ Fehler (\(operation)): iCloud Speicher ist voll.")
+            print("Fehler (\(operation)): iCloud Speicher ist voll.")
         case .permissionFailure:
-            print("☁️ ❌ Fehler (\(operation)): Berechtigung verweigert. Prüfe deine CloudKit-Container ID.")
+            print("Fehler (\(operation)): Berechtigung verweigert. Prüfe deine CloudKit-Container ID.")
         default:
-            print("☁️ ❌ CloudKit Fehler (\(operation)): \(error.localizedDescription) (Code: \(error.code.rawValue))")
+            print("CloudKit Fehler (\(operation)): \(error.localizedDescription) (Code: \(error.code.rawValue))")
         }
     }
     
@@ -86,7 +86,7 @@ class CloudKitManager: ObservableObject {
         
         // 2. Alle Rekords löschen (Modernes Async API ab iOS 15)
         _ = try await privateDatabase.modifyRecords(saving: [], deleting: recordIDs)
-        print("☁️ Datenbank-Wipe abgeschlossen.")
+        print("Datenbank-Wipe abgeschlossen.")
     }
     
     /// Überprüft, ob CloudKit verfügbar ist (iCloud Login)
@@ -94,7 +94,7 @@ class CloudKitManager: ObservableObject {
         do {
             return try await container.accountStatus()
         } catch {
-            print("❌ CloudKit Status Fehler: \(error)")
+            print("CloudKit Status Fehler: \(error)")
             return .couldNotDetermine
         }
     }

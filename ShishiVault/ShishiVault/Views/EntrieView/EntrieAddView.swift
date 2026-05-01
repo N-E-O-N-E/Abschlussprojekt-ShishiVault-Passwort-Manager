@@ -109,7 +109,7 @@ struct EntrieAddView: View {
                     .padding(5).padding(.horizontal, 10)
                     
                     Button(action: {
-                        password = CryptHelper.shared.randomPasswordMaker()
+                        password = RandomPassword.shared.generateRandomPassword()
                         passwordConfirm = password
                         passwordPwnedState = 0
                         

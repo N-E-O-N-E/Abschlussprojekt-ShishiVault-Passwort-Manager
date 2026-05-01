@@ -18,7 +18,7 @@ class ShishiViewModel: ObservableObject {
     func toggleCloudSync(enabled: Bool) {
         isCloudSyncEnabled = enabled
         if enabled {
-            print("☁️ Cloud-Sync aktiviert.")
+            print("Cloud-Sync aktiviert.")
             // Hier könnte man einen initialen Upload aller lokalen Daten anstoßen
         }
     }
@@ -27,9 +27,9 @@ class ShishiViewModel: ObservableObject {
     func wipeCloudData() async {
         do {
             try await CloudKitManager.shared.wipeCloudDatabase()
-            print("☁️ Cloud-Daten erfolgreich gelöscht.")
+            print("Cloud-Daten erfolgreich gelöscht.")
         } catch {
-            print("❌ Fehler beim Löschen der Cloud-Daten: \(error)")
+            print("Fehler beim Löschen der Cloud-Daten: \(error)")
         }
     }
     

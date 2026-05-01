@@ -26,7 +26,7 @@ class ArgonCryptoService {
             
             // 3. Für die Zukunft speichern
             UserDefaults.standard.set(newSalt, forKey: key)
-            print("✨ Neues Salt \(newSalt.base64EncodedString()) generiert und gespeichert.")
+            print("Neues Salt \(newSalt.base64EncodedString()) generiert und gespeichert.")
             return newSalt
         }
     }
@@ -102,10 +102,10 @@ class ArgonCryptoService {
             // 4. In UserDefaults überschreiben
             UserDefaults.standard.set(sealedBox.combined, forKey: "key_validator")
             
-            print("✅ Masterpasswort erfolgreich geändert.")
+            print("Masterpasswort erfolgreich geändert.")
             return true
         } catch {
-            print("❌ Fehler beim Versiegeln des neuen Passworts.")
+            print("Fehler beim Versiegeln des neuen Passworts.")
             return false
         }
     }
@@ -115,7 +115,7 @@ class ArgonCryptoService {
         let defaults = UserDefaults.standard
         defaults.removeObject(forKey: "user_salt")
         defaults.removeObject(forKey: "key_validator")
-        print("🧹 UserDefaults bereinigt (Salt & Validator).")
+        print("UserDefaults bereinigt (Salt & Validator).")
     }
     
 }

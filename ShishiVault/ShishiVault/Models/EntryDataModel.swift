@@ -1,6 +1,6 @@
 import Foundation
 
-struct EntryData: Identifiable, Codable {
+struct EntryDataModel: Identifiable, Codable {
     
     var id: UUID
     var title: String

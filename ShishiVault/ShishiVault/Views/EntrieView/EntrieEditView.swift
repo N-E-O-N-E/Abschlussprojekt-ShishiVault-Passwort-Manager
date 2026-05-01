@@ -20,7 +20,7 @@ struct EntrieEditView: View {
     
     // MARK: - Bindings & Properties
     @Binding var entrieEditView: Bool
-    var entry: EntryData?
+    var entry: EntryDataModel?
     
     // MARK: - State: Entry Data
     @State private var title: String = ""
@@ -152,7 +152,7 @@ private extension EntrieEditView {
     var passwordRotationButton: some View {
         Button(action: {
             Task {
-                password = CryptHelper.shared.randomPasswordMaker()
+                password = RandomPassword.shared.generateRandomPassword()
                 do {
                     passwordPwnedState = try await APIhaveibeenpwned().checkPasswordPwned(password: password)
                     if passwordPwnedState == 1 { pwnedAlert = true }

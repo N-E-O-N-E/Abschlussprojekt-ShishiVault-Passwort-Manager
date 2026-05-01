@@ -20,7 +20,7 @@ class DatabaseManager {
             // Aktiviert SQLCipher mit dem Key
             let hexKey = key.map { String(format: "%02hhx", $0) }.joined()
             try data.usePassphrase(hexKey)
-            print("🔑 SQLCIPHER PASSWORT: \(hexKey)")
+            // print("SQLCIPHER PASSWORT: \(hexKey)")
         }
         
         // Verbindung herstellen
@@ -82,7 +82,7 @@ class DatabaseManager {
         
         if fileManager.fileExists(atPath: dbURL.path) {
             try fileManager.removeItem(atPath: dbURL.path)
-            print("🗑️ Datenbankdatei gelöscht.")
+            print("Datenbankdatei gelöscht.")
         }
     }
 }
