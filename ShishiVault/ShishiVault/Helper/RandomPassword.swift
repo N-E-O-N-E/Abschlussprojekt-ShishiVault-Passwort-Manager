@@ -2,8 +2,8 @@ import SwiftUI
 import CryptoKit
 import UniformTypeIdentifiers
 
-class CryptHelper {
-    static let shared = CryptHelper()
+class RandomPassword {
+    static let shared = RandomPassword()
     private init() {}
 
     func copyToClipboard(input: String) throws {
